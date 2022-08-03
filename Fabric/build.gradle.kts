@@ -1,7 +1,7 @@
 plugins {
     idea
     `maven-publish`
-    id("fabric-loom") version "0.10-SNAPSHOT"
+    id("fabric-loom") version "0.12-SNAPSHOT"
 }
 
 val minecraftVersion: String by project
@@ -12,6 +12,7 @@ val modId: String by project
 val mappingsChannel: String by project
 val mappingsVersion: String by project
 val reiVersion: String by project
+val kubejsVersion: String by project
 
 val baseArchiveName = "${modName}-fabric-${minecraftVersion}"
 
@@ -21,10 +22,7 @@ base {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:${mappingsChannel}-${minecraftVersion}:${mappingsVersion}@zip")
-    })
+    mappings(loom.officialMojangMappings())
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
     modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
@@ -33,6 +31,8 @@ dependencies {
 
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${reiVersion}")
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}")
+
+    modApi("dev.latvian.mods:kubejs-fabric:${kubejsVersion}")
 
     fileTree("extra-mods-$minecraftVersion") { include("**/*.jar") }
         .forEach { f ->
@@ -46,10 +46,12 @@ dependencies {
             modLocalRuntime("extra-mods:$mod:$version")
         }
 
-    implementation(project(":Common"))
+    implementation(project(":Common", "namedElements"))
 }
 
 loom {
+    accessWidenerPath.set(project(":Common").file("src/main/resources/${modId}.accesswidener"))
+
     runs {
         named("client") {
             client()
@@ -72,11 +74,6 @@ loom {
 
 tasks.processResources {
     from(project(":Common").sourceSets.main.get().resources)
-    inputs.property("version", project.version)
-
-    filesMatching("fabric.mod.json") {
-        expand("version" to project.version)
-    }
 }
 
 tasks.withType<JavaCompile> {

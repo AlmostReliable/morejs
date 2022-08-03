@@ -33,6 +33,16 @@ allprojects {
                 includeGroup("curse.maven")
             }
         }
+        maven("https://maven.architectury.dev") {
+            content {
+                includeGroup("dev.architectury")
+            }
+        }
+        maven("https://maven.saps.dev/minecraft") {
+            content {
+                includeGroup("dev.latvian.mods")
+            }
+        }
     }
 
     tasks.withType<GenerateModuleMetadata> {

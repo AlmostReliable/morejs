@@ -16,6 +16,9 @@ val modId: String by project
 val mappingsChannel: String by project
 val mappingsVersion: String by project
 val jeiVersion: String by project
+val kubejsVersion: String by project
+val rhinoVersion: String by project
+val architecturyVersion: String by project
 
 
 val baseArchiveName = "${modName}-forge-${minecraftVersion}"
@@ -69,6 +72,10 @@ dependencies {
 
     compileOnly(fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api"))
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}"))
+
+    implementation(fg.deobf("dev.latvian.mods:kubejs-forge:${kubejsVersion}"))
+    implementation(fg.deobf("dev.latvian.mods:rhino-forge:${rhinoVersion}"))
+    implementation(fg.deobf("dev.architectury:architectury-forge:${architecturyVersion}"))
 
     fileTree("extra-mods-$minecraftVersion") { include("**/*.jar") }
         .forEach { f ->

@@ -1,6 +1,6 @@
 plugins {
     `maven-publish`
-    id("fabric-loom") version "0.10-SNAPSHOT"
+    id("fabric-loom") version "0.12-SNAPSHOT"
     id("com.github.gmazzo.buildconfig") version "3.0.3"
 }
 
@@ -13,6 +13,7 @@ val modId: String by project
 val fabricLoaderVersion: String by project
 val mappingsChannel: String by project
 val mappingsVersion: String by project
+val kubejsVersion: String by project
 
 val baseArchiveName = "${modName}-common-${minecraftVersion}"
 
@@ -21,8 +22,7 @@ base {
 }
 
 loom {
-    remapArchives.set(false);
-    setupRemappedVariants.set(false);
+    accessWidenerPath.set(File("src/main/resources/${modId}.accesswidener"))
     runConfigs.configureEach {
         ideConfigGenerated(false)
     }
@@ -30,11 +30,10 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:${mappingsChannel}-${minecraftVersion}:${mappingsVersion}@zip")
-    })
+    mappings(loom.officialMojangMappings())
     implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+    modApi("dev.latvian.mods:kubejs-fabric:${kubejsVersion}")
 
     /**
      * DON'T USE THIS! NEEDED TO COMPILE THIS PROJECT
@@ -67,6 +66,7 @@ buildConfig {
     buildConfigField("String", "MOD_ID", "\"${modId}\"")
     buildConfigField("String", "MOD_VERSION", "\"${project.version}\"")
     buildConfigField("String", "MOD_NAME", "\"${modName}\"")
+    buildConfigField("String", "MOD_GROUP", "\"${project.group as String}\"")
 
     packageName(project.group as String)
 }

@@ -16,11 +16,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.almostreliable.unified.AlmostUnifiedFabric"
+      "com.almostreliable.missingname.MissingNameModFabric"
     ]
   },
   "mixins": [
-    "almostunified-common.mixins.json"
+    "missingname-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",
