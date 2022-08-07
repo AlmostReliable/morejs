@@ -48,4 +48,8 @@ public class VillagerHelper {
     public static StewTrade createStewTrade(ItemStack[] inputs, MobEffect[] effects, int duration) {
         return new StewTrade(inputs, effects, duration);
     }
+
+    public static PotionTrade createPotionTrade(ItemStack[] inputs) {
+        return new PotionTrade(inputs);
+    }
 }
