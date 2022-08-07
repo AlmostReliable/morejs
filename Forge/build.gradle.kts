@@ -29,6 +29,7 @@ base {
 
 minecraft {
     mappings(mappingsChannel, "${mappingsVersion}-${minecraftVersion}")
+    accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
 
     runs {
         create("client") {
