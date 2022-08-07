@@ -1,11 +1,10 @@
 package com.almostreliable.missingname.modules.villager;
 
 import com.almostreliable.missingname.modules.villager.trades.*;
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +29,7 @@ public class VillagerHelper {
         return new CustomTrade(transformer);
     }
 
-    public static TreasureMapTrade createStructureMapTrade(ItemStack[] inputs, ResourceLocation structure) {
+    public static TreasureMapTrade createStructureMapTrade(ItemStack[] inputs, String structure) {
         return TreasureMapTrade.forStructure(inputs, structure);
     }
 
@@ -38,7 +37,7 @@ public class VillagerHelper {
         return TreasureMapTrade.forBiome(inputs, biome);
     }
 
-    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, Function<EntityJS, BlockPos> func) {
+    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, Function<Entity, BlockPos> func) {
         return new TreasureMapTrade(inputs, func);
     }
 
