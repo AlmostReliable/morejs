@@ -1,6 +1,5 @@
 package com.almostreliable.missingname.modules.villager.trades;
 
-import com.almostreliable.missingname.modules.villager.ItemListingType;
 import com.almostreliable.missingname.modules.villager.OfferModification;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.entity.EntityJS;
@@ -14,7 +13,7 @@ import java.util.Random;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
-        implements VillagerTrades.ItemListing, ItemListingType {
+        implements VillagerTrades.ItemListing {
 
     protected final ItemStack firstInput;
     protected final ItemStack secondInput;
@@ -64,11 +63,6 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
     public T priceMultiplier(float priceMultiplier) {
         this.priceMultiplier = priceMultiplier;
         return getSelf();
-    }
-
-    @Override
-    public Type getTradeType() {
-        return Type.OWN_CUSTOM;
     }
 
     @SuppressWarnings("unchecked")

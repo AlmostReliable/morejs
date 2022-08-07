@@ -1,7 +1,7 @@
 package com.almostreliable.missingname;
 
 import com.almostreliable.missingname.modules.villager.LevelRange;
-import com.almostreliable.missingname.modules.villager.VillagerHelper;
+import com.almostreliable.missingname.modules.villager.VillagerUtils;
 import com.almostreliable.missingname.util.LevelUtils;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
@@ -18,7 +18,7 @@ public class Plugin extends KubeJSPlugin {
 
     @Override
     public void addBindings(BindingsEvent event) {
-        event.add("VillagerHelper", VillagerHelper.class);
+        event.add("VillagerUtils", VillagerUtils.class);
         event.add("LevelRange", LevelRange.class);
         event.add("LevelUtils", LevelUtils.class);
     }

@@ -13,29 +13,35 @@ import java.util.*;
 public class TradingManager {
     public static TradingManager INSTANCE = new TradingManager();
 
-    @Nullable private Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> tradesBackup;
+    @Nullable private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> tradesBackup;
+    @Nullable private Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
 
     public void run() {
         if (tradesBackup == null) {
-            tradesBackup = createMutableTradesMap();
+            tradesBackup = createMutableTradesMapByProfessions();
+        }
+
+        if (wandererTradesBackup == null) {
+            wandererTradesBackup = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
         }
 
         updateVanillaTrades(tradesBackup);
-        Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> trades = createMutableTradesMap();
+        var trades = createMutableTradesMapByProfessions();
         new VillagerTradingEventJS(trades).post(ScriptType.SERVER, Events.VILLAGER_TRADING);
         updateVanillaTrades(trades);
+
+        updateVanillaWanderingTrades(wandererTradesBackup);
+        var wandererTrades = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
+        new WandererTradingEventJS(wandererTrades).post(ScriptType.SERVER, Events.WANDERING_TRADING);
+        updateVanillaWanderingTrades(wandererTradesBackup);
     }
 
-    private Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> createMutableTradesMap() {
+    private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> createMutableTradesMapByProfessions() {
         synchronized (VillagerTrades.TRADES) {
-            Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> result = new HashMap<>();
+            Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> result = new HashMap<>();
 
             VillagerTrades.TRADES.forEach((profession, trades) -> {
-                Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>> map = new Int2ObjectOpenHashMap<>();
-                trades.forEach((level, listings) -> {
-                    var newListings = new ArrayList<>(Arrays.stream(listings).toList());
-                    map.computeIfAbsent(level, $ -> new ArrayList<>()).addAll(newListings);
-                });
+                Int2ObjectMap<List<VillagerTrades.ItemListing>> map = toListingsListMap(trades);
                 result.put(profession, map);
             });
 
@@ -43,17 +49,39 @@ public class TradingManager {
         }
     }
 
-    private void updateVanillaTrades(Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> trades) {
+    private synchronized Int2ObjectMap<List<VillagerTrades.ItemListing>> toListingsListMap(Int2ObjectMap<VillagerTrades.ItemListing[]> listingsMap) {
+        Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>> result = new Int2ObjectOpenHashMap<>();
+        listingsMap.forEach((level, listings) -> {
+            var newListings = new ArrayList<>(Arrays.stream(listings).toList());
+            result.put(level.intValue(), newListings);
+        });
+        return result;
+    }
+
+    private synchronized Int2ObjectMap<VillagerTrades.ItemListing[]> toListingsArrayMap(Int2ObjectMap<List<VillagerTrades.ItemListing>> listingsMap) {
+        Int2ObjectOpenHashMap<VillagerTrades.ItemListing[]> result = new Int2ObjectOpenHashMap<>();
+        listingsMap.forEach((level, listings) -> {
+            result.put(level.intValue(), listings.toArray(new VillagerTrades.ItemListing[0]));
+        });
+        return result;
+    }
+
+    private void updateVanillaTrades(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades) {
         synchronized (VillagerTrades.TRADES) {
             VillagerTrades.TRADES.clear();
 
             trades.forEach((profession, newTrades) -> {
-                Int2ObjectMap<VillagerTrades.ItemListing[]> vanillaTrades = new Int2ObjectOpenHashMap<>(newTrades.size());
-                newTrades.forEach((level, itemListing) -> {
-                    vanillaTrades.put(level.intValue(), itemListing.toArray(new VillagerTrades.ItemListing[0]));
-                });
+                Int2ObjectMap<VillagerTrades.ItemListing[]> vanillaTrades = toListingsArrayMap(newTrades);
                 VillagerTrades.TRADES.put(profession, vanillaTrades);
             });
+        }
+    }
+
+    private void updateVanillaWanderingTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+        synchronized (VillagerTrades.WANDERING_TRADER_TRADES) {
+            VillagerTrades.WANDERING_TRADER_TRADES.clear();
+            Int2ObjectMap<VillagerTrades.ItemListing[]> map = toListingsArrayMap(trades);
+            VillagerTrades.WANDERING_TRADER_TRADES.putAll(map);
         }
     }
 }

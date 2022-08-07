@@ -5,7 +5,7 @@ import com.almostreliable.missingname.modules.villager.trades.SimpleTrade;
 import com.almostreliable.missingname.modules.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -15,30 +15,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class VillagerTradingEventJS extends EventJS {
-    private final Set<Class<? extends VillagerTrades.ItemListing>> vanillaListings = Set.of(
-            VillagerTrades.DyedArmorForEmeralds.class,
-            VillagerTrades.EnchantBookForEmeralds.class,
-            VillagerTrades.EnchantedItemForEmeralds.class,
-            VillagerTrades.ItemsForEmeralds.class,
-            VillagerTrades.ItemsAndEmeraldsToItems.class,
-            VillagerTrades.EmeraldForItems.class,
-            VillagerTrades.TippedArrowForItemsAndEmeralds.class,
-            VillagerTrades.SuspiciousStewForEmerald.class,
-            VillagerTrades.TreasureMapForEmeralds.class
-    );
+    private final Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades;
 
-    private final Set<Class<? extends VillagerTrades.ItemListing>> ownListings = Set.of(
-            CustomTrade.class,
-            SimpleTrade.class
-    );
-
-    private final Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> trades;
-
-    public VillagerTradingEventJS(Map<VillagerProfession, Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>> trades) {
+    public VillagerTradingEventJS(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades) {
         this.trades = trades;
     }
 
     public List<VillagerTrades.ItemListing> getTrades(VillagerProfession profession, int level) {
+        Preconditions.checkArgument(1 <= level && level <= 5, "Level must be between 1 and 5");
         Preconditions.checkNotNull(profession);
         return trades.get(profession).computeIfAbsent(level, $ -> new ArrayList<>());
     }
@@ -49,7 +33,7 @@ public class VillagerTradingEventJS extends EventJS {
         Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty),
                 "Buyer items cannot be empty");
 
-        SimpleTrade trade = VillagerHelper.createSimpleTrade(inputs, output);
+        SimpleTrade trade = VillagerUtils.createSimpleTrade(inputs, output);
         return addTrade(profession, level, trade);
     }
 
@@ -65,52 +49,40 @@ public class VillagerTradingEventJS extends EventJS {
     }
 
     public void removeVanillaTrades() {
-        forEachTrades((listings, profession, level) -> {
-            listings.removeIf(this::isVanillaTrade);
+        forEachTrades((listings, level, profession) -> {
+            listings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
 
     public void removeVanillaTrades(VillagerProfession[] professions, LevelRange levelRange) {
         forEachTrades(professions, levelRange, itemListings -> {
-            itemListings.removeIf(this::isVanillaTrade);
+            itemListings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
 
     public void removeModdedTrades() {
-        forEachTrades((listings, profession, level) -> {
-            listings.removeIf(this::isOwnTrade);
+        forEachTrades((listings, level, profession) -> {
+            listings.removeIf(VillagerUtils::isModdedTrade);
         });
     }
 
     public void removeModdedTrades(VillagerProfession[] professions, LevelRange levelRange) {
         forEachTrades(professions, levelRange, itemListings -> {
-            itemListings.removeIf(this::isOwnTrade);
+            itemListings.removeIf(VillagerUtils::isModdedTrade);
         });
-    }
-
-    public boolean isVanillaTrade(VillagerTrades.ItemListing listing) {
-        return vanillaListings.contains(listing.getClass());
-    }
-
-    public boolean isOwnTrade(VillagerTrades.ItemListing listing) {
-        return ownListings.contains(listing.getClass());
-    }
-
-    public boolean isModdedTrade(VillagerTrades.ItemListing listing) {
-        return !isVanillaTrade(listing) && !isOwnTrade(listing);
     }
 
     public void forEachTrades(ForEachCallback callback) {
         trades.forEach((profession, levelTrades) -> {
             levelTrades.forEach((level, itemListings) -> {
-                callback.accept(itemListings, profession, level);
+                callback.accept(itemListings, level, profession);
             });
         });
     }
 
     public void forEachTrades(VillagerProfession[] professions, LevelRange levelRange, Consumer<List<VillagerTrades.ItemListing>> consumer) {
         Set<VillagerProfession> filter = Arrays.stream(professions).collect(Collectors.toSet());
-        forEachTrades((itemListings, profession, level) -> {
+        forEachTrades((itemListings, level, profession) -> {
             if (filter.contains(profession) && levelRange.test(level)) {
                 consumer.accept(itemListings);
             }
@@ -118,6 +90,6 @@ public class VillagerTradingEventJS extends EventJS {
     }
 
     public interface ForEachCallback {
-        void accept(List<VillagerTrades.ItemListing> listings, VillagerProfession profession, int level);
+        void accept(List<VillagerTrades.ItemListing> listings, int level, VillagerProfession profession);
     }
 }

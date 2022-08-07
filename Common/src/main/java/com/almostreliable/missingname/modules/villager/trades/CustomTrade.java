@@ -1,6 +1,5 @@
 package com.almostreliable.missingname.modules.villager.trades;
 
-import com.almostreliable.missingname.modules.villager.ItemListingType;
 import com.almostreliable.missingname.modules.villager.OfferModification;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import net.minecraft.world.entity.Entity;
@@ -12,17 +11,12 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class CustomTrade implements VillagerTrades.ItemListing, ItemListingType {
+public class CustomTrade implements VillagerTrades.ItemListing {
 
     private final TransformableTrade.Transformer transformer;
 
     public CustomTrade(TransformableTrade.Transformer transformer) {
         this.transformer = transformer;
-    }
-
-    @Override
-    public Type getTradeType() {
-        return Type.OWN_CUSTOM;
     }
 
     @Nullable
