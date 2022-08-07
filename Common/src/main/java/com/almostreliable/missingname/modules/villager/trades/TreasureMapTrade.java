@@ -37,7 +37,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
         return this;
     }
 
-    public TreasureMapTrade destinationType(MapDecoration.Type type) {
+    public TreasureMapTrade marker(MapDecoration.Type type) {
         this.destinationType = type;
         return this;
     }
