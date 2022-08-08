@@ -6,6 +6,7 @@ import com.almostreliable.missingname.modules.villager.trades.TransformableTrade
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -23,8 +24,10 @@ public class VillagerTradingEventJS extends EventJS {
 
     public List<VillagerTrades.ItemListing> getTrades(VillagerProfession profession, int level) {
         Preconditions.checkArgument(1 <= level && level <= 5, "Level must be between 1 and 5");
-        Preconditions.checkNotNull(profession);
-        return trades.get(profession).computeIfAbsent(level, $ -> new ArrayList<>());
+        Preconditions.checkArgument(!profession.equals(VillagerProfession.NONE), "No or invalid profession specified");
+        return trades
+                .computeIfAbsent(profession, $ -> new Int2ObjectOpenHashMap<>())
+                .computeIfAbsent(level, $ -> new ArrayList<>());
     }
 
     public SimpleTrade addTrade(VillagerProfession profession, int level, ItemStack[] inputs, ItemStack output) {
@@ -38,7 +41,6 @@ public class VillagerTradingEventJS extends EventJS {
     }
 
     public <T extends VillagerTrades.ItemListing> T addTrade(VillagerProfession profession, int level, T trade) {
-        Objects.requireNonNull(profession);
         Objects.requireNonNull(trade);
         getTrades(profession, level).add(trade);
         return trade;
