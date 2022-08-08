@@ -1,5 +1,6 @@
 package com.almostreliable.missingname.modules.villager.trades;
 
+import com.almostreliable.missingname.util.BlockPosFunction;
 import com.almostreliable.missingname.util.LevelUtils;
 import com.almostreliable.missingname.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -15,19 +16,17 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Function;
 
 public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     @Nullable protected Component displayName;
     protected MapDecoration.Type destinationType = MapDecoration.Type.RED_X;
 
-    // TODO: Make it better
-    protected final Function<Entity, BlockPos> destinationPositionFunc;
+    protected final BlockPosFunction destinationPositionFunc;
     private boolean renderBiomePreviewMap = true;
 
     private byte mapViewScale = 2;
 
-    public TreasureMapTrade(ItemStack[] inputs, Function<Entity, BlockPos> destinationPositionFunc) {
+    public TreasureMapTrade(ItemStack[] inputs, BlockPosFunction destinationPositionFunc) {
         super(inputs);
         this.destinationPositionFunc = destinationPositionFunc;
     }
@@ -56,7 +55,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     @Nullable
     public MerchantOffer createOffer(Entity trader, Random rand) {
         if (trader.getLevel() instanceof ServerLevel level) {
-            BlockPos pos = destinationPositionFunc.apply(trader);
+            BlockPos pos = destinationPositionFunc.apply(level, trader);
             if (pos == null) return null;
 
             ItemStack map = MapItem.create(level, pos.getX(), pos.getZ(), this.mapViewScale, true, true);
@@ -70,20 +69,16 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     }
 
     public static TreasureMapTrade forStructure(ItemStack[] input, String structure) {
-        TextComponent c = new TextComponent("Treasure Map: " + Utils.format(structure));
-        return new TreasureMapTrade(input,
-                entity -> Utils
-                        .cast(entity.level, ServerLevel.class)
-                        .map(level -> LevelUtils.findStructure(entity.blockPosition(), level, structure, 600))
-                        .orElse(null)).displayName(c);
+        TextComponent component = new TextComponent("Treasure Map: " + Utils.format(structure));
+        return new TreasureMapTrade(input, (level, entity) -> {
+            return LevelUtils.findStructure(entity.blockPosition(), level, structure, 100);
+        }).displayName(component);
     }
 
     public static TreasureMapTrade forBiome(ItemStack[] input, String biome) {
-        TextComponent c = new TextComponent("Treasure Map: " + Utils.format(biome));
-        return new TreasureMapTrade(input,
-                entity -> Utils
-                        .cast(entity.getLevel(), ServerLevel.class)
-                        .map(level -> LevelUtils.findBiome(entity.blockPosition(), level, biome, 1200))
-                        .orElse(null)).displayName(c);
+        TextComponent component = new TextComponent("Treasure Map: " + Utils.format(biome));
+        return new TreasureMapTrade(input, (level, entity) -> {
+            return LevelUtils.findBiome(entity.blockPosition(), level, biome, 250);
+        }).displayName(component);
     }
 }

@@ -1,6 +1,7 @@
 package com.almostreliable.missingname.modules.villager;
 
 import com.almostreliable.missingname.modules.villager.trades.*;
+import com.almostreliable.missingname.util.BlockPosFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffect;
@@ -63,7 +64,7 @@ public class VillagerUtils {
         return TreasureMapTrade.forBiome(inputs, biome);
     }
 
-    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, Function<Entity, BlockPos> func) {
+    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, BlockPosFunction func) {
         return new TreasureMapTrade(inputs, func);
     }
 

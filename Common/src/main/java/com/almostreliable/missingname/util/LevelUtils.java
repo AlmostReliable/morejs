@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class LevelUtils {
     @Nullable
-    public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int radius) {
+    public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int chunkRadius) {
         return level
                 .registryAccess()
                 .registry(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY)
@@ -23,17 +23,17 @@ public class LevelUtils {
                 .map(holderSet -> level
                         .getChunkSource()
                         .getGenerator()
-                        .findNearestMapFeature(level, holderSet, position, radius, true))
+                        .findNearestMapFeature(level, holderSet, position, chunkRadius, true))
                 .map(Pair::getFirst)
                 .orElse(null);
     }
 
-    public static BlockPos findBiome(BlockPos position, ServerLevel level, String biome, int radius) {
+    public static BlockPos findBiome(BlockPos position, ServerLevel level, String biome, int chunkRadius) {
         Predicate<Holder<Biome>> predicate = ResourceOrTag
                 .get(biome, Registry.BIOME_REGISTRY)
                 .map(id -> holder -> holder.is(id), tag -> holder -> holder.is(tag));
 
-        Pair<BlockPos, Holder<Biome>> nearestBiome = level.findNearestBiome(predicate, position, radius, 8);
+        Pair<BlockPos, Holder<Biome>> nearestBiome = level.findNearestBiome(predicate, position, chunkRadius * 16, 8);
         if (nearestBiome != null) {
             return nearestBiome.getFirst();
         }
