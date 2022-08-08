@@ -1,6 +1,8 @@
 package com.almostreliable.missingname.modules.villager;
 
 import com.almostreliable.missingname.core.Events;
+import com.almostreliable.missingname.modules.villager.events.VillagerTradingEventJS;
+import com.almostreliable.missingname.modules.villager.events.WandererTradingEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;

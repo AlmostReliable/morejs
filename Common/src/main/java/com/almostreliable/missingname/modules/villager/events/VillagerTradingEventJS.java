@@ -1,5 +1,7 @@
-package com.almostreliable.missingname.modules.villager;
+package com.almostreliable.missingname.modules.villager.events;
 
+import com.almostreliable.missingname.modules.villager.LevelRange;
+import com.almostreliable.missingname.modules.villager.VillagerUtils;
 import com.almostreliable.missingname.modules.villager.trades.CustomTrade;
 import com.almostreliable.missingname.modules.villager.trades.SimpleTrade;
 import com.almostreliable.missingname.modules.villager.trades.TransformableTrade;
