@@ -28,5 +28,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "MissingName"
+rootProject.name = "MoreJS"
 include("Common", "Fabric", "Forge")

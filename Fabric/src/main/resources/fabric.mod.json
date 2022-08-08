@@ -16,11 +16,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.almostreliable.missingname.MissingNameModFabric"
+      "com.almostreliable.morejs.MoreJSFabric"
     ]
   },
   "mixins": [
-    "missingname-common.mixins.json"
+    "morejs-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",

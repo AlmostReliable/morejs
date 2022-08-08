@@ -1,1 +1,1 @@
-com.almostreliable.missingname.Plugin
+com.almostreliable.morejs.Plugin
