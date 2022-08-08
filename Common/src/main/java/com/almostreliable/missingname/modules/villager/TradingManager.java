@@ -33,7 +33,7 @@ public class TradingManager {
         updateVanillaWanderingTrades(wandererTradesBackup);
         var wandererTrades = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
         new WandererTradingEventJS(wandererTrades).post(ScriptType.SERVER, Events.WANDERING_TRADING);
-        updateVanillaWanderingTrades(wandererTradesBackup);
+        updateVanillaWanderingTrades(wandererTrades);
     }
 
     private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> createMutableTradesMapByProfessions() {

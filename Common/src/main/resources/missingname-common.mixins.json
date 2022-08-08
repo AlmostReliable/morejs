@@ -4,7 +4,6 @@
   "package": "com.almostreliable.missingname.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "villager.ItemListingMixin",
     "villager.MerchantOfferAccessor"
   ],
   "client": [
