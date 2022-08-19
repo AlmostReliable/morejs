@@ -4,6 +4,8 @@
   "package": "com.almostreliable.morejs.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "enchanting.EnchantmentMenuMixin",
+    "enchanting.EnchantmentMixin",
     "villager.MerchantOfferAccessor"
   ],
   "client": [
