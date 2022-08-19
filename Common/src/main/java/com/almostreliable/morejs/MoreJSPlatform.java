@@ -1,9 +1,6 @@
 package com.almostreliable.morejs;
 
 public interface MoreJSPlatform {
-
-    MoreJSPlatform INSTANCE = PlatformLoader.load(MoreJSPlatform.class);
-
     /**
      * Gets the current platform
      *
