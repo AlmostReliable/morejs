@@ -7,7 +7,7 @@ import java.util.ServiceLoader;
 
 public class MoreJS {
 
-    public static final Logger LOG = LogManager.getLogger(BuildConfig.MOD_NAME);
+    public static final Logger LOG = LogManager.getLogger(BuildConfig.MOD_NAME + "/enchanting");
     public static final MoreJSPlatform PLATFORM = load();
 
     static MoreJSPlatform load() {

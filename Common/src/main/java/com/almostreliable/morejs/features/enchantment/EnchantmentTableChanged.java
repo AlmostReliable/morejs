@@ -19,7 +19,7 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 
-public class EnchantmentSlotChangedEvent extends LevelEventJS {
+public class EnchantmentTableChanged extends LevelEventJS {
 
     private final ItemStack item;
     private final Level level;
@@ -27,7 +27,7 @@ public class EnchantmentSlotChangedEvent extends LevelEventJS {
     private final EnchantmentMenuProcess state;
     private final Random random;
 
-    public EnchantmentSlotChangedEvent(ItemStack item, Level level, BlockPos pos, EnchantmentMenuProcess state, Random random) {
+    public EnchantmentTableChanged(ItemStack item, Level level, BlockPos pos, EnchantmentMenuProcess state, Random random) {
         this.item = item;
         this.level = level;
         this.pos = pos;
@@ -81,20 +81,20 @@ public class EnchantmentSlotChangedEvent extends LevelEventJS {
             this.index = index;
         }
 
-        public void setRequiredLevel(int level) {
-            EnchantmentSlotChangedEvent.this.state.getMenu().costs[index] = level;
+        public int getRequiredLevel() {
+            return EnchantmentTableChanged.this.state.getMenu().costs[index];
         }
 
-        public int getRequiredLevel() {
-            return EnchantmentSlotChangedEvent.this.state.getMenu().costs[index];
+        public void setRequiredLevel(int level) {
+            EnchantmentTableChanged.this.state.getMenu().costs[index] = level;
         }
 
         public void updateClue() {
             var enchantments = getEnchantments();
-            var instance = enchantments.get(EnchantmentSlotChangedEvent.this.random.nextInt(enchantments.size()));
-            EnchantmentSlotChangedEvent.this.state.getMenu().enchantClue[index] = Registry.ENCHANTMENT.getId(
+            var instance = enchantments.get(EnchantmentTableChanged.this.random.nextInt(enchantments.size()));
+            EnchantmentTableChanged.this.state.getMenu().enchantClue[index] = Registry.ENCHANTMENT.getId(
                     instance.enchantment);
-            EnchantmentSlotChangedEvent.this.state.getMenu().levelClue[index] = instance.level;
+            EnchantmentTableChanged.this.state.getMenu().levelClue[index] = instance.level;
         }
 
         public int getEnchantmentCount() {
@@ -119,7 +119,7 @@ public class EnchantmentSlotChangedEvent extends LevelEventJS {
         }
 
         private List<EnchantmentInstance> getEnchantments() {
-            return EnchantmentSlotChangedEvent.this.state.getEnchantments(index);
+            return EnchantmentTableChanged.this.state.getEnchantments(index);
         }
     }
 }
