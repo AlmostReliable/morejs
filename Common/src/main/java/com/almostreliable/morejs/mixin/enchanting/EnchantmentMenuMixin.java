@@ -3,13 +3,11 @@ package com.almostreliable.morejs.mixin.enchanting;
 import com.almostreliable.morejs.Debug;
 import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
-import com.almostreliable.morejs.features.enchantment.EnchantmentMenuExtension;
-import com.almostreliable.morejs.features.enchantment.EnchantmentMenuProcess;
-import com.almostreliable.morejs.features.enchantment.EnchantmentState;
-import com.almostreliable.morejs.features.enchantment.EnchantmentTableChanged;
+import com.almostreliable.morejs.features.enchantment.*;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.EnchantmentMenu;
@@ -80,8 +78,8 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             this.morejs$process.setState(EnchantmentState.USE_STORED_ENCHANTMENTS);
             if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Post SlotChange: {}", this.morejs$process.getPlayer(), item);
 
-            new EnchantmentTableChanged(item, level, pos, this.morejs$process, this.random).post(ScriptType.SERVER,
-                    Events.ENCHANTMENT_TABLE);
+            new EnchantmentTableChangedJS(item, level, pos, this.morejs$process, this.random).post(ScriptType.SERVER,
+                    Events.ENCHANTMENT_TABLE_CHANGED);
         });
 
         if (item.isEmpty() || !item.isEnchantable()) {
@@ -103,6 +101,23 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
                 cir.setReturnValue(enchantments);
             }
         }
+    }
+
+    @Inject(method = "clickMenuButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ContainerLevelAccess;execute(Ljava/util/function/BiConsumer;)V"), cancellable = true)
+    private void clickMenuButton$InvokeEnchantEvent(Player player, int i, CallbackInfoReturnable<Boolean> cir) {
+        this.access.execute((level, pos) -> {
+            if (player != this.morejs$process.getPlayer()) {
+                MoreJS.LOG.warn("<{}> Player changed during clickMenuButton", this.morejs$process.getPlayer());
+                return;
+            }
+
+            ItemStack item = this.enchantSlots.getItem(0);
+            var e = new EnchantingEventJS(item, level, pos, player, this.morejs$process, true);
+            e.post(ScriptType.SERVER, Events.ENCHANTMENT_TABLE_ENCHANT);
+            if (e.isCancelled()) {
+                cir.setReturnValue(false);
+            }
+        });
     }
 
     @Override
