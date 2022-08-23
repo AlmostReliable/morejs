@@ -3,6 +3,7 @@ package com.almostreliable.morejs.mixin.enchanting;
 import com.almostreliable.morejs.Debug;
 import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
+import com.almostreliable.morejs.features.enchantment.EnchantmentMenuExtension;
 import com.almostreliable.morejs.features.enchantment.EnchantmentMenuProcess;
 import com.almostreliable.morejs.features.enchantment.EnchantmentState;
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableChanged;
@@ -29,9 +30,9 @@ import java.util.List;
 import java.util.Random;
 
 @Mixin(EnchantmentMenu.class)
-public abstract class EnchantmentMenuMixin extends AbstractContainerMenu {
-    @SuppressWarnings("ConstantConditions") @Unique
-    private final EnchantmentMenuProcess morejs$process = new EnchantmentMenuProcess((EnchantmentMenu) (Object) this);
+public abstract class EnchantmentMenuMixin extends AbstractContainerMenu implements EnchantmentMenuExtension {
+    @Unique
+    private EnchantmentMenuProcess morejs$process;
     @Shadow @Final private Random random;
     @Shadow @Final private Container enchantSlots;
     @Shadow @Final private ContainerLevelAccess access;
@@ -40,8 +41,15 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu {
         super(menuType, i);
     }
 
+    @Override
+    public EnchantmentMenuProcess getMoreJSProcess() {
+        return this.morejs$process;
+    }
+
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At("RETURN"))
     private void initializeProcess(int i, Inventory inventory, ContainerLevelAccess containerLevelAccess, CallbackInfo ci) {
+        //noinspection ConstantConditions
+        this.morejs$process = new EnchantmentMenuProcess((EnchantmentMenu) (Object) this);
         morejs$process.setPlayer(inventory.player);
     }
 
@@ -54,10 +62,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu {
                 return;
             }
 
-            this.morejs$process.setCurrentItem(item);
-            this.morejs$process.setFreezeBroadcast(true);
-            this.morejs$process.clearEnchantments();
-            this.morejs$process.setState(EnchantmentState.STORE_ENCHANTMENTS);
+            this.morejs$process.prepareEvent(item);
             if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Pre SlotChange: {}", this.morejs$process.getPlayer(), item);
         });
     }

@@ -87,4 +87,11 @@ public class EnchantmentMenuProcess {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public void prepareEvent(ItemStack item) {
+        setCurrentItem(item);
+        clearEnchantments();
+        setFreezeBroadcast(true);
+        setState(EnchantmentState.STORE_ENCHANTMENTS);
+    }
 }
