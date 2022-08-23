@@ -16,39 +16,25 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class EnchantingEventJS extends LevelEventJS {
+public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
 
-    private final ItemStack item;
-    private final Level level;
     private final BlockPos pos;
-    private final Player player;
     protected final EnchantmentMenuProcess state;
     private final boolean cancelable;
 
-    public EnchantingEventJS(ItemStack item, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state, boolean cancelable) {
-        this.item = item;
-        this.level = level;
+    public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state) {
+        this(item, secondItem, level, pos, player, state, false);
+    }
+
+    public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state, boolean cancelable) {
+        super(item, secondItem, level, player, state.getMenu());
         this.pos = pos;
-        this.player = player;
         this.state = state;
         this.cancelable = cancelable;
     }
 
-    @Override
-    public LevelJS getLevel() {
-        return UtilsJS.getLevel(level);
-    }
-
     public BlockPos getPosition() {
         return pos;
-    }
-
-    public PlayerJS<?> getPlayer() {
-        return getLevel().getPlayer(player);
-    }
-
-    public ItemStackJS getItem() {
-        return new ItemStackJS(item);
     }
 
     public Data get(int index) {
@@ -73,7 +59,7 @@ public class EnchantingEventJS extends LevelEventJS {
         }
 
         public int getRequiredLevel() {
-            return EnchantingEventJS.this.state.getMenu().costs[index];
+            return EnchantmentTableServerEventJS.this.menu.costs[index];
         }
 
         public int getEnchantmentCount() {
@@ -89,7 +75,7 @@ public class EnchantingEventJS extends LevelEventJS {
         }
 
         protected List<EnchantmentInstance> getEnchantments() {
-            return EnchantingEventJS.this.state.getEnchantments(index);
+            return EnchantmentTableServerEventJS.this.state.getEnchantments(index);
         }
     }
 }

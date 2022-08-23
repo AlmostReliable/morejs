@@ -36,12 +36,18 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
     @Shadow @Final private ContainerLevelAccess access;
 
     protected EnchantmentMenuMixin(@Nullable MenuType<?> menuType, int i) {
+        // Ignore this
         super(menuType, i);
     }
 
     @Override
     public EnchantmentMenuProcess getMoreJSProcess() {
         return this.morejs$process;
+    }
+
+    @Override
+    public Container getMoreJsEnchantSlots() {
+        return this.enchantSlots;
     }
 
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/inventory/ContainerLevelAccess;)V", at = @At("RETURN"))
@@ -74,11 +80,13 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
 
         ItemStack item = container.getItem(0);
         this.access.execute((level, pos) -> {
+            ItemStack secondItem = container.getItem(1);
             this.morejs$process.setFreezeBroadcast(false);
             this.morejs$process.setState(EnchantmentState.USE_STORED_ENCHANTMENTS);
             if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Post SlotChange: {}", this.morejs$process.getPlayer(), item);
 
-            new EnchantmentTableChangedJS(item, level, pos, this.morejs$process, this.random).post(ScriptType.SERVER,
+            new EnchantmentTableChangedJS(item, secondItem, level, pos, this.morejs$process, this.random).post(
+                    ScriptType.SERVER,
                     Events.ENCHANTMENT_TABLE_CHANGED);
         });
 
@@ -112,7 +120,8 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             }
 
             ItemStack item = this.enchantSlots.getItem(0);
-            var e = new EnchantingEventJS(item, level, pos, player, this.morejs$process, true);
+            ItemStack secondItem = this.enchantSlots.getItem(1);
+            var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process, true);
             e.post(ScriptType.SERVER, Events.ENCHANTMENT_TABLE_ENCHANT);
             if (e.isCancelled()) {
                 cir.setReturnValue(false);

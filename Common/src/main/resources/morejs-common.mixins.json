@@ -9,6 +9,7 @@
     "villager.MerchantOfferAccessor"
   ],
   "client": [
+    "enchanting.EnchantmentScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

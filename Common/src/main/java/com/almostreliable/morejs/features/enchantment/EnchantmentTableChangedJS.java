@@ -12,11 +12,11 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiPredicate;
 
-public class EnchantmentTableChangedJS extends EnchantingEventJS {
+public class EnchantmentTableChangedJS extends EnchantmentTableServerEventJS {
     private final Random random;
 
-    public EnchantmentTableChangedJS(ItemStack item, Level level, BlockPos pos, EnchantmentMenuProcess state, Random random) {
-        super(item, level, pos, state.getPlayer(), state, false);
+    public EnchantmentTableChangedJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, EnchantmentMenuProcess state, Random random) {
+        super(item, secondItem, level, pos, state.getPlayer(), state);
         this.random = random;
     }
 
@@ -56,9 +56,9 @@ public class EnchantmentTableChangedJS extends EnchantingEventJS {
         public void updateClue() {
             var enchantments = getEnchantments();
             var instance = enchantments.get(EnchantmentTableChangedJS.this.random.nextInt(enchantments.size()));
-            EnchantmentTableChangedJS.this.state.getMenu().enchantClue[index] = Registry.ENCHANTMENT.getId(
+            EnchantmentTableChangedJS.this.menu.enchantClue[index] = Registry.ENCHANTMENT.getId(
                     instance.enchantment);
-            EnchantmentTableChangedJS.this.state.getMenu().levelClue[index] = instance.level;
+            EnchantmentTableChangedJS.this.menu.levelClue[index] = instance.level;
         }
 
         public void removeEnchantments(BiPredicate<Enchantment, Integer> consumer) {
