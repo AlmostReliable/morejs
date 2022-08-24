@@ -6,4 +6,5 @@ public class Events {
     public static final String ENCHANTMENT_TABLE_CHANGED = "morejs.enchantment_table.changed";
     public static final String ENCHANTMENT_TABLE_ENCHANT = "morejs.enchantment_table.enchant";
     public static final String ENCHANTMENT_TABLE_TOOLTIP = "morejs.enchantment_table.tooltip";
+    public static final String TELEPORT = "morejs.teleport";
 }

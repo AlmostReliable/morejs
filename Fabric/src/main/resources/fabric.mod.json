@@ -20,7 +20,8 @@
     ]
   },
   "mixins": [
-    "morejs-common.mixins.json"
+    "morejs-common.mixins.json",
+    "morejs-fabric.mixins.json"
   ],
   "depends": {
     "fabric": "*",
