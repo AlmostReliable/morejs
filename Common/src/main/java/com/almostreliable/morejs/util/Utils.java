@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.util;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,6 +13,21 @@ public class Utils {
 
         return Optional.empty();
     }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object o) {
+        return (T) o;
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T> T nullableCast(@Nullable Object o) {
+        if (o == null) {
+            return null;
+        }
+        return (T) o;
+    }
+
 
     public static String format(String string) {
         int index = string.indexOf(":");

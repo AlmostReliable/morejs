@@ -1,5 +1,5 @@
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
-package com.almostreliable.morejs.features;
+package com.almostreliable.morejs.mixin.structure;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

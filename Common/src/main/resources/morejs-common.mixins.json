@@ -6,6 +6,9 @@
   "mixins": [
     "enchanting.EnchantmentMenuMixin",
     "enchanting.EnchantmentMixin",
+    "structure.StructureBlockInfoMixin",
+    "structure.StructureManagerMixin",
+    "structure.StructureTemplateMixin",
     "villager.MerchantOfferAccessor"
   ],
   "client": [
