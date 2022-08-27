@@ -1,11 +1,11 @@
 package com.almostreliable.morejs.features.villager.trades;
 
-import com.almostreliable.morejs.util.BlockPosFunction;
 import com.almostreliable.morejs.util.LevelUtils;
-import com.almostreliable.morejs.util.Utils;
+import com.almostreliable.morejs.util.ResourceOrTag;
+import com.almostreliable.morejs.util.WeightedList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -21,12 +21,12 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     @Nullable protected Component displayName;
     protected MapDecoration.Type destinationType = MapDecoration.Type.RED_X;
 
-    protected final BlockPosFunction destinationPositionFunc;
+    protected final MapPosInfo.Provider destinationPositionFunc;
     private boolean renderBiomePreviewMap = true;
 
     private byte mapViewScale = 2;
 
-    public TreasureMapTrade(ItemStack[] inputs, BlockPosFunction destinationPositionFunc) {
+    public TreasureMapTrade(ItemStack[] inputs, MapPosInfo.Provider destinationPositionFunc) {
         super(inputs);
         this.destinationPositionFunc = destinationPositionFunc;
     }
@@ -55,30 +55,50 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     @Nullable
     public MerchantOffer createOffer(Entity trader, Random rand) {
         if (trader.getLevel() instanceof ServerLevel level) {
-            BlockPos pos = destinationPositionFunc.apply(level, trader);
-            if (pos == null) return null;
+            MapPosInfo info = destinationPositionFunc.apply(level, trader);
+            if (info == null) return null;
 
-            ItemStack map = MapItem.create(level, pos.getX(), pos.getZ(), this.mapViewScale, true, true);
+            ItemStack map = MapItem.create(level, info.pos().getX(), info.pos().getZ(), this.mapViewScale, true, true);
             if (renderBiomePreviewMap) MapItem.renderBiomePreviewMap(level, map);
-            MapItemSavedData.addTargetDecoration(map, pos, "+", destinationType);
-            if (displayName != null) map.setHoverName(displayName);
+            MapItemSavedData.addTargetDecoration(map, info.pos(), "+", destinationType);
+            map.setHoverName(displayName == null ? info.name() : displayName);
             return createOffer(map);
         }
 
         return null;
     }
 
-    public static TreasureMapTrade forStructure(ItemStack[] input, String structure) {
-        TextComponent component = new TextComponent("Treasure Map: " + Utils.format(structure));
-        return new TreasureMapTrade(input, (level, entity) -> {
-            return LevelUtils.findStructure(entity.blockPosition(), level, structure, 100);
-        }).displayName(component);
+    public static TreasureMapTrade forStructure(ItemStack[] input, WeightedList<Object> entries) {
+        var list = entries.map(o -> {
+            if (o == null) {
+                return null;
+            }
+            return ResourceOrTag.get(o.toString(), Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+        });
+
+        MapPosInfo.Provider func = (level, entity) -> {
+            var roll = list.roll(level.random);
+            BlockPos pos = LevelUtils.findStructure(entity.blockPosition(), level, roll, 100);
+            if (pos == null) return null;
+            return new MapPosInfo(pos, roll.getName());
+        };
+        return new TreasureMapTrade(input, func);
     }
 
-    public static TreasureMapTrade forBiome(ItemStack[] input, String biome) {
-        TextComponent component = new TextComponent("Treasure Map: " + Utils.format(biome));
-        return new TreasureMapTrade(input, (level, entity) -> {
-            return LevelUtils.findBiome(entity.blockPosition(), level, biome, 250);
-        }).displayName(component);
+    public static TreasureMapTrade forBiome(ItemStack[] input, WeightedList<Object> entries) {
+        var list = entries.map(o -> {
+            if (o == null) {
+                return null;
+            }
+            return ResourceOrTag.get(o.toString(), Registry.BIOME_REGISTRY);
+        });
+
+        MapPosInfo.Provider func = (level, entity) -> {
+            var roll = list.roll(level.random);
+            BlockPos pos = LevelUtils.findBiome(entity.blockPosition(), level, roll, 250);
+            if (pos == null) return null;
+            return new MapPosInfo(pos, roll.getName());
+        };
+        return new TreasureMapTrade(input, func);
     }
 }

@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.features.villager;
 
 import com.almostreliable.morejs.features.villager.trades.*;
-import com.almostreliable.morejs.util.BlockPosFunction;
+import com.almostreliable.morejs.util.WeightedList;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -52,15 +52,15 @@ public class VillagerUtils {
         return new CustomTrade(transformer);
     }
 
-    public static TreasureMapTrade createStructureMapTrade(ItemStack[] inputs, String structure) {
-        return TreasureMapTrade.forStructure(inputs, structure);
+    public static TreasureMapTrade createStructureMapTrade(ItemStack[] inputs, WeightedList<Object> structures) {
+        return TreasureMapTrade.forStructure(inputs, structures);
     }
 
-    public static TreasureMapTrade createBiomeMapTrade(ItemStack[] inputs, String biome) {
-        return TreasureMapTrade.forBiome(inputs, biome);
+    public static TreasureMapTrade createBiomeMapTrade(ItemStack[] inputs, WeightedList<Object> biomes) {
+        return TreasureMapTrade.forBiome(inputs, biomes);
     }
 
-    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, BlockPosFunction func) {
+    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, MapPosInfo.Provider func) {
         return new TreasureMapTrade(inputs, func);
     }
 

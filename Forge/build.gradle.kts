@@ -33,7 +33,7 @@ minecraft {
 
     runs {
         create("client") {
-            workingDirectory(project.file("run"))
+            workingDirectory(project.file("../run"))
             ideaModule("${rootProject.name}.${project.name}.main")
             taskName("Client")
             property("mixin.env.remapRefMap", "true")
@@ -47,7 +47,7 @@ minecraft {
         }
 
         create("server") {
-            workingDirectory(project.file("run"))
+            workingDirectory(project.file("../run"))
             ideaModule("${rootProject.name}.${project.name}.main")
             taskName("Server")
             property("mixin.env.remapRefMap", "true")
@@ -87,7 +87,7 @@ dependencies {
             val mod = f.nameWithoutExtension.substring(0, sepIndex);
             val version = f.nameWithoutExtension.substring(sepIndex + 1);
             println("Extra mod $mod with version $version detected")
-            runtimeOnly(fg.deobf("extra-mods:$mod:$version"))
+            implementation(fg.deobf("extra-mods:$mod:$version"))
         }
 
     annotationProcessor("org.spongepowered:mixin:${mixinVersion}:processor")
