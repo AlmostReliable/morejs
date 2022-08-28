@@ -8,4 +8,5 @@ public class Events {
     public static final String ENCHANTMENT_TABLE_TOOLTIP = "morejs.enchantment_table.tooltip";
     public static final String TELEPORT = "morejs.teleport";
     public static final String STRUCTURE_LOAD = "morejs.structure.load";
+    public static final String XP_CHANGE = "morejs.player.xp_change";
 }

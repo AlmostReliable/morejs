@@ -5,6 +5,7 @@
   "refmap": "morejs.refmap.json",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "PlayerMixin",
     "teleport.ChorusFruitItemMixin",
     "teleport.ThrownEnderPearlMixin"
   ],
