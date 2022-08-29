@@ -1,56 +1,55 @@
 <div align="center">
-<h1>Almost Unified</h1>
+<h1>MoreJS</h1>
 
-A [Minecraft] mod which aims to unify materials.
+A [Minecraft] mod to extend [KubeJS] with additional events.
 
 [![Version][version_badge]][version_link]
-[![Total Downloads][total_downloads_badge]][curseforge]
+[![Total Downloads CF][total_downloads_cf_badge]][curseforge]
+[![Total Downloads MR][total_downloads_mr_badge]][modrinth]
 [![Workflow Status][workflow_status_badge]][workflow_status_link]
 [![License][license_badge]][license]
 
-[Discord] | [CurseForge]
+[Discord] | [CurseForge] | [Modrinth]
 
 </div>
 
-## **🔧 Manually Installation**
-1. Download the latest **mod jar** from [CurseForge] or the latest [releases].
-2. Install Minecraft [Forge] or [Fabric].
-3. Drop the mod **jar** into your mods folder.
+## **📑 Overview**
+This is a mod for [Minecraft]-[Forge] and [Fabric] and needs [KubeJS].<br>
+- Events Villager/Wanderer trading (Supports modded villagers)
+- Events for the enchantment table
+- Event to modify NBT Structures on load
+- And more!
 
-## **🖥️ Setup dev environment**
-- Clone the repository
-- Import into Intellij (VSCode and Eclipse are not tested, we recommend using Intellij)
-- Run 
-    - `gradle -> common -> Tasks -> genSources`
-    - `gradle -> fabric -> Tasks -> genSources`
-    - `gradle -> forge -> Tasks -> forgegradle runs -> genIntellijRuns`
-- Have fun!
+## **🔧 Installation**
+1. Download the latest **mod jar** from the [releases], from [CurseForge] or from [Modrinth].
+2. Download the latest **mod jar** of [KubeJS].
+3. Install Minecraft [Forge] or [Fabric].
+4. Drop both **jar files** into your mods folder.
 
-The `common` module uses `fabric-loom`, this makes it possible to use parchment. Please do not use fabric related features in the `common` module.
-
-## **💚 Credits**
-This project is using the [MultiLoader Template] from [Jared].
+## **⚙️ More Information**
+For more information about the usage and the functionality of the mod, please visit our [wiki].
 
 ## **🎓 License**
 This project is licensed under the [GNU Lesser General Public License v3.0][license].
 
 <!-- Badges -->
-[version_badge]: https://img.shields.io/github/v/release/AlmostReliable/almost-unified?style=flat-square
-[version_link]: https://github.com/AlmostReliable/almost-unified/releases/latest
-[total_downloads_badge]: http://cf.way2muchnoise.eu/full_633823.svg?badge_style=flat
-[workflow_status_badge]: https://img.shields.io/github/workflow/status/AlmostReliable/almost-unified/CI?style=flat-square
-[workflow_status_link]: https://github.com/AlmostReliable/almost-unified/actions
-[license_badge]: https://img.shields.io/github/license/AlmostReliable/almost-unified?style=flat-square
+[version_badge]: https://img.shields.io/github/v/release/AlmostReliable/morejs?include_prereleases&style=flat-square
+[version_link]: https://github.com/AlmostReliable/morejs/releases/latest
+[total_downloads_cf_badge]: http://cf.way2muchnoise.eu/full_570630.svg?badge_style=flat
+[total_downloads_mr_badge]: https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth&query=downloads&url=https://api.modrinth.com/api/v1/mod/fJFETWDN
+[workflow_status_badge]: https://img.shields.io/github/workflow/status/AlmostReliable/morejs/CI?style=flat-square
+[workflow_status_link]: https://github.com/AlmostReliable/morejs/actions
+[license_badge]: https://img.shields.io/github/license/AlmostReliable/morejs?style=flat-square
 
 <!-- Links -->
 [minecraft]: https://www.minecraft.net/
+[kubejs]: https://www.curseforge.com/minecraft/mc-mods/kubejs
 [discord]: https://discord.com/invite/ThFnwZCyYY
-[releases]: https://github.com/AlmostReliable/almost-unified/releases
-[curseforge]: https://www.curseforge.com/minecraft/mc-mods/almost-unified
-[wiki]: https://github.com/AlmostReliable/almost-unified/wiki
+[releases]: https://github.com/AlmostReliable/morejs/releases
+[curseforge]: https://www.curseforge.com/minecraft/mc-mods/morejs
+[modrinth]: https://modrinth.com/mod/morejs
 [forge]: http://files.minecraftforge.net/
 [fabric]: https://fabricmc.net/
+[wiki]: https://github.com/AlmostReliable/morejs/wiki
 [changelog]: CHANGELOG.md
 [license]: LICENSE
-[Jared]: https://github.com/jaredlll08
-[MultiLoader Template]: https://github.com/jaredlll08/MultiLoader-Template
