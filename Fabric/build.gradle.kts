@@ -58,12 +58,14 @@ loom {
             configName = "Fabric Client"
             ideConfigGenerated(true)
             runDir("../run")
+            vmArgs("-XX:+AllowEnhancedClassRedefinition")
         }
         named("server") {
             server()
             configName = "Fabric Server"
             ideConfigGenerated(true)
             runDir("../run")
+            vmArgs("-XX:+AllowEnhancedClassRedefinition")
         }
     }
 
