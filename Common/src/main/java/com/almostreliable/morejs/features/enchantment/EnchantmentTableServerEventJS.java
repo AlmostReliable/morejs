@@ -1,11 +1,6 @@
 package com.almostreliable.morejs.features.enchantment;
 
 import com.google.common.base.Preconditions;
-import dev.latvian.mods.kubejs.item.ItemStackJS;
-import dev.latvian.mods.kubejs.level.LevelEventJS;
-import dev.latvian.mods.kubejs.level.LevelJS;
-import dev.latvian.mods.kubejs.player.PlayerJS;
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +13,8 @@ import java.util.function.BiConsumer;
 
 public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
 
-    private final BlockPos pos;
     protected final EnchantmentMenuProcess state;
+    private final BlockPos pos;
     private final boolean cancelable;
 
     public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state) {

@@ -14,6 +14,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ResourceOrTag<T> {
+    private final Either<ResourceKey<T>, TagKey<T>> either;
+
     private ResourceOrTag(Either<ResourceKey<T>, TagKey<T>> either) {
         this.either = either;
     }
@@ -27,8 +29,6 @@ public class ResourceOrTag<T> {
         ResourceLocation rl = new ResourceLocation(s);
         return new ResourceOrTag<>(Either.left(ResourceKey.create(registry, rl)));
     }
-
-    private final Either<ResourceKey<T>, TagKey<T>> either;
 
     public Optional<? extends HolderSet<T>> asHolderSet(Registry<T> registry) {
         return either.map(id -> registry.getHolder(id).map(HolderSet::direct), registry::getTag);

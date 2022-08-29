@@ -1,16 +1,12 @@
 package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.OfferExtension;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import javax.annotation.Nullable;
 
 @Mixin(MerchantOffer.class)
 public class MerchantOfferMixin implements OfferExtension {
@@ -25,13 +21,13 @@ public class MerchantOfferMixin implements OfferExtension {
     @Unique private boolean morejs$isDisabled;
 
     @Override
-    public void setDisabled(boolean disabled) {
-        this.morejs$isDisabled = disabled;
+    public boolean isDisabled() {
+        return this.morejs$isDisabled;
     }
 
     @Override
-    public boolean isDisabled() {
-        return this.morejs$isDisabled;
+    public void setDisabled(boolean disabled) {
+        this.morejs$isDisabled = disabled;
     }
 
     @Override

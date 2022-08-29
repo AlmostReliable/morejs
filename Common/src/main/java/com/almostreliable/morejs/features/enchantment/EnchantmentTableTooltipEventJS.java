@@ -1,6 +1,5 @@
 package com.almostreliable.morejs.features.enchantment;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
@@ -35,9 +34,9 @@ public class EnchantmentTableTooltipEventJS extends EnchantmentTableEventJS {
     }
 
     public EnchantmentInstance getClue() {
-        if(clue == null) {
+        if (clue == null) {
             Enchantment enchantment = Enchantment.byId(menu.enchantClue[slot]);
-            if(enchantment == null) {
+            if (enchantment == null) {
                 throw new IllegalStateException("Enchantment not found for id: " + menu.enchantClue[slot]);
             }
             clue = new EnchantmentInstance(enchantment, menu.levelClue[slot]);

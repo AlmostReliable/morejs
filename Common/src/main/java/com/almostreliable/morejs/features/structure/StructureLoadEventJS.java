@@ -19,6 +19,12 @@ public class StructureLoadEventJS extends EventJS {
 
     }
 
+    public static void invoke(StructureTemplate structure, ResourceLocation id) {
+        if (structure instanceof StructureTemplateAccess sta) {
+            new StructureLoadEventJS(sta, id).post(ScriptType.SERVER, Events.STRUCTURE_LOAD);
+        }
+    }
+
     public Vec3i getStructureSize() {
         return structure.getBorderSize();
     }
@@ -44,16 +50,12 @@ public class StructureLoadEventJS extends EventJS {
     }
 
     public void forEachPalettes(Consumer<PaletteWrapper> consumer) {
-        structure.getPalettes().forEach(palette -> consumer.accept(new PaletteWrapper(palette, structure.getBorderSize())));
+        structure
+                .getPalettes()
+                .forEach(palette -> consumer.accept(new PaletteWrapper(palette, structure.getBorderSize())));
     }
 
     public EntityInfoWrapper getEntities() {
         return new EntityInfoWrapper(structure.getEntities(), structure.getBorderSize());
-    }
-
-    public static void invoke(StructureTemplate structure, ResourceLocation id) {
-        if (structure instanceof StructureTemplateAccess sta) {
-            new StructureLoadEventJS(sta, id).post(ScriptType.SERVER, Events.STRUCTURE_LOAD);
-        }
     }
 }

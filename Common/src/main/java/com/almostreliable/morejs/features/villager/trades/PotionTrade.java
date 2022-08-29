@@ -19,8 +19,8 @@ import java.util.Random;
 
 public class PotionTrade extends TransformableTrade<PotionTrade> {
 
-    private Item itemForPotion;
     List<Potion> potions;
+    private Item itemForPotion;
     private boolean onlyBrewablePotion;
     private boolean noBrewablePotion;
 
@@ -58,7 +58,7 @@ public class PotionTrade extends TransformableTrade<PotionTrade> {
     @Override
     public MerchantOffer createOffer(Entity entity, Random random) {
         List<Potion> allowedPotions = potions.stream().filter(p -> {
-            if(p.getEffects().isEmpty()) {
+            if (p.getEffects().isEmpty()) {
                 return false;
             }
 

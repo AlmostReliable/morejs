@@ -4,9 +4,9 @@ import net.minecraft.world.item.ItemStack;
 
 public interface OfferExtension {
 
-    void setDisabled(boolean disabled);
-
     boolean isDisabled();
+
+    void setDisabled(boolean disabled);
 
     ItemStack getFirstInput();
 

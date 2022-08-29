@@ -22,10 +22,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MerchantScreenMixin extends AbstractContainerScreen<MerchantMenu> {
 
 
-    @Shadow @Final private MerchantScreen.TradeOfferButton[] tradeOfferButtons;
-
     @Shadow int scrollOff;
-
+    @Shadow @Final private MerchantScreen.TradeOfferButton[] tradeOfferButtons;
     @Shadow private int shopItem;
 
     public MerchantScreenMixin(MerchantMenu abstractContainerMenu, Inventory inventory, Component component) {
@@ -33,12 +31,19 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
         super(abstractContainerMenu, inventory, component);
     }
 
+    private static boolean morejs$offerIsDisabled(MerchantOffer offer) {
+        return ((OfferExtension) offer).isDisabled();
+    }
+
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffer;isOutOfStock()Z", ordinal = 0))
     private void morejs$disableButtonsIfNeeded(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         try {
             var offer = this.menu.getOffers().get(this.shopItem);
             if (morejs$offerIsDisabled(offer) && this.isHovering(186, 35, 22, 21, mouseX, mouseY)) {
-                this.renderTooltip(poseStack, new TextComponent("You don't meet the requirements to buy this item."), mouseX, mouseY);
+                this.renderTooltip(poseStack,
+                        new TextComponent("You don't meet the requirements to buy this item."),
+                        mouseX,
+                        mouseY);
             }
         } catch (Exception e) {
             ConsoleJS.CLIENT.warn("Error while trying to get the trade offer. Mismatch for index: " + this.shopItem);
@@ -48,9 +53,5 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffer;isOutOfStock()Z", ordinal = 0))
     private boolean morejs$renderDeprecatedTooltipOnNotDisabled(MerchantOffer merchantOffer) {
         return merchantOffer.isOutOfStock() && !morejs$offerIsDisabled(merchantOffer);
-    }
-
-    private static boolean morejs$offerIsDisabled(MerchantOffer offer) {
-        return ((OfferExtension) offer).isDisabled();
     }
 }

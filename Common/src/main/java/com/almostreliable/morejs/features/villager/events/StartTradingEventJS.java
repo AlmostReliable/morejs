@@ -8,7 +8,6 @@ import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class StartTradingEventJS extends PlayerEventJS {
     private final Player player;

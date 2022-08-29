@@ -9,7 +9,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 
 import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 public class LevelUtils {
 
@@ -29,7 +28,10 @@ public class LevelUtils {
 
     @Nullable
     public static BlockPos findBiome(BlockPos position, ServerLevel level, ResourceOrTag<Biome> rot, int chunkRadius) {
-        Pair<BlockPos, Holder<Biome>> nearestBiome = level.findNearestBiome(rot.asHolderPredicate(), position, chunkRadius * 16, 8);
+        Pair<BlockPos, Holder<Biome>> nearestBiome = level.findNearestBiome(rot.asHolderPredicate(),
+                position,
+                chunkRadius * 16,
+                8);
         if (nearestBiome != null) {
             return nearestBiome.getFirst();
         }

@@ -18,10 +18,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
+    protected final MapPosInfo.Provider destinationPositionFunc;
     @Nullable protected Component displayName;
     protected MapDecoration.Type destinationType = MapDecoration.Type.RED_X;
-
-    protected final MapPosInfo.Provider destinationPositionFunc;
     private boolean renderBiomePreviewMap = true;
 
     private byte mapViewScale = 2;
@@ -29,6 +28,40 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     public TreasureMapTrade(ItemStack[] inputs, MapPosInfo.Provider destinationPositionFunc) {
         super(inputs);
         this.destinationPositionFunc = destinationPositionFunc;
+    }
+
+    public static TreasureMapTrade forStructure(ItemStack[] input, WeightedList<Object> entries) {
+        var list = entries.map(o -> {
+            if (o == null) {
+                return null;
+            }
+            return ResourceOrTag.get(o.toString(), Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+        });
+
+        MapPosInfo.Provider func = (level, entity) -> {
+            var roll = list.roll(level.random);
+            BlockPos pos = LevelUtils.findStructure(entity.blockPosition(), level, roll, 100);
+            if (pos == null) return null;
+            return new MapPosInfo(pos, roll.getName());
+        };
+        return new TreasureMapTrade(input, func);
+    }
+
+    public static TreasureMapTrade forBiome(ItemStack[] input, WeightedList<Object> entries) {
+        var list = entries.map(o -> {
+            if (o == null) {
+                return null;
+            }
+            return ResourceOrTag.get(o.toString(), Registry.BIOME_REGISTRY);
+        });
+
+        MapPosInfo.Provider func = (level, entity) -> {
+            var roll = list.roll(level.random);
+            BlockPos pos = LevelUtils.findBiome(entity.blockPosition(), level, roll, 250);
+            if (pos == null) return null;
+            return new MapPosInfo(pos, roll.getName());
+        };
+        return new TreasureMapTrade(input, func);
     }
 
     public TreasureMapTrade displayName(Component name) {
@@ -66,39 +99,5 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
         }
 
         return null;
-    }
-
-    public static TreasureMapTrade forStructure(ItemStack[] input, WeightedList<Object> entries) {
-        var list = entries.map(o -> {
-            if (o == null) {
-                return null;
-            }
-            return ResourceOrTag.get(o.toString(), Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
-        });
-
-        MapPosInfo.Provider func = (level, entity) -> {
-            var roll = list.roll(level.random);
-            BlockPos pos = LevelUtils.findStructure(entity.blockPosition(), level, roll, 100);
-            if (pos == null) return null;
-            return new MapPosInfo(pos, roll.getName());
-        };
-        return new TreasureMapTrade(input, func);
-    }
-
-    public static TreasureMapTrade forBiome(ItemStack[] input, WeightedList<Object> entries) {
-        var list = entries.map(o -> {
-            if (o == null) {
-                return null;
-            }
-            return ResourceOrTag.get(o.toString(), Registry.BIOME_REGISTRY);
-        });
-
-        MapPosInfo.Provider func = (level, entity) -> {
-            var roll = list.roll(level.random);
-            BlockPos pos = LevelUtils.findBiome(entity.blockPosition(), level, roll, 250);
-            if (pos == null) return null;
-            return new MapPosInfo(pos, roll.getName());
-        };
-        return new TreasureMapTrade(input, func);
     }
 }

@@ -10,7 +10,10 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class WandererTradingEventJS extends EventJS {
     private final Int2ObjectMap<List<VillagerTrades.ItemListing>> trades;

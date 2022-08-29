@@ -6,10 +6,6 @@ public class LevelRange implements IntPredicate {
     private final int min;
     private final int max;
 
-    public static LevelRange all() {
-        return new LevelRange(0, Integer.MAX_VALUE);
-    }
-
     public LevelRange(int min, int max) {
         this.min = min;
         this.max = max;
@@ -17,6 +13,10 @@ public class LevelRange implements IntPredicate {
 
     public LevelRange(int level) {
         this(level, level);
+    }
+
+    public static LevelRange all() {
+        return new LevelRange(0, Integer.MAX_VALUE);
     }
 
     @Override

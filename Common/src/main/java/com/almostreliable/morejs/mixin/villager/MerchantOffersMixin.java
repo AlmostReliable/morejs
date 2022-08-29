@@ -20,13 +20,6 @@ import javax.annotation.Nullable;
 @Mixin(MerchantOffers.class)
 public class MerchantOffersMixin {
 
-    @Inject(method = "writeToStream", at = @At("RETURN"))
-    private void morejs$writeCustomData(FriendlyByteBuf friendlyByteBuf, CallbackInfo ci) {
-        for (MerchantOffer o : morejs$getSelf()) {
-            friendlyByteBuf.writeBoolean(((OfferExtension) o).isDisabled());
-        }
-    }
-
     @Inject(method = "createFromStream", at = @At("RETURN"))
     private static void morejs$createFromStream(FriendlyByteBuf friendlyByteBuf, CallbackInfoReturnable<MerchantOffers> cir) {
         cir.getReturnValue().forEach(o -> {
@@ -35,6 +28,12 @@ public class MerchantOffersMixin {
         });
     }
 
+    @Inject(method = "writeToStream", at = @At("RETURN"))
+    private void morejs$writeCustomData(FriendlyByteBuf friendlyByteBuf, CallbackInfo ci) {
+        for (MerchantOffer o : morejs$getSelf()) {
+            friendlyByteBuf.writeBoolean(((OfferExtension) o).isDisabled());
+        }
+    }
 
     @Inject(method = "<init>(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("RETURN"))
     private void morejs$storeDisabled(@Nullable CompoundTag tag, CallbackInfo ci) {

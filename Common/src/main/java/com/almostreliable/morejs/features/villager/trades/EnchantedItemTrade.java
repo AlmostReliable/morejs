@@ -13,14 +13,17 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
 
     private final Item itemToEnchant;
+    List<Enchantment> enchantments;
     private int minEnchantmentAmount = 1;
     private int maxEnchantmentAmount = 1;
-    List<Enchantment> enchantments;
 
     public EnchantedItemTrade(ItemStack[] inputs, Item itemToEnchant) {
         super(inputs);

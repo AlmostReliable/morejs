@@ -11,12 +11,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class EnchantmentTableEventJS extends LevelEventJS {
+    protected final EnchantmentMenu menu;
     private final ItemStack item;
     private final ItemStack secondItem;
     private final Player player;
     private final Level level;
-
-    protected final EnchantmentMenu menu;
 
     public EnchantmentTableEventJS(ItemStack item, ItemStack secondItem, Level level, Player player, EnchantmentMenu menu) {
         this.item = item;

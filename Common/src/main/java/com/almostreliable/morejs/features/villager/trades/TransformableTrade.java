@@ -17,10 +17,10 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
 
     protected final ItemStack firstInput;
     protected final ItemStack secondInput;
-    @Nullable private Transformer transformer;
     protected int maxUses = 16;
     protected int villagerExperience = 2;
     protected float priceMultiplier = 0.05F;
+    @Nullable private Transformer transformer;
 
     public TransformableTrade(ItemStack[] inputs) {
         Preconditions.checkArgument(1 <= inputs.length && inputs.length <= 2, "Inputs must be 1 or 2 items");
