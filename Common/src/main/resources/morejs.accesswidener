@@ -10,3 +10,4 @@ accessible class net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds
 accessible class net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald
 accessible class net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds
 accessible class net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds
+accessible class net/minecraft/client/gui/screens/inventory/MerchantScreen$TradeOfferButton

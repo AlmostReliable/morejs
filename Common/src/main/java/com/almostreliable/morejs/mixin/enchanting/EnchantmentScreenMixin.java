@@ -52,7 +52,6 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
                 MutableComponent of = ComponentWrapper.of(o);
                 currentComponents.add(of);
             });
-            String s = "";
         }
     }
 }

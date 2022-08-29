@@ -10,10 +10,13 @@
     "structure.StructureBlockInfoMixin",
     "structure.StructureManagerMixin",
     "structure.StructureTemplateMixin",
-    "villager.MerchantOfferAccessor"
+    "villager.MerchantMenuMixin",
+    "villager.MerchantOfferMixin",
+    "villager.MerchantOffersMixin"
   ],
   "client": [
-    "enchanting.EnchantmentScreenMixin"
+    "enchanting.EnchantmentScreenMixin",
+    "villager.MerchantScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -9,4 +9,5 @@ public class Events {
     public static final String TELEPORT = "morejs.teleport";
     public static final String STRUCTURE_LOAD = "morejs.structure.load";
     public static final String XP_CHANGE = "morejs.player.xp_change";
+    public static final String PLAYER_START_TRADING = "morejs.player.start_trading";
 }

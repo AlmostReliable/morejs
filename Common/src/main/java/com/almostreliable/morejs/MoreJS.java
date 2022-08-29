@@ -9,6 +9,7 @@ public class MoreJS {
 
     public static final Logger LOG = LogManager.getLogger(BuildConfig.MOD_NAME + "/enchanting");
     public static final MoreJSPlatform PLATFORM = load();
+    public static final String DISABLED_TAG = "morejs$disabled";
 
     static MoreJSPlatform load() {
         Class<MoreJSPlatform> clazz = MoreJSPlatform.class;

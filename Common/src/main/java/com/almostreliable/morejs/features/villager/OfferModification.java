@@ -1,17 +1,16 @@
 package com.almostreliable.morejs.features.villager;
 
-import com.almostreliable.morejs.mixin.villager.MerchantOfferAccessor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 public class OfferModification {
 
     private final MerchantOffer offer;
-    private final MerchantOfferAccessor offerAsAccessor;
+    private final OfferExtension offerAsAccessor;
 
     public OfferModification(MerchantOffer offer) {
         this.offer = offer;
-        this.offerAsAccessor = (MerchantOfferAccessor) offer;
+        this.offerAsAccessor = (OfferExtension) offer;
     }
 
     public ItemStack getFirstInput() {
