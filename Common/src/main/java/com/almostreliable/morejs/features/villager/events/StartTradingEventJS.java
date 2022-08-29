@@ -20,7 +20,7 @@ public class StartTradingEventJS extends PlayerEventJS {
 
     @Override
     public EntityJS getEntity() {
-        return null;
+        return entityOf(player);
     }
 
     public Merchant getMerchant() {
