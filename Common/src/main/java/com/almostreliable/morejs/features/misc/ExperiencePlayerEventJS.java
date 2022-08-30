@@ -56,6 +56,10 @@ public class ExperiencePlayerEventJS extends PlayerEventJS {
         return player.getXpNeededForNextLevel();
     }
 
+    public int getRemainingExperience() {
+        return (int) (getXpNeededForNextLevel() - (getExperienceProgress() * getXpNeededForNextLevel()));
+    }
+
     public boolean willLevelUp() {
         return getExperienceProgress() + (getAmount() / (float) getXpNeededForNextLevel()) >= 1.0F;
     }
