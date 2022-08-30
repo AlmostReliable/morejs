@@ -46,7 +46,7 @@ This project is licensed under the [GNU Lesser General Public License v3.0][lice
 [version_link]: https://github.com/AlmostReliable/morejs/releases/latest
 [total_downloads_cf_badge]: http://cf.way2muchnoise.eu/full_666198.svg?badge_style=flat
 [total_downloads_mr_badge]: https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth&query=downloads&url=https://api.modrinth.com/api/v1/mod/mo64mR1W
-[workflow_status_badge]: https://img.shields.io/github/workflow/status/AlmostReliable/morejs/CI?style=flat-square
+[workflow_status_badge]: https://img.shields.io/github/workflow/status/AlmostReliable/morejs/Build?style=flat-square
 [workflow_status_link]: https://github.com/AlmostReliable/morejs/actions
 [license_badge]: https://img.shields.io/github/license/AlmostReliable/morejs?style=flat-square
 
