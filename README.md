@@ -9,7 +9,7 @@ A [Minecraft] mod to extend [KubeJS] with additional events.
 [![Workflow Status][workflow_status_badge]][workflow_status_link]
 [![License][license_badge]][license]
 
-[Discord] | [CurseForge] | [Modrinth]
+[Discord] | [Wiki] | [CurseForge] | [Modrinth]
 
 </div>
 
