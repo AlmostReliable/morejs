@@ -15,10 +15,19 @@ A [Minecraft] mod to extend [KubeJS] with additional events.
 
 ## **📑 Overview**
 This is a mod for [Minecraft]-[Forge] and [Fabric] and needs [KubeJS].<br>
-- Events Villager/Wanderer trading (Supports modded villagers)
-- Events for the enchantment table
-- Event to modify NBT Structures on load
-- And more!
+An overview of a few events: 
+| Events                           | Client Script | Server Script |
+| -------------------------------- | :-----------: | :-----------: |
+| morejs.villager.trades           |               |      ✔️       |
+| morejs.wanderer.trades           |               |      ✔️       |
+| morejs.player.start_trading      |               |      ✔️       |
+| morejs.enchantment_table.changed |               |      ✔️       |
+| morejs.enchantment_table.enchant |               |      ✔️       |
+| morejs.enchantment_table.tooltip |      ✔️       |               |
+| morejs.teleport                  |               |      ✔️       |
+| morejs.structure.load            |               |      ✔️       |
+| morejs.player.xp_change          |               |      ✔️       |
+
 
 ## **🔧 Installation**
 1. Download the latest **mod jar** from the [releases], from [CurseForge] or from [Modrinth].
@@ -35,8 +44,8 @@ This project is licensed under the [GNU Lesser General Public License v3.0][lice
 <!-- Badges -->
 [version_badge]: https://img.shields.io/github/v/release/AlmostReliable/morejs?include_prereleases&style=flat-square
 [version_link]: https://github.com/AlmostReliable/morejs/releases/latest
-[total_downloads_cf_badge]: http://cf.way2muchnoise.eu/full_570630.svg?badge_style=flat
-[total_downloads_mr_badge]: https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth&query=downloads&url=https://api.modrinth.com/api/v1/mod/fJFETWDN
+[total_downloads_cf_badge]: http://cf.way2muchnoise.eu/full_666198.svg?badge_style=flat
+[total_downloads_mr_badge]: https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth&query=downloads&url=https://api.modrinth.com/api/v1/mod/mo64mR1W
 [workflow_status_badge]: https://img.shields.io/github/workflow/status/AlmostReliable/morejs/CI?style=flat-square
 [workflow_status_link]: https://github.com/AlmostReliable/morejs/actions
 [license_badge]: https://img.shields.io/github/license/AlmostReliable/morejs?style=flat-square
