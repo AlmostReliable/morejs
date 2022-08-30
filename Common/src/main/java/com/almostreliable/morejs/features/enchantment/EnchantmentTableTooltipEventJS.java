@@ -29,7 +29,7 @@ public class EnchantmentTableTooltipEventJS extends EnchantmentTableEventJS {
         return slot;
     }
 
-    public int getCost() {
+    public int getRequiredLevel() {
         return menu.costs[slot];
     }
 
