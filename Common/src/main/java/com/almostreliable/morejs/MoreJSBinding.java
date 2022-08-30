@@ -50,6 +50,11 @@ public class MoreJSBinding {
     }
 
     public static WeightedList<Object> ofWeightedList(@Nullable Object o) {
+        if (o instanceof WeightedList.Builder b) {
+            //noinspection unchecked
+            return b.build();
+        }
+
         if (o instanceof WeightedList) {
             return Utils.cast(o);
         }
