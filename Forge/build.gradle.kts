@@ -21,7 +21,7 @@ val rhinoVersion: String by project
 val architecturyVersion: String by project
 
 
-val baseArchiveName = "${modName}-forge-${minecraftVersion}"
+val baseArchiveName = "${modId}-forge-${minecraftVersion}"
 
 base {
     archivesName.set(baseArchiveName)
