@@ -1,6 +1,7 @@
 package com.almostreliable.morejs;
 
-import com.almostreliable.morejs.features.villager.LevelRange;
+import com.almostreliable.morejs.features.villager.IntRange;
+import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
@@ -32,7 +33,8 @@ public class Plugin extends KubeJSPlugin {
 
     @Override
     public void addTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-        typeWrappers.register(LevelRange.class, MoreJSBinding::range);
+        typeWrappers.register(IntRange.class, MoreJSBinding::range);
         typeWrappers.register(WeightedList.class, MoreJSBinding::ofWeightedList);
+        typeWrappers.register(TradeFilter.class, MoreJSBinding::ofTradeFilter);
     }
 }

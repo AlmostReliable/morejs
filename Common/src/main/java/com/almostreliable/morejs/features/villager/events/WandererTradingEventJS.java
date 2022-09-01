@@ -1,11 +1,13 @@
 package com.almostreliable.morejs.features.villager.events;
 
+import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -30,8 +32,7 @@ public class WandererTradingEventJS extends EventJS {
     public SimpleTrade addTrade(int level, ItemStack[] inputs, ItemStack output) {
         Preconditions.checkArgument(!output.isEmpty(), "Sell item cannot be empty");
         Preconditions.checkArgument(inputs.length != 0, "Buyer items cannot be empty");
-        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty),
-                "Buyer items cannot be empty");
+        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty), "Buyer items cannot be empty");
 
         SimpleTrade trade = VillagerUtils.createSimpleTrade(inputs, output);
         return addTrade(level, trade);
@@ -45,6 +46,24 @@ public class WandererTradingEventJS extends EventJS {
 
     public void addCustomTrade(int level, TransformableTrade.Transformer transformer) {
         getTrades(level).add(new CustomTrade(transformer));
+    }
+
+    public void removeTrades(TradeFilter filter) {
+        trades.forEach((level, listings) -> {
+            filter.onMatch((first, second, output) -> ConsoleJS.SERVER.info(
+                    "Removing wanderer trade for level " + level + ": " + first + " & " + second + " -> " + output));
+
+            if (!filter.matchMerchantLevel(level)) {
+                return;
+            }
+
+            listings.removeIf(itemListing -> {
+                if (itemListing instanceof TradeFilter.Filterable filterable) {
+                    return filterable.matchesTradeFilter(filter);
+                }
+                return false;
+            });
+        });
     }
 
     public void removeVanillaTrades(int level) {

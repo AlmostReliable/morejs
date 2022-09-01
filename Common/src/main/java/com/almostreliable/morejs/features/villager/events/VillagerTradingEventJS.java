@@ -1,12 +1,14 @@
 package com.almostreliable.morejs.features.villager.events;
 
-import com.almostreliable.morejs.features.villager.LevelRange;
+import com.almostreliable.morejs.features.villager.IntRange;
+import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -35,8 +37,7 @@ public class VillagerTradingEventJS extends EventJS {
     public SimpleTrade addTrade(VillagerProfession profession, int level, ItemStack[] inputs, ItemStack output) {
         Preconditions.checkArgument(!output.isEmpty(), "Sell item cannot be empty");
         Preconditions.checkArgument(inputs.length != 0, "Buyer items cannot be empty");
-        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty),
-                "Buyer items cannot be empty");
+        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty), "Buyer items cannot be empty");
 
         SimpleTrade trade = VillagerUtils.createSimpleTrade(inputs, output);
         return addTrade(profession, level, trade);
@@ -52,14 +53,35 @@ public class VillagerTradingEventJS extends EventJS {
         getTrades(profession, level).add(new CustomTrade(transformer));
     }
 
+    public void removeTrades(TradeFilter filter) {
+        forEachTrades((listings, level, profession) -> {
+            filter.onMatch((first, second, output) -> ConsoleJS.SERVER.info(
+                    "Removing villager ( trade for level " + level + ": " + first + " & " + second + " -> " + output));
+            if (!filter.matchProfession(profession)) {
+                return;
+            }
+
+            if (!filter.matchMerchantLevel(level)) {
+                return;
+            }
+
+            listings.removeIf(itemListing -> {
+                if (itemListing instanceof TradeFilter.Filterable filterable) {
+                    return filterable.matchesTradeFilter(filter);
+                }
+                return false;
+            });
+        });
+    }
+
     public void removeVanillaTrades() {
         forEachTrades((listings, level, profession) -> {
             listings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
 
-    public void removeVanillaTrades(VillagerProfession[] professions, LevelRange levelRange) {
-        forEachTrades(professions, levelRange, itemListings -> {
+    public void removeVanillaTrades(VillagerProfession[] professions, IntRange intRange) {
+        forEachTrades(professions, intRange, itemListings -> {
             itemListings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
@@ -70,8 +92,8 @@ public class VillagerTradingEventJS extends EventJS {
         });
     }
 
-    public void removeModdedTrades(VillagerProfession[] professions, LevelRange levelRange) {
-        forEachTrades(professions, levelRange, itemListings -> {
+    public void removeModdedTrades(VillagerProfession[] professions, IntRange intRange) {
+        forEachTrades(professions, intRange, itemListings -> {
             itemListings.removeIf(VillagerUtils::isModdedTrade);
         });
     }
@@ -84,10 +106,10 @@ public class VillagerTradingEventJS extends EventJS {
         });
     }
 
-    public void forEachTrades(VillagerProfession[] professions, LevelRange levelRange, Consumer<List<VillagerTrades.ItemListing>> consumer) {
+    public void forEachTrades(VillagerProfession[] professions, IntRange intRange, Consumer<List<VillagerTrades.ItemListing>> consumer) {
         Set<VillagerProfession> filter = Arrays.stream(professions).collect(Collectors.toSet());
         forEachTrades((itemListings, level, profession) -> {
-            if (filter.contains(profession) && levelRange.test(level)) {
+            if (filter.contains(profession) && intRange.test(level)) {
                 consumer.accept(itemListings);
             }
         });

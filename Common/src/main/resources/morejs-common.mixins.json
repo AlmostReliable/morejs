@@ -12,7 +12,16 @@
     "structure.StructureTemplateMixin",
     "villager.MerchantMenuMixin",
     "villager.MerchantOfferMixin",
-    "villager.MerchantOffersMixin"
+    "villager.MerchantOffersMixin",
+    "villager.VillagerTradesMixin$EmeraldForItemsMixin",
+    "villager.VillagerTradesMixin$EmeraldsForVillagerTypeItemMixin",
+    "villager.VillagerTradesMixin$EnchantBookForEmeraldsMixin",
+    "villager.VillagerTradesMixin$EnchantedItemForEmeraldsMixin",
+    "villager.VillagerTradesMixin$ItemsAndEmeraldsToItemsMixin",
+    "villager.VillagerTradesMixin$ItemsForEmeraldsMixin",
+    "villager.VillagerTradesMixin$SuspiciousStewForEmeraldMixin",
+    "villager.VillagerTradesMixin$TippedArrowForItemsAndEmeraldsMixin",
+    "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin"
   ],
   "client": [
     "enchanting.EnchantmentScreenMixin",
