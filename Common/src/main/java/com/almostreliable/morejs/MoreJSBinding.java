@@ -37,6 +37,10 @@ public class MoreJSBinding {
         return LevelUtils.findBiome(position, level, rot, chunkRadius);
     }
 
+    public static WeightedList.Builder<Object> weightedList() {
+        return new WeightedList.Builder<>();
+    }
+
     public static IntRange range(@Nullable Object o) {
         if (o instanceof Number number) {
             return new IntRange(number.intValue());
@@ -51,10 +55,6 @@ public class MoreJSBinding {
         }
 
         return IntRange.all();
-    }
-
-    public static WeightedList.Builder<Object> weightedList() {
-        return new WeightedList.Builder<>();
     }
 
     public static WeightedList<Object> ofWeightedList(@Nullable Object o) {
