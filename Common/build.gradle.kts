@@ -1,6 +1,6 @@
 plugins {
     `maven-publish`
-    id("fabric-loom") version "0.12-SNAPSHOT"
+    id("fabric-loom") version "0.13-SNAPSHOT"
     id("com.github.gmazzo.buildconfig") version "3.0.3"
 }
 
@@ -47,6 +47,10 @@ tasks.processResources {
     filesMatching("pack.mcmeta") {
         expand(buildProps)
     }
+}
+
+tasks {
+    withType<net.fabricmc.loom.task.AbstractRemapJarTask>().forEach { task -> task.targetNamespace.set("named") }
 }
 
 publishing {

@@ -1,4 +1,7 @@
 # Changelog
+## [0.0.2] - 2022-10-21
+- Added trade filters
+
 ## [0.0.1] - 2022-08-30
 - Added `morejs.villager.trading` event.
 - Added `morejs.wanderer.trading` event.
@@ -11,4 +14,5 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.2-beta
 [0.0.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.1-beta
