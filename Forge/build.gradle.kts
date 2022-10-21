@@ -15,7 +15,6 @@ val modAuthor: String by project
 val modId: String by project
 val mappingsChannel: String by project
 val mappingsVersion: String by project
-val jeiVersion: String by project
 val kubejsVersion: String by project
 val rhinoVersion: String by project
 val architecturyVersion: String by project
@@ -38,7 +37,7 @@ minecraft {
             taskName("Client")
             property("mixin.env.remapRefMap", "true")
             property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
-            jvmArg("-XX:+AllowEnhancedClassRedefinition")
+            jvmArgs("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
             mods {
                 create(modId) {
                     source(sourceSets.main.get())
@@ -53,7 +52,7 @@ minecraft {
             taskName("Server")
             property("mixin.env.remapRefMap", "true")
             property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
-            jvmArg("-XX:+AllowEnhancedClassRedefinition")
+            jvmArgs("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
             mods {
                 create(modId) {
                     source(sourceSets.main.get())
@@ -72,9 +71,6 @@ val commonTests: SourceSetOutput = project(":Common").sourceSets["test"].output
 dependencies {
     minecraft("net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}")
     compileOnly(project(":Common"))
-
-    compileOnly(fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}"))
 
     implementation(fg.deobf("dev.latvian.mods:kubejs-forge:${kubejsVersion}"))
     implementation(fg.deobf("dev.latvian.mods:rhino-forge:${rhinoVersion}"))
