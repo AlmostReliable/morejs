@@ -15,8 +15,7 @@ public class PlayerMixin {
     @ModifyVariable(method = "giveExperiencePoints", at = @At("HEAD"), argsOnly = true)
     private int morejs$invokeExperienceEvent(int amount) {
         var e = new ExperiencePlayerEventJS((Player) (Object) this, amount);
-        e.post(Events.XP_CHANGE);
-        if (e.isCancelled()) {
+        if (Events.XP_CHANGE.post(e)) {
             return Integer.MIN_VALUE;
         }
         return e.getAmount();

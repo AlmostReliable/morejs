@@ -40,7 +40,7 @@ public class VillagerUtils {
     public static Collection<VillagerProfession> getProfessions() {
         return Registry.VILLAGER_PROFESSION
                 .stream()
-                .filter(p -> !p.getName().equals("none"))
+                .filter(p -> !p.name().equals("none"))
                 .toList();
     }
 

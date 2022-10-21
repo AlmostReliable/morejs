@@ -3,6 +3,7 @@ package com.almostreliable.morejs.features.villager.trades;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
@@ -16,7 +17,6 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
 
@@ -52,7 +52,7 @@ public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
 
     @Nullable
     @Override
-    public MerchantOffer createOffer(Entity entity, Random random) {
+    public MerchantOffer createOffer(Entity entity, RandomSource random) {
         ItemStack result = itemToEnchant.equals(Items.BOOK) ? new ItemStack(Items.ENCHANTED_BOOK)
                                                             : new ItemStack(itemToEnchant);
 

@@ -1,7 +1,6 @@
 package com.almostreliable.morejs.features.teleport;
 
 import dev.latvian.mods.kubejs.entity.EntityEventJS;
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
@@ -34,8 +33,8 @@ public class EntityTeleportsEventJS extends EntityEventJS {
     }
 
     @Override
-    public EntityJS getEntity() {
-        return entityOf(entity);
+    public Entity getEntity() {
+        return entity;
     }
 
     public double getX() {
@@ -60,10 +59,5 @@ public class EntityTeleportsEventJS extends EntityEventJS {
 
     public void setZ(double z) {
         this.z = z;
-    }
-
-    @Override
-    public boolean canCancel() {
-        return true;
     }
 }

@@ -1,11 +1,11 @@
 package com.almostreliable.morejs.features.villager.trades;
 
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class SimpleTrade extends TransformableTrade<SimpleTrade> {
     protected ItemStack output;
@@ -17,7 +17,7 @@ public class SimpleTrade extends TransformableTrade<SimpleTrade> {
 
     @Nullable
     @Override
-    public MerchantOffer createOffer(Entity trader, Random rand) {
+    public MerchantOffer createOffer(Entity trader, RandomSource rand) {
         return createOffer(output);
     }
 }

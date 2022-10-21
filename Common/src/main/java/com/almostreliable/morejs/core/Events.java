@@ -1,13 +1,25 @@
 package com.almostreliable.morejs.core;
 
-public class Events {
-    public static final String VILLAGER_TRADING = "morejs.villager.trades";
-    public static final String WANDERING_TRADING = "morejs.wanderer.trades";
-    public static final String PLAYER_START_TRADING = "morejs.player.start_trading";
-    public static final String ENCHANTMENT_TABLE_CHANGED = "morejs.enchantment_table.changed";
-    public static final String ENCHANTMENT_TABLE_ENCHANT = "morejs.enchantment_table.enchant";
-    public static final String ENCHANTMENT_TABLE_TOOLTIP = "morejs.enchantment_table.tooltip";
-    public static final String TELEPORT = "morejs.teleport";
-    public static final String STRUCTURE_LOAD = "morejs.structure.load";
-    public static final String XP_CHANGE = "morejs.player.xp_change";
+import com.almostreliable.morejs.features.enchantment.EnchantmentTableServerEventJS;
+import com.almostreliable.morejs.features.enchantment.EnchantmentTableTooltipEventJS;
+import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
+import com.almostreliable.morejs.features.structure.StructureLoadEventJS;
+import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
+import com.almostreliable.morejs.features.villager.events.StartTradingEventJS;
+import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
+import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
+import dev.latvian.mods.kubejs.event.EventGroup;
+import dev.latvian.mods.kubejs.event.EventHandler;
+
+public interface Events {
+    EventGroup GROUP = EventGroup.of("MoreJSEvents");
+    EventHandler VILLAGER_TRADING = GROUP.server("villagerTrades", () -> VillagerTradingEventJS.class);
+    EventHandler WANDERING_TRADING = GROUP.server("wandererTrades", () -> WandererTradingEventJS.class);
+    EventHandler PLAYER_START_TRADING = GROUP.server("playerStartTrading", () -> StartTradingEventJS.class);
+    EventHandler ENCHANTMENT_TABLE_CHANGED = GROUP.server("enchantmentTableChanged", () -> EnchantmentTableServerEventJS.class);
+    EventHandler ENCHANTMENT_TABLE_ENCHANT = GROUP.server("enchantmentTableEnchant", () -> EnchantmentTableServerEventJS.class).cancelable();
+    EventHandler ENCHANTMENT_TABLE_TOOLTIP = GROUP.client("enchantmentTableTooltip", () -> EnchantmentTableTooltipEventJS.class);
+    EventHandler TELEPORT = GROUP.server("teleport", () -> EntityTeleportsEventJS.class).cancelable();
+    EventHandler STRUCTURE_LOAD = GROUP.server("structureLoad", () -> StructureLoadEventJS.class);
+    EventHandler XP_CHANGE = GROUP.server("playerXpChange", () -> ExperiencePlayerEventJS.class).cancelable();
 }

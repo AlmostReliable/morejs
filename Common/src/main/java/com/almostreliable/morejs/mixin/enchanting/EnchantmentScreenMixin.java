@@ -39,13 +39,16 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
 
         if (this.menu instanceof EnchantmentMenuExtension extension) {
             List<Object> components = new ArrayList<>(currentComponents);
-            new EnchantmentTableTooltipEventJS(extension.getMoreJsEnchantSlots().getItem(0),
+            EnchantmentTableTooltipEventJS e = new EnchantmentTableTooltipEventJS(extension
+                    .getMoreJsEnchantSlots()
+                    .getItem(0),
                     extension.getMoreJsEnchantSlots().getItem(1),
                     Minecraft.getInstance().level,
                     Minecraft.getInstance().player,
                     this.menu,
                     slot,
-                    components).post(ScriptType.CLIENT, Events.ENCHANTMENT_TABLE_TOOLTIP);
+                    components);
+            Events.ENCHANTMENT_TABLE_TOOLTIP.post(e);
 
             currentComponents.clear();
             components.forEach(o -> {

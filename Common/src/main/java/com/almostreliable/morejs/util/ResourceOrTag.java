@@ -5,7 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -40,6 +39,6 @@ public class ResourceOrTag<T> {
 
     public Component getName() {
         String name = either.map(id -> id.location().toString(), tag -> "#" + tag.location().toString());
-        return new TextComponent("Map for: " + Utils.format(name));
+        return Component.literal("Map for: " + Utils.format(name));
     }
 }

@@ -8,6 +8,7 @@ import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.Utils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
+import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
@@ -15,8 +16,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -26,8 +28,8 @@ import java.util.stream.Stream;
 public class MoreJSBinding {
     @Nullable
     public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int chunkRadius) {
-        ResourceOrTag<ConfiguredStructureFeature<?, ?>> rot = ResourceOrTag.get(structure,
-                Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+        ResourceOrTag<Structure> rot = ResourceOrTag.get(structure,
+                Registry.STRUCTURE_REGISTRY);
         return LevelUtils.findStructure(position, level, rot, chunkRadius);
     }
 
@@ -86,18 +88,18 @@ public class MoreJSBinding {
         }
 
         if (!(o instanceof Map<?, ?> map)) {
-            return new TradeFilter(ItemStackJS.EMPTY, ItemStackJS.EMPTY, ItemStackJS.EMPTY);
+            return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
         }
 
         if (!map.containsKey("firstItem") || !map.containsKey("secondItem") || !map.containsKey("outputItem")) {
             ConsoleJS.SERVER.error("Trade filter must contain firstItem, secondItem and outputItem");
-            return new TradeFilter(ItemStackJS.EMPTY, ItemStackJS.EMPTY, ItemStackJS.EMPTY);
+            return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
         }
 
         TradeFilter filter = new TradeFilter(
-                ItemStackJS.of(map.get("firstItem")),
-                ItemStackJS.of(map.get("secondItem")),
-                ItemStackJS.of(map.get("outputItem"))
+                IngredientJS.of(map.get("firstItem")),
+                IngredientJS.of(map.get("secondItem")),
+                IngredientJS.of(map.get("outputItem"))
         );
 
         filter.setFirstCountMatcher(range(map.get("firstCount")));

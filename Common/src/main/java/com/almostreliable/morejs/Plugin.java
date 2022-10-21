@@ -1,5 +1,6 @@
 package com.almostreliable.morejs;
 
+import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
@@ -17,12 +18,12 @@ import java.util.stream.Collectors;
 public class Plugin extends KubeJSPlugin {
 
     @Override
-    public void addClasses(ScriptType type, ClassFilter filter) {
+    public void registerClasses(ScriptType type, ClassFilter filter) {
         filter.allow(BuildConfig.MOD_GROUP);
     }
 
     @Override
-    public void addBindings(BindingsEvent event) {
+    public void registerBindings(BindingsEvent event) {
         event.add("VillagerUtils", VillagerUtils.class);
         event.add("MoreJS", MoreJSBinding.class);
 
@@ -32,9 +33,14 @@ public class Plugin extends KubeJSPlugin {
     }
 
     @Override
-    public void addTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
+    public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
         typeWrappers.register(IntRange.class, MoreJSBinding::range);
         typeWrappers.register(WeightedList.class, MoreJSBinding::ofWeightedList);
         typeWrappers.register(TradeFilter.class, MoreJSBinding::ofTradeFilter);
+    }
+
+    @Override
+    public void registerEvents() {
+        Events.GROUP.register();
     }
 }

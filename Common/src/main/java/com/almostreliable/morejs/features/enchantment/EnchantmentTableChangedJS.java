@@ -3,6 +3,7 @@ package com.almostreliable.morejs.features.enchantment;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -13,9 +14,9 @@ import java.util.Random;
 import java.util.function.BiPredicate;
 
 public class EnchantmentTableChangedJS extends EnchantmentTableServerEventJS {
-    private final Random random;
+    private final RandomSource random;
 
-    public EnchantmentTableChangedJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, EnchantmentMenuProcess state, Random random) {
+    public EnchantmentTableChangedJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, EnchantmentMenuProcess state, RandomSource random) {
         super(item, secondItem, level, pos, state.getPlayer(), state);
         this.random = random;
     }

@@ -29,12 +29,12 @@ public class TradingManager {
 
         updateVanillaTrades(tradesBackup);
         var trades = createMutableTradesMapByProfessions();
-        new VillagerTradingEventJS(trades).post(ScriptType.SERVER, Events.VILLAGER_TRADING);
+        Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(trades));
         updateVanillaTrades(trades);
 
         updateVanillaWanderingTrades(wandererTradesBackup);
         var wandererTrades = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
-        new WandererTradingEventJS(wandererTrades).post(ScriptType.SERVER, Events.WANDERING_TRADING);
+        Events.WANDERING_TRADING.post(new WandererTradingEventJS(wandererTrades));
         updateVanillaWanderingTrades(wandererTrades);
     }
 

@@ -6,7 +6,6 @@ import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -41,7 +40,7 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
             var offer = this.menu.getOffers().get(this.shopItem);
             if (morejs$offerIsDisabled(offer) && this.isHovering(186, 35, 22, 21, mouseX, mouseY)) {
                 this.renderTooltip(poseStack,
-                        new TextComponent("You don't meet the requirements to buy this item."),
+                        Component.literal("You don't meet the requirements to buy this item."),
                         mouseX,
                         mouseY);
             }

@@ -15,17 +15,11 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
 
     protected final EnchantmentMenuProcess state;
     private final BlockPos pos;
-    private final boolean cancelable;
 
     public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state) {
-        this(item, secondItem, level, pos, player, state, false);
-    }
-
-    public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state, boolean cancelable) {
         super(item, secondItem, level, player, state.getMenu());
         this.pos = pos;
         this.state = state;
-        this.cancelable = cancelable;
     }
 
     public BlockPos getPosition() {
@@ -35,11 +29,6 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
     public Data get(int index) {
         Preconditions.checkElementIndex(index, getSize());
         return new Data(index);
-    }
-
-    @Override
-    public boolean canCancel() {
-        return this.cancelable;
     }
 
     public int getSize() {

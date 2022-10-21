@@ -23,8 +23,7 @@ public class ThrownEnderPearlMixin {
                 self.getY(),
                 self.getZ(),
                 TeleportType.ENDER_PEARL);
-        event.post(ScriptType.SERVER, Events.TELEPORT);
-        if (event.isCancelled()) {
+        if (Events.TELEPORT.post(event)) {
             ci.cancel();
             self.discard();
             return;

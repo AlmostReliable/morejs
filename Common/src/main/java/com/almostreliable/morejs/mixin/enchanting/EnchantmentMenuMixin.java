@@ -5,6 +5,7 @@ import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.enchantment.*;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,15 +26,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 @Mixin(EnchantmentMenu.class)
 public abstract class EnchantmentMenuMixin extends AbstractContainerMenu implements EnchantmentMenuExtension {
     @Unique
     private EnchantmentMenuProcess morejs$process;
-    @Shadow @Final private Random random;
     @Shadow @Final private Container enchantSlots;
     @Shadow @Final private ContainerLevelAccess access;
+
+    @Shadow @Final private RandomSource random;
 
     protected EnchantmentMenuMixin(@Nullable MenuType<?> menuType, int i) {
         // Ignore this
@@ -84,10 +85,12 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             this.morejs$process.setFreezeBroadcast(false);
             this.morejs$process.setState(EnchantmentState.USE_STORED_ENCHANTMENTS);
             if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Post SlotChange: {}", this.morejs$process.getPlayer(), item);
-
-            new EnchantmentTableChangedJS(item, secondItem, level, pos, this.morejs$process, this.random).post(
-                    ScriptType.SERVER,
-                    Events.ENCHANTMENT_TABLE_CHANGED);
+            Events.ENCHANTMENT_TABLE_CHANGED.post(new EnchantmentTableChangedJS(item,
+                    secondItem,
+                    level,
+                    pos,
+                    this.morejs$process,
+                    this.random));
         });
 
         if (item.isEmpty() || !item.isEnchantable()) {
@@ -121,9 +124,9 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
 
             ItemStack item = this.enchantSlots.getItem(0);
             ItemStack secondItem = this.enchantSlots.getItem(1);
-            var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process, true);
-            e.post(ScriptType.SERVER, Events.ENCHANTMENT_TABLE_ENCHANT);
-            if (e.isCancelled()) {
+            var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process);
+            Events.ENCHANTMENT_TABLE_ENCHANT.post(e);
+            if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e)) {
                 cir.setReturnValue(false);
             }
         });

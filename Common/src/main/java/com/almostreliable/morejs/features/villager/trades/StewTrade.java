@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.features.villager.trades;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +11,6 @@ import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
-import java.util.Random;
 
 public class StewTrade extends TransformableTrade<StewTrade> {
 
@@ -31,7 +31,7 @@ public class StewTrade extends TransformableTrade<StewTrade> {
 
     @Nullable
     @Override
-    public MerchantOffer createOffer(Entity entity, Random random) {
+    public MerchantOffer createOffer(Entity entity, RandomSource random) {
         ItemStack stew = new ItemStack(Items.SUSPICIOUS_STEW);
         for (MobEffect effect : effects) {
             SuspiciousStewItem.saveMobEffect(stew, effect, this.duration);

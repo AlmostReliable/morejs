@@ -4,15 +4,16 @@ import com.almostreliable.morejs.util.TriConsumer;
 import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
 import java.util.Set;
 
 public class TradeFilter {
 
-    private final IngredientJS firstMatcher;
-    private final IngredientJS secondMatcher;
-    private final IngredientJS outputMatcher;
+    private final Ingredient firstMatcher;
+    private final Ingredient secondMatcher;
+    private final Ingredient outputMatcher;
     private IntRange merchantLevelMatch = IntRange.all();
     private IntRange firstCountMatcher = IntRange.all();
     private IntRange secondCountMatcher = IntRange.all();
@@ -23,7 +24,7 @@ public class TradeFilter {
 
     @Nullable private Set<VillagerProfession> professions;
 
-    public TradeFilter(IngredientJS firstMatcher, IngredientJS secondMatcher, IngredientJS outputMatcher) {
+    public TradeFilter(Ingredient firstMatcher, Ingredient secondMatcher, Ingredient outputMatcher) {
         this.firstMatcher = firstMatcher;
         this.secondMatcher = secondMatcher;
         this.outputMatcher = outputMatcher;
@@ -70,9 +71,9 @@ public class TradeFilter {
     }
 
     public boolean match(ItemStack first, ItemStack second, ItemStack output, TradeTypes type) {
-        boolean firstMatch = firstMatcher.testVanilla(first) && firstCountMatcher.test(first.getCount());
-        boolean secondMatch = secondMatcher.testVanilla(second) && secondCountMatcher.test(second.getCount());
-        boolean outputMatch = outputMatcher.testVanilla(output) && outputCountMatcher.test(output.getCount());
+        boolean firstMatch = firstMatcher.test(first) && firstCountMatcher.test(first.getCount());
+        boolean secondMatch = secondMatcher.test(second) && secondCountMatcher.test(second.getCount());
+        boolean outputMatch = outputMatcher.test(output) && outputCountMatcher.test(output.getCount());
         boolean matched = matchType(type) && firstMatch && secondMatch && outputMatch;
         if (matched) {
             onMatch.accept(first, second, output);

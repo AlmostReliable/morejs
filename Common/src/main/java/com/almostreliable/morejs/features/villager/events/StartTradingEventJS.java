@@ -1,7 +1,6 @@
 package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.features.villager.OfferExtension;
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.trading.Merchant;
@@ -19,8 +18,8 @@ public class StartTradingEventJS extends PlayerEventJS {
     }
 
     @Override
-    public EntityJS getEntity() {
-        return entityOf(player);
+    public Player getEntity() {
+        return player;
     }
 
     public Merchant getMerchant() {

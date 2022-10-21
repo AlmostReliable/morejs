@@ -2,14 +2,13 @@ package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.OfferModification;
 import com.google.common.base.Preconditions;
-import dev.latvian.mods.kubejs.entity.EntityJS;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
@@ -30,19 +29,19 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
 
     @Nullable
     @Override
-    public final MerchantOffer getOffer(Entity entity, Random random) {
+    public final MerchantOffer getOffer(Entity entity, RandomSource random) {
         MerchantOffer offer = createOffer(entity, random);
         if (offer == null) {
             return null;
         }
         if (transformer != null) {
-            transformer.accept(new OfferModification(offer), new EntityJS(entity), random);
+            transformer.accept(new OfferModification(offer), entity, random);
         }
         return offer;
     }
 
     @Nullable
-    public abstract MerchantOffer createOffer(Entity entity, Random random);
+    public abstract MerchantOffer createOffer(Entity entity, RandomSource random);
 
 
     public T transform(Transformer offerModification) {
@@ -75,6 +74,6 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
     }
 
     public interface Transformer {
-        void accept(OfferModification offer, EntityJS entity, Random random);
+        void accept(OfferModification offer, Entity entity, RandomSource random);
     }
 }

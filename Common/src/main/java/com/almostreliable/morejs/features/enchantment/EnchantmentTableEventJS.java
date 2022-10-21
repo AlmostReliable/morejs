@@ -1,10 +1,6 @@
 package com.almostreliable.morejs.features.enchantment;
 
-import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.level.LevelEventJS;
-import dev.latvian.mods.kubejs.level.LevelJS;
-import dev.latvian.mods.kubejs.player.PlayerJS;
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
@@ -26,19 +22,19 @@ public class EnchantmentTableEventJS extends LevelEventJS {
     }
 
     @Override
-    public LevelJS getLevel() {
-        return UtilsJS.getLevel(level);
+    public Level getLevel() {
+        return level;
     }
 
-    public PlayerJS<?> getPlayer() {
-        return getLevel().getPlayer(player);
+    public Player getPlayer() {
+        return player;
     }
 
-    public ItemStackJS getItem() {
-        return new ItemStackJS(item);
+    public ItemStack getItem() {
+        return item;
     }
 
-    public ItemStackJS getSecondItem() {
-        return new ItemStackJS(secondItem);
+    public ItemStack getSecondItem() {
+        return secondItem;
     }
 }

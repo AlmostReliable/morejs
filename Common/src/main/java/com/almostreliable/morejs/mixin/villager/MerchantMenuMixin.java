@@ -27,6 +27,6 @@ public abstract class MerchantMenuMixin extends AbstractContainerMenu {
     @Inject(method = "<init>(ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/item/trading/Merchant;)V", at = @At("RETURN"))
     public void invokeOpenTradeEvent(int windowId, Inventory inventory, Merchant merchant, CallbackInfo ci) {
         if (merchant instanceof ClientSideMerchant && !(inventory.player instanceof ServerPlayer)) return;
-        new StartTradingEventJS(inventory.player, merchant).post(ScriptType.SERVER, Events.PLAYER_START_TRADING);
+        Events.PLAYER_START_TRADING.post(new StartTradingEventJS(inventory.player, merchant));
     }
 }

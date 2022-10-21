@@ -21,7 +21,7 @@ public class StructureLoadEventJS extends EventJS {
 
     public static void invoke(StructureTemplate structure, ResourceLocation id) {
         if (structure instanceof StructureTemplateAccess sta) {
-            new StructureLoadEventJS(sta, id).post(ScriptType.SERVER, Events.STRUCTURE_LOAD);
+            Events.STRUCTURE_LOAD.post(new StructureLoadEventJS(sta, id));
         }
     }
 

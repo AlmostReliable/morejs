@@ -18,10 +18,10 @@ public class ForgeEventLoaders {
     }
 
     private static void onExperienceChange(PlayerXpEvent.XpChange event) {
-        var e = new ExperiencePlayerEventJS(event.getPlayer(), event.getAmount());
-        e.post(Events.XP_CHANGE);
+        var e = new ExperiencePlayerEventJS(event.getEntity(), event.getAmount());
+        boolean cancelled = Events.XP_CHANGE.post(e);
         event.setAmount(e.getAmount());
-        if (e.isCancelled()) {
+        if (cancelled) {
             event.setCanceled(true);
         }
     }
@@ -36,8 +36,7 @@ public class ForgeEventLoaders {
 
     private static void handleEvent(EntityTeleportEvent e, TeleportType type) {
         var event = new EntityTeleportsEventJS(e.getEntity(), e.getTargetX(), e.getTargetY(), e.getTargetZ(), type);
-        event.post(ScriptType.SERVER, Events.TELEPORT);
-        if (event.isCancelled()) {
+        if (Events.TELEPORT.post(event)) {
             e.setCanceled(true);
             return;
         }

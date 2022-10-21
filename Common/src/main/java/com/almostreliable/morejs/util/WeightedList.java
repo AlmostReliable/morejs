@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.util;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.util.RandomSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class WeightedList<T> {
-    private static final Random RANDOM = new Random();
+    private static final RandomSource RANDOM = RandomSource.create();
     private final List<Entry<T>> entries;
     private final int totalWeight;
 
@@ -23,7 +24,7 @@ public class WeightedList<T> {
         return roll(RANDOM);
     }
 
-    public T roll(Random random) {
+    public T roll(RandomSource random) {
         int i = random.nextInt(totalWeight);
         for (Entry<T> e : entries) {
             i -= e.weight;

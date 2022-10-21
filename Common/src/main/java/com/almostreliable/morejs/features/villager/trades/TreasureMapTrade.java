@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     protected final MapPosInfo.Provider destinationPositionFunc;
@@ -35,7 +35,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
             if (o == null) {
                 return null;
             }
-            return ResourceOrTag.get(o.toString(), Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+            return ResourceOrTag.get(o.toString(), Registry.STRUCTURE_REGISTRY);
         });
 
         MapPosInfo.Provider func = (level, entity) -> {
@@ -86,7 +86,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
 
     @Override
     @Nullable
-    public MerchantOffer createOffer(Entity trader, Random rand) {
+    public MerchantOffer createOffer(Entity trader, RandomSource rand) {
         if (trader.getLevel() instanceof ServerLevel level) {
             MapPosInfo info = destinationPositionFunc.apply(level, trader);
             if (info == null) return null;
