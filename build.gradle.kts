@@ -8,6 +8,7 @@ val modName: String by project
 val modAuthor: String by project
 val modDescription: String by project
 val forgeMinVersion: String by project
+val kubejsVersion: String by project
 val githubUser: String by project
 val githubRepo: String by project
 
@@ -96,6 +97,7 @@ subprojects {
             "modAuthor" to modAuthor,
             "modDescription" to modDescription,
             "forgeMinVersion" to forgeMinVersion,
+            "kubejsVersion" to kubejsVersion,
             "githubUser" to githubUser,
             "githubRepo" to githubRepo
         )

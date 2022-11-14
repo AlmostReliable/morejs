@@ -34,9 +34,9 @@ public class Plugin extends KubeJSPlugin {
 
     @Override
     public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-        typeWrappers.register(IntRange.class, MoreJSBinding::range);
-        typeWrappers.register(WeightedList.class, MoreJSBinding::ofWeightedList);
-        typeWrappers.register(TradeFilter.class, MoreJSBinding::ofTradeFilter);
+        typeWrappers.registerSimple(IntRange.class, MoreJSBinding::range);
+        typeWrappers.registerSimple(WeightedList.class, MoreJSBinding::ofWeightedList);
+        typeWrappers.registerSimple(TradeFilter.class, MoreJSBinding::ofTradeFilter);
     }
 
     @Override
