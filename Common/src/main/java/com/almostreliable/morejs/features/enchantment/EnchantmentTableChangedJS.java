@@ -9,7 +9,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
 
 import java.util.Objects;
-import java.util.Random;
 import java.util.function.BiPredicate;
 
 public class EnchantmentTableChangedJS extends EnchantmentTableServerEventJS {

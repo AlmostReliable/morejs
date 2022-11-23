@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -71,11 +72,24 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
         });
     }
 
+    @Redirect(method = "slotsChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEnchantable()Z"))
+    private boolean slotChanged$InvokeEnchantableEvent(ItemStack itemStack, Container container) {
+        Boolean[] result = new Boolean[1];
+
+        this.access.execute((level, pos) -> {
+            ItemStack secondItem = container.getItem(1);
+            var e = new EnchantmentTableIsEnchantableEventJS(itemStack, secondItem, level, pos, this.morejs$process);
+            Events.ENCHANTMENT_TABLE_IS_ENCHANTABLE.post(e);
+            result[0] = e.getIsEnchantable();
+        });
+
+        return this.morejs$process.storeItemIsEnchantable(result[0], itemStack);
+    }
+
     @Inject(method = "slotsChanged", at = @At("RETURN"))
     private void slotChanged$InvokeChangeEvent(Container container, CallbackInfo ci) {
         if (container != this.enchantSlots || !this.morejs$process.isFreezeBroadcast()) {
             return;
-
         }
 
         ItemStack item = container.getItem(0);
@@ -90,7 +104,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
                     Events.ENCHANTMENT_TABLE_CHANGED);
         });
 
-        if (item.isEmpty() || !item.isEnchantable()) {
+        if (item.isEmpty() || !this.morejs$process.isItemEnchantable(item)) {
             this.morejs$process.clearEnchantments();
         }
     }
@@ -125,6 +139,13 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             e.post(ScriptType.SERVER, Events.ENCHANTMENT_TABLE_ENCHANT);
             if (e.isCancelled()) {
                 cir.setReturnValue(false);
+            }
+
+            if(e.itemWasChanged()) {
+                cir.setReturnValue(false);
+                ItemStack newItem = e.getItem().copy();
+                this.morejs$process.abortEvent(newItem);
+                this.enchantSlots.setItem(0, newItem);
             }
         });
     }

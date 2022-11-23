@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class EnchantmentMenuProcess {
      * Approach to fix changing the slot triggers multiple {@link EnchantmentMenu#slotsChanged}... Mojang pls...
      */
     private ItemStack currentItem = ItemStack.EMPTY;
+    private Boolean itemIsEnchantable = null;
     private EnchantmentState state = EnchantmentState.IDLE;
     private Player player;
 
@@ -41,11 +43,23 @@ public class EnchantmentMenuProcess {
 
     public void setCurrentItem(ItemStack currentItem) {
         this.currentItem = currentItem;
+        if (currentItem.isEmpty()) {
+            itemIsEnchantable = null;
+        }
     }
 
     public void clearEnchantments() {
         if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Clearing enchantments", player);
         enchantments.clear();
+    }
+
+    public boolean storeItemIsEnchantable(@Nullable Boolean override, ItemStack item) {
+        itemIsEnchantable = override != null ? override : item.isEnchantable();
+        return itemIsEnchantable;
+    }
+
+    public boolean isItemEnchantable(ItemStack item) {
+        return itemIsEnchantable == null ? item.isEnchantable() : itemIsEnchantable;
     }
 
     public void setEnchantments(int index, List<EnchantmentInstance> enchantments) {
@@ -93,5 +107,11 @@ public class EnchantmentMenuProcess {
         clearEnchantments();
         setFreezeBroadcast(true);
         setState(EnchantmentState.STORE_ENCHANTMENTS);
+    }
+
+    public void abortEvent(ItemStack item) {
+        setCurrentItem(item);
+        clearEnchantments();
+        setState(EnchantmentState.IDLE);
     }
 }
