@@ -4,7 +4,6 @@ import com.almostreliable.morejs.Debug;
 import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.enchantment.*;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,6 +20,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -33,7 +33,6 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
     private EnchantmentMenuProcess morejs$process;
     @Shadow @Final private Container enchantSlots;
     @Shadow @Final private ContainerLevelAccess access;
-
     @Shadow @Final private RandomSource random;
 
     protected EnchantmentMenuMixin(@Nullable MenuType<?> menuType, int i) {
@@ -72,11 +71,24 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
         });
     }
 
+    @Redirect(method = "slotsChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEnchantable()Z"))
+    private boolean slotChanged$InvokeEnchantableEvent(ItemStack itemStack, Container container) {
+        Boolean[] result = new Boolean[1];
+
+        this.access.execute((level, pos) -> {
+            ItemStack secondItem = container.getItem(1);
+            var e = new EnchantmentTableIsEnchantableEventJS(itemStack, secondItem, level, pos, this.morejs$process);
+            Events.ENCHANTMENT_TABLE_IS_ENCHANTABLE.post(e);
+            result[0] = e.getIsEnchantable();
+        });
+
+        return this.morejs$process.storeItemIsEnchantable(result[0], itemStack);
+    }
+
     @Inject(method = "slotsChanged", at = @At("RETURN"))
     private void slotChanged$InvokeChangeEvent(Container container, CallbackInfo ci) {
         if (container != this.enchantSlots || !this.morejs$process.isFreezeBroadcast()) {
             return;
-
         }
 
         ItemStack item = container.getItem(0);
@@ -93,7 +105,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
                     this.random));
         });
 
-        if (item.isEmpty() || !item.isEnchantable()) {
+        if (item.isEmpty() || !this.morejs$process.isItemEnchantable(item)) {
             this.morejs$process.clearEnchantments();
         }
     }
@@ -125,9 +137,15 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             ItemStack item = this.enchantSlots.getItem(0);
             ItemStack secondItem = this.enchantSlots.getItem(1);
             var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process);
-            Events.ENCHANTMENT_TABLE_ENCHANT.post(e);
             if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e)) {
                 cir.setReturnValue(false);
+            }
+
+            if(e.itemWasChanged()) {
+                cir.setReturnValue(false);
+                ItemStack newItem = e.getItem().copy();
+                this.morejs$process.abortEvent(newItem);
+                this.enchantSlots.setItem(0, newItem);
             }
         });
     }

@@ -8,7 +8,8 @@ import net.minecraft.world.level.Level;
 
 public class EnchantmentTableEventJS extends LevelEventJS {
     protected final EnchantmentMenu menu;
-    private final ItemStack item;
+
+    protected ItemStack item;
     private final ItemStack secondItem;
     private final Player player;
     private final Level level;

@@ -16,6 +16,7 @@ public interface Events {
     EventHandler VILLAGER_TRADING = GROUP.server("villagerTrades", () -> VillagerTradingEventJS.class);
     EventHandler WANDERING_TRADING = GROUP.server("wandererTrades", () -> WandererTradingEventJS.class);
     EventHandler PLAYER_START_TRADING = GROUP.server("playerStartTrading", () -> StartTradingEventJS.class);
+    EventHandler ENCHANTMENT_TABLE_IS_ENCHANTABLE = GROUP.server("enchantmentTableIsEnchantable", () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_CHANGED = GROUP.server("enchantmentTableChanged", () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_ENCHANT = GROUP.server("enchantmentTableEnchant", () -> EnchantmentTableServerEventJS.class).cancelable();
     EventHandler ENCHANTMENT_TABLE_TOOLTIP = GROUP.client("enchantmentTableTooltip", () -> EnchantmentTableTooltipEventJS.class);
