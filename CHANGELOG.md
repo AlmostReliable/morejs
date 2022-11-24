@@ -1,4 +1,8 @@
 # Changelog
+## [0.0.4] - 2022-11-24
+- Add `enchantmentTableIsEnchantable` event
+- Reset the item for `enchantmentTableChanged`
+- Add more utilities to events to check enchantment ids directly
 
 ## [0.0.3] - 2022-10-21
 - Fix crash with new KubeJS version
@@ -18,6 +22,7 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.4-beta
 [0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.3-beta
 [0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.2-beta
 [0.0.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.1-beta
