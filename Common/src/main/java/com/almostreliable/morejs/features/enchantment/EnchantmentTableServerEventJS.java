@@ -2,6 +2,7 @@ package com.almostreliable.morejs.features.enchantment;
 
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.google.common.base.Preconditions;
+import dev.latvian.mods.kubejs.item.ItemStackJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -51,9 +52,9 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         return state.getMenu().costs.length;
     }
 
-    public void setItem(ItemStack item) {
+    public void setItem(ItemStackJS item) {
         this.itemChanged = true;
-        this.item = item;
+        this.item = item.getItemStack();
     }
 
     public boolean itemWasChanged() {

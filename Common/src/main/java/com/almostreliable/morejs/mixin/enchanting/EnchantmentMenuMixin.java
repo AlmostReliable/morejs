@@ -79,7 +79,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
         this.access.execute((level, pos) -> {
             ItemStack secondItem = container.getItem(1);
             var e = new EnchantmentTableIsEnchantableEventJS(itemStack, secondItem, level, pos, this.morejs$process);
-            Events.ENCHANTMENT_TABLE_IS_ENCHANTABLE.post(e);
+            e.post(ScriptType.SERVER, Events.ENCHANTMENT_TABLE_IS_ENCHANTABLE);
             result[0] = e.getIsEnchantable();
         });
 
@@ -143,7 +143,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
 
             if(e.itemWasChanged()) {
                 cir.setReturnValue(false);
-                ItemStack newItem = e.getItem().copy();
+                ItemStack newItem = e.getItem().getItemStack().copy();
                 this.morejs$process.abortEvent(newItem);
                 this.enchantSlots.setItem(0, newItem);
             }
