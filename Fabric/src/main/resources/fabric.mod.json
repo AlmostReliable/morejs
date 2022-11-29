@@ -17,6 +17,12 @@
   "entrypoints": {
     "main": [
       "com.almostreliable.morejs.MoreJSFabric"
+    ],
+    "client": [
+      "com.almostreliable.morejs.MoreJSFabric"
+    ],
+    "server": [
+      "com.almostreliable.morejs.MoreJSFabric"
     ]
   },
   "mixins": [

@@ -1,5 +1,7 @@
 package com.almostreliable.morejs.util;
 
+import net.minecraft.world.item.crafting.Ingredient;
+
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,5 +48,9 @@ public class Utils {
         }
 
         return new ArrayList<>(Collections.singletonList(o));
+    }
+
+    public static boolean matchesIngredient(Ingredient filter, Ingredient ingredient) {
+        return Arrays.stream(filter.getItems()).anyMatch(ingredient);
     }
 }

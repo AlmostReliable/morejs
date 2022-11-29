@@ -1,6 +1,10 @@
 package com.almostreliable.morejs;
 
+import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.core.ReloadListener;
+import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEventFabric;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -12,7 +16,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class MoreJSFabric implements ModInitializer {
+public class MoreJSFabric implements ModInitializer, ClientModInitializer, DedicatedServerModInitializer {
 
     @Override
     public void onInitialize() {
@@ -31,5 +35,15 @@ public class MoreJSFabric implements ModInitializer {
                         return listener.reload(barrier, rm, prepFiller, reloadFiller, backgroundExecutor, gameExecutor);
                     }
                 });
+    }
+
+    @Override
+    public void onInitializeClient() {
+        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventFabric());
+    }
+
+    @Override
+    public void onInitializeServer() {
+        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventFabric());
     }
 }
