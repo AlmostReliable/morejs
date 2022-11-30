@@ -1,4 +1,7 @@
 # Changelog
+## [0.0.5] - 2022-11-24
+- Add `registerPotionBrewing` event
+
 ## [0.0.4] - 2022-11-24
 - Add `enchantmentTableIsEnchantable` event
 - Reset the item for `enchantmentTableChanged`
