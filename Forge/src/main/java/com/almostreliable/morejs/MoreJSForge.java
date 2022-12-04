@@ -3,6 +3,7 @@ package com.almostreliable.morejs;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.core.ReloadListener;
 import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEventForge;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,10 +26,10 @@ public class MoreJSForge {
     }
 
     private void onClientCommon(FMLClientSetupEvent event) {
-        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventForge());
+        new PotionBrewingRegisterEventForge().post(ScriptType.STARTUP, Events.REGISTER_POTION_BREWING);
     }
 
     private void onServerCommon(FMLDedicatedServerSetupEvent event) {
-        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventForge());
+        new PotionBrewingRegisterEventForge().post(ScriptType.STARTUP, Events.REGISTER_POTION_BREWING);
     }
 }

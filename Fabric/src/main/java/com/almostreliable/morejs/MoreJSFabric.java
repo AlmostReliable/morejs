@@ -3,6 +3,7 @@ package com.almostreliable.morejs;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.core.ReloadListener;
 import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEventFabric;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -39,11 +40,11 @@ public class MoreJSFabric implements ModInitializer, ClientModInitializer, Dedic
 
     @Override
     public void onInitializeClient() {
-        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventFabric());
+        new PotionBrewingRegisterEventFabric().post(ScriptType.STARTUP, Events.REGISTER_POTION_BREWING);
     }
 
     @Override
     public void onInitializeServer() {
-        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEventFabric());
+        new PotionBrewingRegisterEventFabric().post(ScriptType.STARTUP, Events.REGISTER_POTION_BREWING);
     }
 }
