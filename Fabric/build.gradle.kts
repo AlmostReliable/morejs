@@ -12,6 +12,7 @@ val modId: String by project
 val mappingsChannel: String by project
 val mappingsVersion: String by project
 val kubejsVersion: String by project
+val reiVersion: String by project
 
 val baseArchiveName = "${modId}-fabric-${minecraftVersion}"
 
@@ -28,6 +29,9 @@ dependencies {
     modApi("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
 
     modApi("dev.latvian.mods:kubejs-fabric:${kubejsVersion}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${reiVersion}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${reiVersion}")
+    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}")
 
     fileTree("extra-mods-$minecraftVersion") { include("**/*.jar") }
         .forEach { f ->

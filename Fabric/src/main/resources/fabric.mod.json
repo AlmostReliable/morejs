@@ -23,6 +23,9 @@
     ],
     "server": [
       "com.almostreliable.morejs.MoreJSFabric"
+    ],
+    "rei_client": [
+      "com.almostreliable.morejs.compat.MoreREI"
     ]
   },
   "mixins": [

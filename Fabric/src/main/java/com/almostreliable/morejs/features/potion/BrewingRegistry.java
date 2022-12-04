@@ -5,6 +5,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class BrewingRegistry {
@@ -49,6 +51,10 @@ public class BrewingRegistry {
             }
         }
         return null;
+    }
+
+    public static Collection<Entry> getEntries() {
+        return Collections.unmodifiableCollection(entries);
     }
 
     public record Entry(Ingredient bottomInput, Ingredient topInput, ItemStack output) {
