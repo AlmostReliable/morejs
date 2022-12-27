@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.core;
 
 import com.almostreliable.morejs.BuildConfig;
-import com.almostreliable.morejs.features.villager.TradingManager;
+import com.almostreliable.morejs.MoreJS;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -13,7 +13,7 @@ public class ReloadListener implements PreparableReloadListener {
     @Override
     public CompletableFuture<Void> reload(PreparationBarrier barrier, ResourceManager manager, ProfilerFiller preparationProfile, ProfilerFiller reloadProfile, Executor backgroundExecutor, Executor gameExecutor) {
         return CompletableFuture.runAsync(() -> {}, gameExecutor).thenCompose(barrier::wait).thenAccept($ -> {
-            TradingManager.INSTANCE.run();
+            MoreJS.PLATFORM.getTradingManager().reload();
         });
     }
 
