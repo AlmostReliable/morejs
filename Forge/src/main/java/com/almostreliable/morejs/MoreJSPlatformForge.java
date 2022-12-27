@@ -1,5 +1,7 @@
 package com.almostreliable.morejs;
 
+import com.almostreliable.morejs.features.villager.ForgeTradingManager;
+import com.almostreliable.morejs.features.villager.TradingManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,5 +34,10 @@ public class MoreJSPlatformForge implements MoreJSPlatform {
     @Override
     public int getEnchantmentCost(Level level, BlockPos blockPos, int i, int enchantmentMaxLevel, ItemStack item, int cost) {
         return ForgeEventFactory.onEnchantmentLevelSet(level, blockPos, i, enchantmentMaxLevel, item, cost);
+    }
+
+    @Override
+    public TradingManager getTradingManager() {
+        return ForgeTradingManager.INSTANCE;
     }
 }

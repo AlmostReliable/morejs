@@ -94,6 +94,7 @@ dependencies {
 mixin {
     add(sourceSets.main.get(), "${modId}.refmap.json")
     config("${modId}-common.mixins.json")
+    config("${modId}-forge.mixins.json")
 }
 
 tasks.withType<JavaCompile> {

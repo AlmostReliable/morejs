@@ -3,7 +3,6 @@ package com.almostreliable.morejs.features.villager;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
 import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -13,29 +12,40 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TradingManager {
-    public static TradingManager INSTANCE = new TradingManager();
+    @Nullable protected Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> tradesBackup;
+    @Nullable protected Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
 
-    @Nullable private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> tradesBackup;
-    @Nullable private Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
-
-    public void run() {
-        if (tradesBackup == null) {
-            tradesBackup = createMutableTradesMapByProfessions();
-        }
-
-        if (wandererTradesBackup == null) {
-            wandererTradesBackup = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
-        }
-
-        updateVanillaTrades(tradesBackup);
+    public void invokeVillagerTradeEvent(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> originalTrades) {
+        updateVanillaTrades(originalTrades);
         var trades = createMutableTradesMapByProfessions();
         Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(trades));
         updateVanillaTrades(trades);
+    }
 
-        updateVanillaWanderingTrades(wandererTradesBackup);
+    public void invokeWanderingTradeEvent(Int2ObjectMap<List<VillagerTrades.ItemListing>> originalTrades) {
+        updateVanillaWanderingTrades(originalTrades);
         var wandererTrades = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
         Events.WANDERING_TRADING.post(new WandererTradingEventJS(wandererTrades));
         updateVanillaWanderingTrades(wandererTrades);
+    }
+
+    public void reload() {
+        invokeVillagerTradeEvent(getTradesBackup());
+        invokeWanderingTradeEvent(getWandererTradesBackup());
+    }
+
+    public Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> getTradesBackup() {
+        if (tradesBackup == null) {
+            tradesBackup = createMutableTradesMapByProfessions();
+        }
+        return tradesBackup;
+    }
+
+    public Int2ObjectMap<List<VillagerTrades.ItemListing>> getWandererTradesBackup() {
+        if (wandererTradesBackup == null) {
+            wandererTradesBackup = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
+        }
+        return wandererTradesBackup;
     }
 
     private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> createMutableTradesMapByProfessions() {

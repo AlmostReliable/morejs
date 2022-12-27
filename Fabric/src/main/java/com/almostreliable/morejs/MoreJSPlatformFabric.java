@@ -1,11 +1,14 @@
 package com.almostreliable.morejs;
 
+import com.almostreliable.morejs.features.villager.TradingManager;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class MoreJSPlatformFabric implements MoreJSPlatform {
+
+    private final TradingManager tradingManager = new TradingManager();
 
     @Override
     public Platform getPlatform() {
@@ -30,5 +33,10 @@ public class MoreJSPlatformFabric implements MoreJSPlatform {
     @Override
     public int getEnchantmentCost(Level level, BlockPos blockPos, int i, int enchantmentMaxLevel, ItemStack item, int cost) {
         return cost;
+    }
+
+    @Override
+    public TradingManager getTradingManager() {
+        return tradingManager;
     }
 }
