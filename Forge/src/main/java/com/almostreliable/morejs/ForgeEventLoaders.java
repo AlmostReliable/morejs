@@ -5,6 +5,7 @@ import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
 import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
 import com.almostreliable.morejs.features.teleport.TeleportType;
 import com.almostreliable.morejs.features.villager.ForgeTradingManager;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;

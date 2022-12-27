@@ -3,6 +3,7 @@ package com.almostreliable.morejs.features.villager;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
 import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
