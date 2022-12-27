@@ -28,6 +28,7 @@
       "com.almostreliable.morejs.compat.MoreREI"
     ]
   },
+  "accessWidener": "${modId}.accesswidener",
   "mixins": [
     "morejs-common.mixins.json",
     "morejs-fabric.mixins.json"
