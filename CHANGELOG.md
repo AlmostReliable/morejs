@@ -1,4 +1,8 @@
 # Changelog
+## [0.0.6] - 2023-01-08
+- Fix loading issue for villager trades on Forge
+- Fix missing accesswidener in fabric.mod.json
+
 ## [0.0.5] - 2022-11-24
 - Add `registerPotionBrewing` event
 
@@ -25,6 +29,7 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.0.6]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.6-beta
 [0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.4-beta
 [0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.3-beta
 [0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.2-beta
