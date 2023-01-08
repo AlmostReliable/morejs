@@ -1,4 +1,8 @@
 # Changelog
+## [0.0.6] - 2023-01-08
+- Fix loading issue for villager trades on Forge
+- Fix missing accesswidener in fabric.mod.json
+
 ## [0.0.5] - 2022-11-24
 - Add `registerPotionBrewing` event
 
