@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Mixin(EnchantmentMenu.class)
+@Mixin(value = EnchantmentMenu.class, priority = 42) // lower priority to ensure we run first. 42 is the answer to everything.
 public abstract class EnchantmentMenuMixin extends AbstractContainerMenu implements EnchantmentMenuExtension {
     @Unique
     private EnchantmentMenuProcess morejs$process;

@@ -1,4 +1,7 @@
 # Changelog
+## [0.0.7] - 2023-01-19
+- Change mixin priority for enchantment feature
+
 ## [0.0.6] - 2023-01-08
 - Fix loading issue for villager trades on Forge
 - Fix missing accesswidener in fabric.mod.json
@@ -29,6 +32,7 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.7-beta
 [0.0.6]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.6-beta
 [0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.4-beta
 [0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.3-beta
