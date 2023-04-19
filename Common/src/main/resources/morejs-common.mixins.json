@@ -11,6 +11,7 @@
         "structure.StructureBlockInfoMixin",
         "structure.StructureManagerMixin",
         "structure.StructureTemplateMixin",
+        "villager.AbstractVillagerMixin",
         "villager.MerchantMenuMixin",
         "villager.MerchantOfferMixin",
         "villager.MerchantOffersMixin",

@@ -1,6 +1,8 @@
 package com.almostreliable.morejs.features.villager;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public interface OfferExtension {
 
@@ -27,4 +29,18 @@ public interface OfferExtension {
     void setVillagerExperience(int villagerExperience);
 
     void setPriceMultiplier(float priceMultiplier);
+
+    default void replaceEmeralds(Item replacement) {
+        if (getFirstInput().getItem() == Items.EMERALD) {
+            setFirstInput(new ItemStack(replacement, getFirstInput().getCount()));
+        }
+
+        if (getSecondInput().getItem() == Items.EMERALD) {
+            setSecondInput(new ItemStack(replacement, getSecondInput().getCount()));
+        }
+
+        if (getOutput().getItem() == Items.EMERALD) {
+            setOutput(new ItemStack(replacement, getOutput().getCount()));
+        }
+    }
 }
