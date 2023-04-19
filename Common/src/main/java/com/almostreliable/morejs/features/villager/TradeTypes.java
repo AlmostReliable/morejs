@@ -10,5 +10,6 @@ public enum TradeTypes {
     TippedArrowForItemsAndEmeralds,
     SuspiciousStewForEmeralds,
     TreasureMapForEmeralds,
-    EmeraldsForVillagerTypeItem
+    EmeraldsForVillagerTypeItem,
+    ForgeBasic,
 }
