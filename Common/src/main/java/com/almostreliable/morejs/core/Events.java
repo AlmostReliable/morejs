@@ -3,6 +3,7 @@ package com.almostreliable.morejs.core;
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableServerEventJS;
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableTooltipEventJS;
 import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
+import com.almostreliable.morejs.features.misc.PiglinAttackPlayerEventJS;
 import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEvent;
 import com.almostreliable.morejs.features.structure.StructureLoadEventJS;
 import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
@@ -25,6 +26,7 @@ public interface Events {
     EventHandler TELEPORT = GROUP.server("teleport", () -> EntityTeleportsEventJS.class).cancelable();
     EventHandler STRUCTURE_LOAD = GROUP.server("structureLoad", () -> StructureLoadEventJS.class);
     EventHandler XP_CHANGE = GROUP.server("playerXpChange", () -> ExperiencePlayerEventJS.class).cancelable();
+    EventHandler PIGLIN_ATTACK_PLAYER = GROUP.server("piglinAttackPlayer", () -> PiglinAttackPlayerEventJS.class).cancelable();
     EventHandler POTION_BREWING_REGISTER = GROUP.startup("registerPotionBrewing",
             () -> PotionBrewingRegisterEvent.class);
 }
