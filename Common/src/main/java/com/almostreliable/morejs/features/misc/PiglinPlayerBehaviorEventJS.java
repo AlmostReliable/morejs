@@ -53,10 +53,6 @@ public class PiglinPlayerBehaviorEventJS extends PlayerEventJS {
         this.behavior = behavior;
     }
 
-    public void setBehavior(String behavior) {
-        this.behavior = PiglinBehavior.valueOf(behavior.toUpperCase());
-    }
-
     public boolean isIgnoreHoldingCheck() {
         return ignoreHoldingCheck;
     }
