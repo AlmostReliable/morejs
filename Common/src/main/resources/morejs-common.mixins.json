@@ -7,6 +7,7 @@
     "mixins": [
         "enchanting.EnchantmentMenuMixin",
         "enchanting.EnchantmentMixin",
+        "entity.PiglinSpecificSensorMixin",
         "potion.PotionBrewingAccessor",
         "structure.StructureBlockInfoMixin",
         "structure.StructureManagerMixin",
