@@ -45,7 +45,12 @@ public class PiglinSpecificSensorMixin {
     ) {
         if (!(entity instanceof Piglin piglinEntity) || !entity.canAttack(player)) return;
 
-        var event = new PiglinPlayerBehaviorEventJS(piglinEntity, player, playerNotWearingGoldArmor.isPresent());
+        var event = new PiglinPlayerBehaviorEventJS(
+                piglinEntity,
+                player,
+                playerNotWearingGoldArmor.isPresent(),
+                playerNotWearingGoldArmor.orElse(null)
+        );
         Events.PIGLIN_PLAYER_BEHAVIOR.post(event);
         fired = true;
 
