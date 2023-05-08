@@ -5,22 +5,22 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class PiglinPlayerBehaviorEventJS extends PlayerEventJS {
 
     private final Player player;
     private final Piglin piglin;
-    private final boolean aggressiveAlready;
-    @Nullable private final Player previousTargetPlayer;
-
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private final Optional<Player> playerNotWearingGoldArmor;
     private PiglinBehavior behavior = PiglinBehavior.KEEP;
     private boolean ignoreHoldingCheck;
 
-    public PiglinPlayerBehaviorEventJS(Piglin piglin, Player player, boolean aggressiveAlready, @Nullable Player previousTargetPlayer) {
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public PiglinPlayerBehaviorEventJS(Piglin piglin, Player player, Optional<Player> playerNotWearingGoldArmor) {
         this.piglin = piglin;
         this.player = player;
-        this.aggressiveAlready = aggressiveAlready;
-        this.previousTargetPlayer = previousTargetPlayer;
+        this.playerNotWearingGoldArmor = playerNotWearingGoldArmor;
     }
 
     public void ignoreHoldingCheck() {
@@ -37,12 +37,12 @@ public class PiglinPlayerBehaviorEventJS extends PlayerEventJS {
     }
 
     public boolean isAggressiveAlready() {
-        return aggressiveAlready;
+        return playerNotWearingGoldArmor.isPresent();
     }
 
     @Nullable
     public Player getPreviousTargetPlayer() {
-        return previousTargetPlayer;
+        return playerNotWearingGoldArmor.orElse(null);
     }
 
     public PiglinBehavior getBehavior() {

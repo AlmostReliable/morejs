@@ -31,7 +31,7 @@ public class PiglinSpecificSensorMixin {
     @Unique private boolean ignoreHoldingCheck;
     @Unique private boolean fired;
 
-    @SuppressWarnings("InvalidInjectorMethodSignature")
+    @SuppressWarnings({ "InvalidInjectorMethodSignature", "OptionalUsedAsFieldOrParameterType" })
     @Inject(method = "doTick", at = @At(value = "INVOKE", target = "Ljava/util/Optional;isEmpty()Z", ordinal = 4, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
     private void morejs$doTick(
             ServerLevel level, LivingEntity entity, CallbackInfo ci,
@@ -48,8 +48,7 @@ public class PiglinSpecificSensorMixin {
         var event = new PiglinPlayerBehaviorEventJS(
                 piglinEntity,
                 player,
-                playerNotWearingGoldArmor.isPresent(),
-                playerNotWearingGoldArmor.orElse(null)
+                playerNotWearingGoldArmor
         );
         Events.PIGLIN_PLAYER_BEHAVIOR.post(event);
         fired = true;
