@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.mixin.entity;
 
 import com.almostreliable.morejs.core.Events;
-import com.almostreliable.morejs.features.misc.PiglinAttackPlayerEventJS;
+import com.almostreliable.morejs.features.misc.PiglinPlayerBehaviorEventJS;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -27,10 +27,9 @@ import java.util.Optional;
 @Mixin(PiglinSpecificSensor.class)
 public class PiglinSpecificSensorMixin {
 
-    @Unique
-    Optional<Player> targetablePlayer = Optional.empty();
-    @Unique
-    boolean fired;
+    @Unique private Optional<Player> targetablePlayer = Optional.empty();
+    @Unique private boolean ignoreHoldingCheck;
+    @Unique private boolean fired;
 
     @SuppressWarnings("InvalidInjectorMethodSignature")
     @Inject(method = "doTick", at = @At(value = "INVOKE", target = "Ljava/util/Optional;isEmpty()Z", ordinal = 4, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
@@ -46,19 +45,26 @@ public class PiglinSpecificSensorMixin {
     ) {
         if (!(entity instanceof Piglin piglinEntity) || !entity.canAttack(player)) return;
 
-        var event = new PiglinAttackPlayerEventJS(piglinEntity, player, playerNotWearingGoldArmor.isPresent());
+        var event = new PiglinPlayerBehaviorEventJS(piglinEntity, player, playerNotWearingGoldArmor.isPresent());
+        Events.PIGLIN_PLAYER_BEHAVIOR.post(event);
         fired = true;
-        if (Events.PIGLIN_ATTACK_PLAYER.post(event)) {
-            targetablePlayer = Optional.empty();
-            return;
-        }
-        targetablePlayer = Optional.of(event.getPlayer());
+
+        targetablePlayer = switch (event.getBehavior()) {
+            case ATTACK -> Optional.of(event.getPlayer());
+            case IGNORE -> Optional.empty();
+            case KEEP -> playerNotWearingGoldArmor;
+        };
+        ignoreHoldingCheck = event.isIgnoreHoldingCheck();
     }
 
     @Inject(method = "doTick", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void morejs$setTarget(ServerLevel level, LivingEntity entity, CallbackInfo ci, Brain<?> brain) {
         if (fired) {
             brain.setMemory(MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD, targetablePlayer);
+            if (ignoreHoldingCheck) {
+                brain.setMemory(MemoryModuleType.NEAREST_PLAYER_HOLDING_WANTED_ITEM, Optional.empty());
+            }
+
             fired = false;
         }
     }
