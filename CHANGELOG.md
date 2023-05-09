@@ -1,4 +1,9 @@
 # Changelog
+## [0.0.8] - 2023-05-09
+- Add event `piglinPlayerBehavior` for piglin behavior (like wearing gold)
+- Add events `updateAbstractVillagerOffers`, `updateVillagerOffers` and `updateWandererOffers` to handle villager trading when it's updated
+- Add basic villager trade from forge to filters
+
 ## [0.0.7] - 2023-01-19
 - Change mixin priority for enchantment feature
 
@@ -32,9 +37,10 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
-[0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.7-beta
-[0.0.6]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.6-beta
-[0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.4-beta
-[0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.3-beta
-[0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.2-beta
-[0.0.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.18-0.0.1-beta
+[0.0.8]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.8-beta
+[0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.7-beta
+[0.0.6]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.6-beta
+[0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.4-beta
+[0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.3-beta
+[0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.2-beta
+[0.0.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.1-beta
