@@ -17,9 +17,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +29,13 @@ import java.util.Optional;
 @Mixin(PiglinSpecificSensor.class)
 public class PiglinSpecificSensorMixin {
 
-    @Unique private Optional<Player> targetablePlayer = Optional.empty();
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    @Unique
+    private Optional<Player> targetablePlayer = Optional.empty();
     @Unique private boolean ignoreHoldingCheck;
     @Unique private boolean fired;
 
-    @SuppressWarnings({ "InvalidInjectorMethodSignature", "OptionalUsedAsFieldOrParameterType" })
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @Inject(method = "doTick", at = @At(value = "INVOKE", target = "Ljava/util/Optional;isEmpty()Z", ordinal = 4, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
     private void morejs$doTick(
             ServerLevel level, LivingEntity entity, CallbackInfo ci,
@@ -40,16 +44,14 @@ public class PiglinSpecificSensorMixin {
             Optional<Piglin> nearVisBabyPiglin, Optional<LivingEntity> nearVisZombiefied,
             Optional<Player> playerNotWearingGoldArmor, Optional<Player> playerHoldingWantedItem,
             int i, List<AbstractPiglin> nearVisAdultPiglins, List<AbstractPiglin> nearAdultPiglins,
-            NearestVisibleLivingEntities nearEntities, Iterator<?> iterator, LivingEntity nearEntity,
-            Player player
-    ) {
-        if (!(entity instanceof Piglin piglinEntity) || !entity.canAttack(player)) return;
+            NearestVisibleLivingEntities nearEntities, Iterator<?> iterator, LivingEntity nearEntity) {
+        if (!(entity instanceof Piglin piglinEntity)
+            || !(nearEntity instanceof Player player)
+            || !entity.canAttack(player)) {
+            return;
+        }
 
-        var event = new PiglinPlayerBehaviorEventJS(
-                piglinEntity,
-                player,
-                playerNotWearingGoldArmor
-        );
+        var event = new PiglinPlayerBehaviorEventJS(piglinEntity, player, playerNotWearingGoldArmor);
         Events.PIGLIN_PLAYER_BEHAVIOR.post(event);
         fired = true;
 
@@ -58,6 +60,7 @@ public class PiglinSpecificSensorMixin {
             case IGNORE -> Optional.empty();
             case KEEP -> playerNotWearingGoldArmor;
         };
+
         ignoreHoldingCheck = event.isIgnoreHoldingCheck();
     }
 
