@@ -2,13 +2,25 @@ package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeTypes;
+import com.almostreliable.morejs.features.villager.events.FilterEnchantedTradeEventJS;
+import net.minecraft.core.Registry;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class VillagerTradesMixin {
 
@@ -115,6 +127,15 @@ public class VillagerTradesMixin {
 
     @Mixin(VillagerTrades.EnchantBookForEmeralds.class)
     private static class EnchantBookForEmeraldsMixin implements TradeFilter.Filterable {
+
+        @Redirect(method = "getOffer", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;"))
+        private Stream<Enchantment> getDD(Stream<Enchantment> instance, Predicate<Enchantment> predicate, Entity entity, RandomSource randomSource) {
+            if(entity instanceof AbstractVillager villager) {
+                return FilterEnchantedTradeEventJS.invokeAndHandle(villager, randomSource, instance);
+            }
+            return instance.filter(predicate);
+        }
+
         @Override
         public boolean matchesTradeFilter(TradeFilter filter) {
             return filter.match(new ItemStack(Items.EMERALD, 64), new ItemStack(Items.ENCHANTED_BOOK),
