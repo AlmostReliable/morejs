@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(BasicItemListing.class)
 public class BasicItemListingMixin implements TradeFilter.Filterable {
-    @Shadow @Final protected ItemStack price;
+    @Shadow(remap = false) @Final protected ItemStack price;
 
-    @Shadow @Final protected ItemStack price2;
+    @Shadow(remap = false) @Final protected ItemStack price2;
 
-    @Shadow @Final protected ItemStack forSale;
+    @Shadow(remap = false) @Final protected ItemStack forSale;
 
     @Override
     public boolean matchesTradeFilter(TradeFilter filter) {
