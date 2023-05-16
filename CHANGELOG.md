@@ -1,4 +1,8 @@
 # Changelog
+
+## [0.1.0] - 2023-05-16
+- Add event `filterEnchantedBookTrade` and `filterAvailableEnchantments` to filter enchantments
+
 ## [0.0.8] - 2023-05-09
 - Add event `piglinPlayerBehavior` for piglin behavior (like wearing gold)
 - Add events `updateAbstractVillagerOffers`, `updateVillagerOffers` and `updateWandererOffers` to handle villager trading when it's updated
