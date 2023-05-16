@@ -1,9 +1,9 @@
 package com.almostreliable.morejs.mixin.villager;
 
+import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeTypes;
 import com.almostreliable.morejs.features.villager.events.FilterEnchantedTradeEventJS;
-import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -18,8 +18,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class VillagerTradesMixin {
@@ -128,12 +130,16 @@ public class VillagerTradesMixin {
     @Mixin(VillagerTrades.EnchantBookForEmeralds.class)
     private static class EnchantBookForEmeraldsMixin implements TradeFilter.Filterable {
 
-        @Redirect(method = "getOffer", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;filter(Ljava/util/function/Predicate;)Ljava/util/stream/Stream;"))
-        private Stream<Enchantment> getDD(Stream<Enchantment> instance, Predicate<Enchantment> predicate, Entity entity, RandomSource randomSource) {
-            if(entity instanceof AbstractVillager villager) {
-                return FilterEnchantedTradeEventJS.invokeAndHandle(villager, randomSource, instance);
+        @Redirect(method = "getOffer", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;collect(Ljava/util/stream/Collector;)Ljava/lang/Object;"))
+        private Object invokeFilterEvent(Stream<Enchantment> instance, Collector<Enchantment, ?, List<Enchantment>> arCollector, Entity entity, RandomSource randomSource) {
+            if (entity instanceof AbstractVillager villager) {
+                List<Enchantment> enchantments = instance.collect(Collectors.toCollection(ArrayList::new));
+                var event = new FilterEnchantedTradeEventJS(villager, randomSource, enchantments);
+                Events.FILTER_ENCHANTED_BOOK_TRADE.post(event);
+                return enchantments;
             }
-            return instance.filter(predicate);
+
+            return instance.collect(arCollector);
         }
 
         @Override

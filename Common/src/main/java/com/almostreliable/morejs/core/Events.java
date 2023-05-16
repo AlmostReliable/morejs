@@ -2,6 +2,7 @@ package com.almostreliable.morejs.core;
 
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableServerEventJS;
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableTooltipEventJS;
+import com.almostreliable.morejs.features.enchantment.FilterAvailableEnchantmentsEventJS;
 import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
 import com.almostreliable.morejs.features.misc.PiglinPlayerBehaviorEventJS;
 import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEvent;
@@ -16,6 +17,7 @@ public interface Events {
     EventHandler VILLAGER_TRADING = GROUP.server("villagerTrades", () -> VillagerTradingEventJS.class);
     EventHandler WANDERING_TRADING = GROUP.server("wandererTrades", () -> WandererTradingEventJS.class);
     EventHandler PLAYER_START_TRADING = GROUP.server("playerStartTrading", () -> StartTradingEventJS.class);
+    EventHandler FILTER_AVAILABLE_ENCHANTMENTS = GROUP.server("filterAvailableEnchantments", () -> FilterAvailableEnchantmentsEventJS.class);
     EventHandler FILTER_ENCHANTED_BOOK_TRADE = GROUP.server("filterEnchantedBookTrade", () -> FilterEnchantedTradeEventJS.class);
     EventHandler UPDATE_ABSTRACT_VILLAGER_OFFERS = GROUP.server("updateAbstractVillagerOffers", () -> UpdateAbstractVillagerOffersEventJS.class);
     EventHandler UPDATE_VILLAGER_OFFERS = GROUP.server("updateVillagerOffers", () -> UpdateVillagerOffersEventJS.class);

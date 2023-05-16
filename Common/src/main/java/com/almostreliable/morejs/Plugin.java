@@ -10,6 +10,7 @@ import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.ClassFilter;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class Plugin extends KubeJSPlugin {
     public void registerBindings(BindingsEvent event) {
         event.add("VillagerUtils", VillagerUtils.class);
         event.add("MoreJS", MoreJSBinding.class);
+        event.add("EnchantmentInstance", EnchantmentInstance.class);
 
         event.add("Optional", Optional.class);
         event.add("Collectors", Collectors.class);
