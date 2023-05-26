@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.1] - 2023-05-26
+- Add `TradeItem` to allow price ranges for trades
+- Add custom potion removing for forge
+
 ## [0.1.0] - 2023-05-16
 - Add event `filterEnchantedBookTrade` and `filterAvailableEnchantments` to filter enchantments
 
