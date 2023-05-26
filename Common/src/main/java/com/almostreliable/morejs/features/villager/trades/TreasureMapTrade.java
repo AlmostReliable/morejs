@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.features.villager.trades;
 
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.util.LevelUtils;
 import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.WeightedList;
@@ -25,12 +26,12 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
 
     private byte mapViewScale = 2;
 
-    public TreasureMapTrade(ItemStack[] inputs, MapPosInfo.Provider destinationPositionFunc) {
+    public TreasureMapTrade(TradeItem[] inputs, MapPosInfo.Provider destinationPositionFunc) {
         super(inputs);
         this.destinationPositionFunc = destinationPositionFunc;
     }
 
-    public static TreasureMapTrade forStructure(ItemStack[] input, WeightedList<Object> entries) {
+    public static TreasureMapTrade forStructure(TradeItem[] input, WeightedList<Object> entries) {
         var list = entries.map(o -> {
             if (o == null) {
                 return null;
@@ -47,7 +48,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
         return new TreasureMapTrade(input, func);
     }
 
-    public static TreasureMapTrade forBiome(ItemStack[] input, WeightedList<Object> entries) {
+    public static TreasureMapTrade forBiome(TradeItem[] input, WeightedList<Object> entries) {
         var list = entries.map(o -> {
             if (o == null) {
                 return null;
@@ -86,7 +87,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
 
     @Override
     @Nullable
-    public MerchantOffer createOffer(Entity trader, RandomSource rand) {
+    public MerchantOffer createOffer(Entity trader, RandomSource random) {
         if (trader.getLevel() instanceof ServerLevel level) {
             MapPosInfo info = destinationPositionFunc.apply(level, trader);
             if (info == null) return null;
@@ -95,7 +96,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
             if (renderBiomePreviewMap) MapItem.renderBiomePreviewMap(level, map);
             MapItemSavedData.addTargetDecoration(map, info.pos(), "+", destinationType);
             map.setHoverName(displayName == null ? info.name() : displayName);
-            return createOffer(map);
+            return createOffer(map, random);
         }
 
         return null;

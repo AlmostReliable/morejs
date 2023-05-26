@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.OfferModification;
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.google.common.base.Preconditions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -14,17 +15,17 @@ import javax.annotation.Nullable;
 public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
         implements VillagerTrades.ItemListing {
 
-    protected final ItemStack firstInput;
-    protected final ItemStack secondInput;
+    protected final TradeItem firstInput;
+    protected final TradeItem secondInput;
     protected int maxUses = 16;
     protected int villagerExperience = 2;
     protected float priceMultiplier = 0.05F;
     @Nullable private Transformer transformer;
 
-    public TransformableTrade(ItemStack[] inputs) {
+    public TransformableTrade(TradeItem[] inputs) {
         Preconditions.checkArgument(1 <= inputs.length && inputs.length <= 2, "Inputs must be 1 or 2 items");
         this.firstInput = inputs[0];
-        this.secondInput = inputs.length == 2 ? inputs[1] : ItemStack.EMPTY;
+        this.secondInput = inputs.length == 2 ? inputs[1] : TradeItem.EMPTY;
     }
 
     @Nullable
@@ -69,8 +70,10 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
         return (T) this;
     }
 
-    protected MerchantOffer createOffer(ItemStack output) {
-        return new MerchantOffer(firstInput, secondInput, output, maxUses, villagerExperience, priceMultiplier);
+    protected MerchantOffer createOffer(ItemStack output, RandomSource random) {
+        ItemStack fi = firstInput.createItemStack(random);
+        ItemStack si = secondInput.createItemStack(random);
+        return new MerchantOffer(fi, si, output, maxUses, villagerExperience, priceMultiplier);
     }
 
     public interface Transformer {

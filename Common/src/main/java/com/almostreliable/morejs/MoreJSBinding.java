@@ -2,6 +2,7 @@ package com.almostreliable.morejs;
 
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.almostreliable.morejs.features.villager.TradeFilter;
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.TradeTypes;
 import com.almostreliable.morejs.util.LevelUtils;
 import com.almostreliable.morejs.util.ResourceOrTag;
@@ -131,5 +132,13 @@ public class MoreJSBinding {
 
         filter.setMerchantLevelMatcher(range(map.get("level")));
         return filter;
+    }
+
+    public static TradeItem ofTradeItem(@Nullable Object o) {
+        if (o instanceof TradeItem item) {
+            return item;
+        }
+
+        return TradeItem.of(ItemStackJS.of(o));
     }
 }

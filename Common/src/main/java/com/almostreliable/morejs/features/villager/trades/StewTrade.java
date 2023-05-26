@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.features.villager.trades;
 
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.google.common.base.Preconditions;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
@@ -17,7 +18,7 @@ public class StewTrade extends TransformableTrade<StewTrade> {
     protected MobEffect[] effects;
     protected int duration;
 
-    public StewTrade(ItemStack[] inputs, MobEffect[] effects, int duration) {
+    public StewTrade(TradeItem[] inputs, MobEffect[] effects, int duration) {
         super(inputs);
         for (MobEffect effect : effects) {
             if (effect == null) {
@@ -36,6 +37,6 @@ public class StewTrade extends TransformableTrade<StewTrade> {
         for (MobEffect effect : effects) {
             SuspiciousStewItem.saveMobEffect(stew, effect, this.duration);
         }
-        return createOffer(stew);
+        return createOffer(stew, random);
     }
 }

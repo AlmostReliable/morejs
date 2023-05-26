@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.features.villager.trades;
 
+import com.almostreliable.morejs.features.villager.TradeItem;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
@@ -24,7 +25,7 @@ public class PotionTrade extends TransformableTrade<PotionTrade> {
     private boolean onlyBrewablePotion;
     private boolean noBrewablePotion;
 
-    public PotionTrade(ItemStack[] inputs) {
+    public PotionTrade(TradeItem[] inputs) {
         super(inputs);
         this.itemForPotion = Items.POTION;
         potions = Registry.POTION.stream().toList();
@@ -79,6 +80,6 @@ public class PotionTrade extends TransformableTrade<PotionTrade> {
 
         Potion potion = allowedPotions.get(random.nextInt(potions.size()));
         ItemStack potionStack = PotionUtils.setPotion(new ItemStack(itemForPotion), potion);
-        return createOffer(potionStack);
+        return createOffer(potionStack, random);
     }
 }

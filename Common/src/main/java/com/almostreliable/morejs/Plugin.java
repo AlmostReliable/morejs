@@ -3,6 +3,7 @@ package com.almostreliable.morejs;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.almostreliable.morejs.features.villager.TradeFilter;
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
@@ -26,6 +27,7 @@ public class Plugin extends KubeJSPlugin {
     @Override
     public void registerBindings(BindingsEvent event) {
         event.add("VillagerUtils", VillagerUtils.class);
+        event.add("TradeItem", TradeItem.class);
         event.add("MoreJS", MoreJSBinding.class);
         event.add("EnchantmentInstance", EnchantmentInstance.class);
 
@@ -36,6 +38,7 @@ public class Plugin extends KubeJSPlugin {
 
     @Override
     public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
+        typeWrappers.registerSimple(TradeItem.class, MoreJSBinding::ofTradeItem);
         typeWrappers.registerSimple(IntRange.class, MoreJSBinding::range);
         typeWrappers.registerSimple(WeightedList.class, MoreJSBinding::ofWeightedList);
         typeWrappers.registerSimple(TradeFilter.class, MoreJSBinding::ofTradeFilter);

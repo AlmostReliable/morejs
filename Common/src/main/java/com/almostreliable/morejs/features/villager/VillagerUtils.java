@@ -44,7 +44,7 @@ public class VillagerUtils {
                 .toList();
     }
 
-    public static SimpleTrade createSimpleTrade(ItemStack[] inputs, ItemStack output) {
+    public static SimpleTrade createSimpleTrade(TradeItem[] inputs, TradeItem output) {
         return new SimpleTrade(inputs, output);
     }
 
@@ -52,27 +52,27 @@ public class VillagerUtils {
         return new CustomTrade(transformer);
     }
 
-    public static TreasureMapTrade createStructureMapTrade(ItemStack[] inputs, WeightedList<Object> structures) {
+    public static TreasureMapTrade createStructureMapTrade(TradeItem[] inputs, WeightedList<Object> structures) {
         return TreasureMapTrade.forStructure(inputs, structures);
     }
 
-    public static TreasureMapTrade createBiomeMapTrade(ItemStack[] inputs, WeightedList<Object> biomes) {
+    public static TreasureMapTrade createBiomeMapTrade(TradeItem[] inputs, WeightedList<Object> biomes) {
         return TreasureMapTrade.forBiome(inputs, biomes);
     }
 
-    public static TreasureMapTrade createCustomMapTrade(ItemStack[] inputs, MapPosInfo.Provider func) {
+    public static TreasureMapTrade createCustomMapTrade(TradeItem[] inputs, MapPosInfo.Provider func) {
         return new TreasureMapTrade(inputs, func);
     }
 
-    public static EnchantedItemTrade createEnchantedItemTrade(ItemStack[] inputs, Item output) {
+    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, Item output) {
         return new EnchantedItemTrade(inputs, output);
     }
 
-    public static StewTrade createStewTrade(ItemStack[] inputs, MobEffect[] effects, int duration) {
+    public static StewTrade createStewTrade(TradeItem[] inputs, MobEffect[] effects, int duration) {
         return new StewTrade(inputs, effects, duration);
     }
 
-    public static PotionTrade createPotionTrade(ItemStack[] inputs) {
+    public static PotionTrade createPotionTrade(TradeItem[] inputs) {
         return new PotionTrade(inputs);
     }
 }

@@ -1,5 +1,7 @@
 package com.almostreliable.morejs.features.villager;
 
+import net.minecraft.util.RandomSource;
+
 import java.util.function.IntPredicate;
 
 public class IntRange implements IntPredicate {
@@ -30,5 +32,13 @@ public class IntRange implements IntPredicate {
 
     public int getMin() {
         return min;
+    }
+
+    public int getRandom(RandomSource random) {
+        if (min == max) {
+            return min;
+        }
+
+        return random.nextIntBetweenInclusive(min, max);
     }
 }

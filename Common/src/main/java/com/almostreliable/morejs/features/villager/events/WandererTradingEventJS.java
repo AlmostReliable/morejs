@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.features.villager.TradeFilter;
+import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
@@ -29,10 +30,10 @@ public class WandererTradingEventJS extends EventJS {
         return trades.computeIfAbsent(level, $ -> new ArrayList<>());
     }
 
-    public SimpleTrade addTrade(int level, ItemStack[] inputs, ItemStack output) {
+    public SimpleTrade addTrade(int level, TradeItem[] inputs, TradeItem output) {
         Preconditions.checkArgument(!output.isEmpty(), "Sell item cannot be empty");
         Preconditions.checkArgument(inputs.length != 0, "Buyer items cannot be empty");
-        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(ItemStack::isEmpty), "Buyer items cannot be empty");
+        Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(TradeItem::isEmpty), "Buyer items cannot be empty");
 
         SimpleTrade trade = VillagerUtils.createSimpleTrade(inputs, output);
         return addTrade(level, trade);

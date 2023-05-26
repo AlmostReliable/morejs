@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.features.villager.trades;
 
+import com.almostreliable.morejs.features.villager.TradeItem;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.core.Registry;
 import net.minecraft.util.Mth;
@@ -25,7 +26,7 @@ public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
     private int minEnchantmentAmount = 1;
     private int maxEnchantmentAmount = 1;
 
-    public EnchantedItemTrade(ItemStack[] inputs, Item itemToEnchant) {
+    public EnchantedItemTrade(TradeItem[] inputs, Item itemToEnchant) {
         super(inputs);
         this.itemToEnchant = itemToEnchant;
         enchantments = Registry.ENCHANTMENT.stream().toList();
@@ -68,6 +69,6 @@ public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
             }
         }
 
-        return createOffer(result);
+        return createOffer(result, random);
     }
 }
