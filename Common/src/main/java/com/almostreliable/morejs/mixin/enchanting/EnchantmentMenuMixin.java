@@ -137,7 +137,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             ItemStack item = this.enchantSlots.getItem(0);
             ItemStack secondItem = this.enchantSlots.getItem(1);
             var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process);
-            if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e)) {
+            if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e).interruptFalse()) {
                 cir.setReturnValue(false);
             }
 

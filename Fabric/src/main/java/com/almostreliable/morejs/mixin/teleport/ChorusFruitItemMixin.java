@@ -26,7 +26,7 @@ public class ChorusFruitItemMixin {
             return;
         }
         var e = new EntityTeleportsEventJS(entity, args.get(0), args.get(1), args.get(2), TeleportType.CHORUS_FRUIT);
-        if (Events.TELEPORT.post(e)) {
+        if (Events.TELEPORT.post(e).interruptFalse()) {
             morejs$cancelTeleport = true;
             return;
         }

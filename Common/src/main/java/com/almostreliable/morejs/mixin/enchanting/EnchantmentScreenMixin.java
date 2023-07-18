@@ -4,7 +4,7 @@ import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.enchantment.EnchantmentMenuExtension;
 import com.almostreliable.morejs.features.enchantment.EnchantmentTableTooltipEventJS;
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.latvian.mods.kubejs.bindings.ComponentWrapper;
+import dev.latvian.mods.kubejs.bindings.TextWrapper;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -52,7 +52,7 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
 
             currentComponents.clear();
             components.forEach(o -> {
-                MutableComponent of = ComponentWrapper.of(o);
+                MutableComponent of = TextWrapper.of(o);
                 currentComponents.add(of);
             });
         }

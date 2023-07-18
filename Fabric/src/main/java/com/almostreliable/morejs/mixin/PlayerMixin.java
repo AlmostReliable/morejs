@@ -2,6 +2,7 @@ package com.almostreliable.morejs.mixin;
 
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,7 +16,7 @@ public class PlayerMixin {
     @ModifyVariable(method = "giveExperiencePoints", at = @At("HEAD"), argsOnly = true)
     private int morejs$invokeExperienceEvent(int amount) {
         var e = new ExperiencePlayerEventJS((Player) (Object) this, amount);
-        if (Events.XP_CHANGE.post(e)) {
+        if (Events.XP_CHANGE.post(e).interruptFalse()) {
             return Integer.MIN_VALUE;
         }
         return e.getAmount();

@@ -24,11 +24,11 @@ public interface Events {
     EventHandler UPDATE_WANDERER_OFFERS = GROUP.server("updateWandererOffers", () -> UpdateAbstractVillagerOffersEventJS.class);
     EventHandler ENCHANTMENT_TABLE_IS_ENCHANTABLE = GROUP.server("enchantmentTableIsEnchantable", () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_CHANGED = GROUP.server("enchantmentTableChanged", () -> EnchantmentTableServerEventJS.class);
-    EventHandler ENCHANTMENT_TABLE_ENCHANT = GROUP.server("enchantmentTableEnchant", () -> EnchantmentTableServerEventJS.class).cancelable();
+    EventHandler ENCHANTMENT_TABLE_ENCHANT = GROUP.server("enchantmentTableEnchant", () -> EnchantmentTableServerEventJS.class).hasResult();
     EventHandler ENCHANTMENT_TABLE_TOOLTIP = GROUP.client("enchantmentTableTooltip", () -> EnchantmentTableTooltipEventJS.class);
-    EventHandler TELEPORT = GROUP.server("teleport", () -> EntityTeleportsEventJS.class).cancelable();
+    EventHandler TELEPORT = GROUP.server("teleport", () -> EntityTeleportsEventJS.class).hasResult();
     EventHandler STRUCTURE_LOAD = GROUP.server("structureLoad", () -> StructureLoadEventJS.class);
-    EventHandler XP_CHANGE = GROUP.server("playerXpChange", () -> ExperiencePlayerEventJS.class).cancelable();
+    EventHandler XP_CHANGE = GROUP.server("playerXpChange", () -> ExperiencePlayerEventJS.class).hasResult();
     EventHandler PIGLIN_PLAYER_BEHAVIOR = GROUP.server("piglinPlayerBehavior", () -> PiglinPlayerBehaviorEventJS.class);
     EventHandler POTION_BREWING_REGISTER = GROUP.startup("registerPotionBrewing",
             () -> PotionBrewingRegisterEvent.class);

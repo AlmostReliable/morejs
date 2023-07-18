@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.features.enchantment;
 
 import com.google.common.base.Preconditions;
+import dev.latvian.mods.kubejs.event.EventResult;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
@@ -21,7 +22,7 @@ public class EnchantmentTableChangedJS extends EnchantmentTableServerEventJS {
     }
 
     @Override
-    protected void afterPosted(boolean result) {
+    protected void afterPosted(EventResult result) {
         super.afterPosted(result);
 
         // If the enchantments are cleared we want also to clear the required level.
