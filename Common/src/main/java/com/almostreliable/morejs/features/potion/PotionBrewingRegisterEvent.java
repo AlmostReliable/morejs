@@ -5,7 +5,7 @@ import com.almostreliable.morejs.util.Utils;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
@@ -46,9 +46,9 @@ public abstract class PotionBrewingRegisterEvent extends EventJS {
             boolean matches = matchesInput && matchesIngredient && matchesOutput;
             if (matches) {
                 ConsoleJS.STARTUP.info(
-                        "Removed potion brewing recipe: " + Registry.POTION.getKey(getInputPotionFromMix(mix)) + " + " +
+                        "Removed potion brewing recipe: " + BuiltInRegistries.POTION.getKey(getInputPotionFromMix(mix)) + " + " +
                         StringUtils.abbreviate(mix.ingredient.toJson().toString(), 64) + " -> " +
-                        Registry.POTION.getKey(getOutputPotionFromMix(mix)));
+                        BuiltInRegistries.POTION.getKey(getOutputPotionFromMix(mix)));
             }
             return matches;
         });

@@ -3,7 +3,7 @@ package com.almostreliable.morejs.features.enchantment;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventResult;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -57,7 +57,7 @@ public class EnchantmentTableChangedJS extends EnchantmentTableServerEventJS {
         public void updateClue() {
             var enchantments = getEnchantments();
             var instance = enchantments.get(EnchantmentTableChangedJS.this.random.nextInt(enchantments.size()));
-            EnchantmentTableChangedJS.this.menu.enchantClue[index] = Registry.ENCHANTMENT.getId(
+            EnchantmentTableChangedJS.this.menu.enchantClue[index] = BuiltInRegistries.ENCHANTMENT.getId(
                     instance.enchantment);
             EnchantmentTableChangedJS.this.menu.levelClue[index] = instance.level;
         }

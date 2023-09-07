@@ -57,7 +57,7 @@ public class EntityInfoWrapper {
                 Mth.clamp(posTag.getDouble(1), 0, borderSize.getY()),
                 Mth.clamp(posTag.getDouble(2), 0, borderSize.getZ())
         );
-        BlockPos blockPos = new BlockPos(pos);
+        BlockPos blockPos = new BlockPos(Mth.floor(pos.x), Mth.floor(pos.y), Mth.floor(pos.z));
         this.entities.add(new StructureTemplate.StructureEntityInfo(pos, blockPos, tag));
     }
 }

@@ -1,6 +1,6 @@
 package com.almostreliable.morejs.features.enchantment;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.EnchantmentMenu;
@@ -47,6 +47,6 @@ public class EnchantmentTableTooltipEventJS extends EnchantmentTableEventJS {
     }
 
     public ResourceLocation getClueId() {
-        return Registry.ENCHANTMENT.getKey(getClue().enchantment);
+        return BuiltInRegistries.ENCHANTMENT.getKey(getClue().enchantment);
     }
 }

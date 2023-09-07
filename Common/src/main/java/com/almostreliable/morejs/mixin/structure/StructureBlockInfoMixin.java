@@ -4,7 +4,7 @@ import com.almostreliable.morejs.features.structure.StructureBlockInfoModificati
 import com.almostreliable.morejs.util.Utils;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +31,7 @@ public class StructureBlockInfoMixin implements StructureBlockInfoModification {
 
     @Override
     public String getId() {
-        return Registry.BLOCK.getKey(state.getBlock()).toString();
+        return BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class StructureBlockInfoMixin implements StructureBlockInfoModification {
 
     @Override
     public void setBlock(ResourceLocation id) {
-        Block block = Registry.BLOCK
+        Block block = BuiltInRegistries.BLOCK
                 .getOptional(id)
                 .orElseThrow(() -> new IllegalArgumentException("Block not found: " + id));
         state = block.defaultBlockState();

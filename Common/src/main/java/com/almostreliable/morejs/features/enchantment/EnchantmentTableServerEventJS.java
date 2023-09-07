@@ -3,7 +3,7 @@ package com.almostreliable.morejs.features.enchantment;
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -75,7 +75,7 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         public List<ResourceLocation> getEnchantmentIds() {
             return getEnchantments()
                     .stream()
-                    .map(e -> Registry.ENCHANTMENT.getKey(e.enchantment))
+                    .map(e -> BuiltInRegistries.ENCHANTMENT.getKey(e.enchantment))
                     .filter(Objects::nonNull)
                     .toList();
         }
@@ -85,7 +85,7 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         }
 
         public boolean hasEnchantment(ResourceLocation id, IntRange range) {
-            Enchantment enchantment = Registry.ENCHANTMENT.getOptional(id).orElse(null);
+            Enchantment enchantment = BuiltInRegistries.ENCHANTMENT.getOptional(id).orElse(null);
             if (enchantment == null) return false;
             for (EnchantmentInstance enchantmentInstance : getEnchantments()) {
                 if (enchantmentInstance.enchantment == enchantment && range.test(enchantmentInstance.level)) {

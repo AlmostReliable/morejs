@@ -2,7 +2,7 @@ package com.almostreliable.morejs.features.villager.events;
 
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.Villager;
@@ -58,7 +58,7 @@ public class FilterEnchantedTradeEventJS extends LivingEntityEventJS {
 
     public void printEnchantments() {
         ConsoleJS.SERVER.info("Potential Enchantments: " + enchantments.stream()
-                .flatMap(e -> Registry.ENCHANTMENT.getResourceKey(e).stream())
+                .flatMap(e -> BuiltInRegistries.ENCHANTMENT.getResourceKey(e).stream())
                 .map(key -> key.location().toString())
                 .sorted(String::compareToIgnoreCase)
                 .collect(Collectors.joining(", ")));

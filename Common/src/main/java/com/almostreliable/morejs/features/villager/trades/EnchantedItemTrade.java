@@ -2,7 +2,7 @@ package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.TradeItem;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -29,7 +29,7 @@ public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
     public EnchantedItemTrade(TradeItem[] inputs, Item itemToEnchant) {
         super(inputs);
         this.itemToEnchant = itemToEnchant;
-        enchantments = Registry.ENCHANTMENT.stream().toList();
+        enchantments = BuiltInRegistries.ENCHANTMENT.stream().toList();
     }
 
     public EnchantedItemTrade enchantments(Enchantment... enchantments) {

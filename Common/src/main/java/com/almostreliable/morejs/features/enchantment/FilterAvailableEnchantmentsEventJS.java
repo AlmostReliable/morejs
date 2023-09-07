@@ -2,7 +2,7 @@ package com.almostreliable.morejs.features.enchantment;
 
 import dev.latvian.mods.kubejs.event.EventJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -27,8 +27,8 @@ public class FilterAvailableEnchantmentsEventJS extends EventJS {
         enchantments
                 .stream()
                 .sorted((ei1, ei2) -> {
-                    ResourceLocation key1 = Registry.ENCHANTMENT.getKey(ei1.enchantment);
-                    ResourceLocation key2 = Registry.ENCHANTMENT.getKey(ei2.enchantment);
+                    ResourceLocation key1 = BuiltInRegistries.ENCHANTMENT.getKey(ei1.enchantment);
+                    ResourceLocation key2 = BuiltInRegistries.ENCHANTMENT.getKey(ei2.enchantment);
                     assert key1 != null;
                     assert key2 != null;
                     int c = key1.toString().compareTo(key2.toString());
@@ -36,7 +36,7 @@ public class FilterAvailableEnchantmentsEventJS extends EventJS {
                     return Integer.compare(ei1.level, ei2.level);
                 })
                 .forEach(ei -> ConsoleJS.SERVER.info(
-                        Registry.ENCHANTMENT.getKey(ei.enchantment) + " (Level: " + ei.level + ")"));
+                        BuiltInRegistries.ENCHANTMENT.getKey(ei.enchantment) + " (Level: " + ei.level + ")"));
     }
 
     public List<EnchantmentInstance> getEnchantmentInstances() {

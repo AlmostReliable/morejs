@@ -13,7 +13,8 @@ import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -30,13 +31,13 @@ public class MoreJSBinding {
     @Nullable
     public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int chunkRadius) {
         ResourceOrTag<Structure> rot = ResourceOrTag.get(structure,
-                Registry.STRUCTURE_REGISTRY);
+                Registries.STRUCTURE);
         return LevelUtils.findStructure(position, level, rot, chunkRadius);
     }
 
     @Nullable
     public static BlockPos findBiome(BlockPos position, ServerLevel level, String biome, int chunkRadius) {
-        ResourceOrTag<Biome> rot = ResourceOrTag.get(biome, Registry.BIOME_REGISTRY);
+        ResourceOrTag<Biome> rot = ResourceOrTag.get(biome, Registries.BIOME);
         return LevelUtils.findBiome(position, level, rot, chunkRadius);
     }
 
@@ -124,7 +125,7 @@ public class MoreJSBinding {
                     .map(Object::toString)
                     .map(ResourceLocation::tryParse)
                     .filter(Objects::nonNull)
-                    .map(Registry.VILLAGER_PROFESSION::getOptional)
+                    .map(BuiltInRegistries.VILLAGER_PROFESSION::getOptional)
                     .flatMap(Optional::stream)
                     .collect(Collectors.toSet());
             filter.setProfessions(professions);

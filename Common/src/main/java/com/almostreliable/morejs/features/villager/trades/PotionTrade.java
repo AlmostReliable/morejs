@@ -2,7 +2,7 @@ package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.TradeItem;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
@@ -28,7 +28,7 @@ public class PotionTrade extends TransformableTrade<PotionTrade> {
     public PotionTrade(TradeItem[] inputs) {
         super(inputs);
         this.itemForPotion = Items.POTION;
-        potions = Registry.POTION.stream().toList();
+        potions = BuiltInRegistries.POTION.stream().toList();
     }
 
     public PotionTrade item(Item item) {

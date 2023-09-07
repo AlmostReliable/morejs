@@ -2,12 +2,11 @@ package com.almostreliable.morejs.features.villager;
 
 import com.almostreliable.morejs.features.villager.trades.*;
 import com.almostreliable.morejs.util.WeightedList;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.Collection;
 import java.util.Set;
@@ -38,7 +37,7 @@ public class VillagerUtils {
     }
 
     public static Collection<VillagerProfession> getProfessions() {
-        return Registry.VILLAGER_PROFESSION
+        return BuiltInRegistries.VILLAGER_PROFESSION
                 .stream()
                 .filter(p -> !p.name().equals("none"))
                 .toList();

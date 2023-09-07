@@ -5,7 +5,7 @@ import com.almostreliable.morejs.util.LevelUtils;
 import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.WeightedList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -36,7 +36,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
             if (o == null) {
                 return null;
             }
-            return ResourceOrTag.get(o.toString(), Registry.STRUCTURE_REGISTRY);
+            return ResourceOrTag.get(o.toString(), Registries.STRUCTURE);
         });
 
         MapPosInfo.Provider func = (level, entity) -> {
@@ -53,7 +53,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
             if (o == null) {
                 return null;
             }
-            return ResourceOrTag.get(o.toString(), Registry.BIOME_REGISTRY);
+            return ResourceOrTag.get(o.toString(), Registries.BIOME);
         });
 
         MapPosInfo.Provider func = (level, entity) -> {
@@ -88,7 +88,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     @Override
     @Nullable
     public MerchantOffer createOffer(Entity trader, RandomSource random) {
-        if (trader.getLevel() instanceof ServerLevel level) {
+        if (trader.level() instanceof ServerLevel level) {
             MapPosInfo info = destinationPositionFunc.apply(level, trader);
             if (info == null) return null;
 

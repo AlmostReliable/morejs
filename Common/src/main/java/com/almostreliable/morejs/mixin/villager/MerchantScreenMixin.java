@@ -1,8 +1,9 @@
 package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.OfferExtension;
-import com.mojang.blaze3d.vertex.PoseStack;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.network.chat.Component;
@@ -35,11 +36,11 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffer;isOutOfStock()Z", ordinal = 0))
-    private void morejs$disableButtonsIfNeeded(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+    private void morejs$disableButtonsIfNeeded(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         try {
             var offer = this.menu.getOffers().get(this.shopItem);
             if (morejs$offerIsDisabled(offer) && this.isHovering(186, 35, 22, 21, mouseX, mouseY)) {
-                this.renderTooltip(poseStack,
+                guiGraphics.renderTooltip(Minecraft.getInstance().font,
                         Component.literal("You don't meet the requirements to buy this item."),
                         mouseX,
                         mouseY);
