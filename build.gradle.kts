@@ -44,6 +44,7 @@ allprojects {
                 includeGroup("dev.latvian.mods")
             }
         }
+        maven("https://jitpack.io")
     }
 
     tasks.withType<GenerateModuleMetadata> {
