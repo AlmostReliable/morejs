@@ -43,7 +43,8 @@ public class PaletteWrapper {
                 "Invalid position, z must be between 0 and " + borderSize.getZ());
 
         StructureTemplate.StructureBlockInfo info = get(pos);
-        if (info instanceof StructureBlockInfoModification mod) {
+        //noinspection ConstantValue
+        if (((Object)info) instanceof StructureBlockInfoModification mod) { // Direct cast seems not to work anymore. Have fun with this.
             mod.setVanillaBlockState(state);
             mod.setNbt(tag);
             return;
@@ -61,7 +62,7 @@ public class PaletteWrapper {
     public void removeIf(Predicate<StructureTemplate.StructureBlockInfo> predicate) {
         palette.blocks().removeIf(block -> {
             if (predicate.test(block)) {
-                cache.remove(block.pos);
+                cache.remove(block.pos());
                 return true;
             }
             return false;
@@ -71,7 +72,7 @@ public class PaletteWrapper {
     @Nullable
     public StructureTemplate.StructureBlockInfo get(BlockPos pos) {
         if (cache.isEmpty()) {
-            forEach(info -> cache.put(info.pos, info));
+            forEach(info -> cache.put(info.pos(), info));
         }
 
         return cache.get(pos);

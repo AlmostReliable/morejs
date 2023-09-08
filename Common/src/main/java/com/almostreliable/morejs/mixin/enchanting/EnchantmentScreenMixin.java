@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import dev.latvian.mods.kubejs.bindings.TextWrapper;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.network.chat.Component;
@@ -31,8 +32,9 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
         super(abstractContainerMenu, inventory, component);
     }
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EnchantmentScreen;renderComponentTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;II)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    private void render$InvokeEnchantmentTooltipMenu(PoseStack ps, int mx, int my, float pTick, CallbackInfo ci, boolean creative, int goldCount, int slot, int cost, Enchantment enchantment, int lClue, int level, List<Component> currentComponents) {
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderComponentTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;II)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
+    // PoseStack ps, int mx, int my, float pTick, CallbackInfo ci, boolean creative, int goldCount, int slot, int cost, Enchantment enchantment, int lClue, int level, List<Component> currentComponents
+    private void render$InvokeEnchantmentTooltipMenu(GuiGraphics graphics, int mx, int my, float pTick, CallbackInfo ci, boolean creative, int goldCount, int slot, int cost, Enchantment enchantment, int lClue, int level, List<Component> currentComponents) {
         if (Minecraft.getInstance().level == null || Minecraft.getInstance().player == null) {
             return;
         }

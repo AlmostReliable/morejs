@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.3.0] - 2023-09-10
+- Update to KubeJS 6.3 1.20.1
+
 ## [0.2.0] - 2023-07-18
 - Update to KubeJS 6.1
 
