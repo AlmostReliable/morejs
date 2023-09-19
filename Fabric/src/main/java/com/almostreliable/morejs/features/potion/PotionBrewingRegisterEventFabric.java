@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.features.potion;
 
 import com.almostreliable.morejs.mixin.potion.PotionBrewingAccessor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
@@ -27,6 +28,18 @@ public class PotionBrewingRegisterEventFabric extends PotionBrewingRegisterEvent
     @Override
     protected Potion getOutputPotionFromMix(PotionBrewing.Mix<Potion> mix) {
         return mix.to;
+    }
+
+    @Override
+    protected Item getOutputItemFromMix(PotionBrewing.Mix<Item> mix) {
+        return mix.to;
+    }
+
+    @Override
+    public void addContainerRecipe(Item from, Ingredient ingredient, Item output) {
+        validateContainer(from, ingredient, output);
+        var mix = new PotionBrewing.Mix<>(from, ingredient, output);
+        PotionBrewingAccessor.getContainerMixes().add(mix);
     }
 
 }

@@ -6,7 +6,9 @@ import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.EventJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 
 public abstract class PotionBrewingRegisterEvent extends EventJS {
 
@@ -46,7 +49,8 @@ public abstract class PotionBrewingRegisterEvent extends EventJS {
             boolean matches = matchesInput && matchesIngredient && matchesOutput;
             if (matches) {
                 ConsoleJS.STARTUP.info(
-                        "Removed potion brewing recipe: " + BuiltInRegistries.POTION.getKey(getInputPotionFromMix(mix)) + " + " +
+                        "Removed potion brewing recipe: " +
+                        BuiltInRegistries.POTION.getKey(getInputPotionFromMix(mix)) + " + " +
                         StringUtils.abbreviate(mix.ingredient.toJson().toString(), 64) + " -> " +
                         BuiltInRegistries.POTION.getKey(getOutputPotionFromMix(mix)));
             }
@@ -57,4 +61,45 @@ public abstract class PotionBrewingRegisterEvent extends EventJS {
     protected abstract Potion getInputPotionFromMix(PotionBrewing.Mix<Potion> mix);
 
     protected abstract Potion getOutputPotionFromMix(PotionBrewing.Mix<Potion> mix);
+
+    protected abstract Item getOutputItemFromMix(PotionBrewing.Mix<Item> mix);
+
+    public void removeContainer(Ingredient ingredient) {
+        HashSet<Item> removed = new HashSet<>();
+
+        var containerIt = PotionBrewingAccessor.getAllowedContainers().listIterator();
+        while (containerIt.hasNext()) {
+            Ingredient ac = containerIt.next();
+            if (Utils.matchesIngredient(ac, ingredient)) {
+                containerIt.remove();
+                for (ItemStack item : ac.getItems()) {
+                    removed.add(item.getItem());
+                }
+            }
+        }
+
+
+        var mixIt = PotionBrewingAccessor.getContainerMixes().listIterator();
+        while (mixIt.hasNext()) {
+            PotionBrewing.Mix<Item> mix = mixIt.next();
+            Item output = getOutputItemFromMix(mix);
+            if (ingredient.test(output.getDefaultInstance())) {
+                mixIt.remove();
+                removed.add(output);
+            }
+        }
+
+        for (Item item : removed) {
+            ConsoleJS.STARTUP.info("Removed potion container: " + BuiltInRegistries.ITEM.getKey(item));
+        }
+    }
+
+    public void validateContainer(Item from, Ingredient ingredient, Item output) {
+        Preconditions.checkArgument(from != null && from != Items.AIR, "Input must not be null or air");
+        Preconditions.checkNotNull(ingredient, "Ingredient must not be null");
+        Preconditions.checkArgument(ingredient.getItems().length > 0, "Ingredient must have at least one item");
+        Preconditions.checkArgument(output != null && output != Items.AIR, "Output must not be null or air");
+    }
+
+    public abstract void addContainerRecipe(Item from, Ingredient ingredient, Item output);
 }
