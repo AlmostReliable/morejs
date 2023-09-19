@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.2.1] - 2023-09-19
+- Add `removeContainer` and `addContainerRecipe` to potion event
+
 ## [0.2.0] - 2023-07-18
 - Update to KubeJS 6.1
 
@@ -48,6 +51,7 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.2.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.2.1
 [0.2.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.2.0-beta
 [0.0.8]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.8-beta
 [0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.7-beta
