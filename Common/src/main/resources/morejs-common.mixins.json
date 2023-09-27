@@ -1,40 +1,40 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "com.almostreliable.morejs.mixin",
-    "refmap": "morejs.refmap.json",
-    "compatibilityLevel": "JAVA_17",
-    "mixins": [
-        "enchanting.EnchantmentHelperMixin",
-        "enchanting.EnchantmentMenuMixin",
-        "enchanting.EnchantmentMixin",
-        "entity.PiglinSpecificSensorMixin",
-        "potion.PotionBrewingAccessor",
-        "structure.StructureBlockInfoMixin",
-        "structure.StructureManagerMixin",
-        "structure.StructuresMixin$DesertPyramidStructureMixin",
-        "structure.StructuresMixin$StructureMixin",
-        "structure.StructuresMixin$WoodlandMansionStructureMixin",
-        "structure.StructureTemplateMixin",
-        "villager.AbstractVillagerMixin",
-        "villager.MerchantMenuMixin",
-        "villager.MerchantOfferMixin",
-        "villager.MerchantOffersMixin",
-        "villager.VillagerTradesMixin$EmeraldForItemsMixin",
-        "villager.VillagerTradesMixin$EmeraldsForVillagerTypeItemMixin",
-        "villager.VillagerTradesMixin$EnchantBookForEmeraldsMixin",
-        "villager.VillagerTradesMixin$EnchantedItemForEmeraldsMixin",
-        "villager.VillagerTradesMixin$ItemsAndEmeraldsToItemsMixin",
-        "villager.VillagerTradesMixin$ItemsForEmeraldsMixin",
-        "villager.VillagerTradesMixin$SuspiciousStewForEmeraldMixin",
-        "villager.VillagerTradesMixin$TippedArrowForItemsAndEmeraldsMixin",
-        "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin"
-    ],
-    "client": [
-        "enchanting.EnchantmentScreenMixin",
-        "villager.MerchantScreenMixin"
-    ],
-    "injectors": {
-        "defaultRequire": 1
+  "required" : true,
+  "minVersion" : "0.8",
+  "package" : "com.almostreliable.morejs.mixin",
+  "refmap" : "morejs.refmap.json",
+  "compatibilityLevel" : "JAVA_17",
+  "mixins" : [
+    "enchanting.EnchantmentHelperMixin",
+    "enchanting.EnchantmentMenuMixin",
+    "enchanting.EnchantmentMixin",
+    "entity.PiglinSpecificSensorMixin",
+    "potion.PotionBrewingAccessor",
+    "structure.StructureBlockInfoMixin",
+    "structure.StructureManagerMixin",
+    "structure.StructuresMixin$DesertPyramidStructureMixin",
+    "structure.StructuresMixin$StructureMixin",
+    "structure.StructuresMixin$WoodlandMansionStructureMixin",
+    "structure.StructureTemplateMixin",
+    "villager.AbstractVillagerMixin",
+    "villager.MerchantMenuMixin",
+    "villager.MerchantOfferMixin",
+    "villager.MerchantOffersMixin",
+    "villager.VillagerTradesMixin$EmeraldForItemsMixin",
+    "villager.VillagerTradesMixin$EmeraldsForVillagerTypeItemMixin",
+    "villager.VillagerTradesMixin$EnchantBookForEmeraldsMixin",
+    "villager.VillagerTradesMixin$EnchantedItemForEmeraldsMixin",
+    "villager.VillagerTradesMixin$ItemsAndEmeraldsToItemsMixin",
+    "villager.VillagerTradesMixin$ItemsForEmeraldsMixin",
+    "villager.VillagerTradesMixin$SuspiciousStewForEmeraldMixin",
+    "villager.VillagerTradesMixin$TippedArrowForItemsAndEmeraldsMixin",
+    "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin"
+  ],
+  "client" : [
+    "enchanting.EnchantmentScreenMixin",
+    "villager.MerchantScreenMixin"
+  ],
+  "injectors" : {
+    "defaultRequire" : 1
   }
 }
