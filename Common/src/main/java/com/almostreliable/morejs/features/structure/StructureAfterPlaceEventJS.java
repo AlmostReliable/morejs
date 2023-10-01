@@ -1,8 +1,6 @@
 package com.almostreliable.morejs.features.structure;
 
-import com.almostreliable.morejs.core.Events;
 import dev.latvian.mods.kubejs.level.LevelEventJS;
-import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.registries.Registries;
@@ -87,7 +85,7 @@ public class StructureAfterPlaceEventJS extends LevelEventJS {
         return worldGenLevel;
     }
 
-    public static ResourceLocation getPieceType(StructurePieceType pieceType) {
+    public ResourceLocation getPieceType(StructurePieceType pieceType) {
         return Objects.requireNonNull(BuiltInRegistries.STRUCTURE_PIECE.getKey(pieceType));
     }
 
@@ -132,18 +130,5 @@ public class StructureAfterPlaceEventJS extends LevelEventJS {
 
     public ResourceLocation getType() {
         return Objects.requireNonNull(BuiltInRegistries.STRUCTURE_TYPE.getKey(structure.type()));
-    }
-
-    @HideFromJS
-    public static void invoke(Structure structure, WorldGenLevel worldGenLevel, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource, BoundingBox boundingBox, ChunkPos chunkPos, PiecesContainer piecesContainer) {
-        var event = new StructureAfterPlaceEventJS(structure,
-                worldGenLevel,
-                structureManager,
-                chunkGenerator,
-                randomSource,
-                boundingBox,
-                chunkPos,
-                piecesContainer);
-        Events.STRUCTURE_AFTER_PLACE.post(event);
     }
 }
