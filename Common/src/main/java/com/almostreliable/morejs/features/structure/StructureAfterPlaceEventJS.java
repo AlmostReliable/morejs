@@ -2,9 +2,9 @@ package com.almostreliable.morejs.features.structure;
 
 import dev.latvian.mods.kubejs.level.LevelEventJS;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
@@ -17,10 +17,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class StructureAfterPlaceEventJS extends LevelEventJS {
 
@@ -100,12 +97,12 @@ public class StructureAfterPlaceEventJS extends LevelEventJS {
         return structure.step().getName();
     }
 
-    public List<BoundingBox> getIntersectionBoxes() {
-        return getIntersectionMap().values().stream().toList();
+    public Collection<BoundingBox> getIntersectionBoxes() {
+        return getIntersectionMap().values();
     }
 
-    public List<StructurePiece> getIntersectionPieces() {
-        return getIntersectionMap().keySet().stream().toList();
+    public Collection<StructurePiece> getIntersectionPieces() {
+        return getIntersectionMap().keySet();
     }
 
     public Map<StructurePiece, BoundingBox> getIntersectionMap() {
@@ -114,17 +111,19 @@ public class StructureAfterPlaceEventJS extends LevelEventJS {
             for (StructurePiece sp : piecesContainer.pieces()) {
                 if (boundingBox.intersects(sp.getBoundingBox())) {
                     AABB aabb = AABB.of(boundingBox).intersect(AABB.of(sp.getBoundingBox()));
-                    map.put(sp,
-                            new BoundingBox((int) aabb.minX,
-                                    (int) aabb.minY,
-                                    (int) aabb.minZ,
-                                    (int) aabb.maxX - 1,
-                                    (int) aabb.maxY - 1,
-                                    (int) aabb.maxZ - 1));
+                    BoundingBox bb = new BoundingBox((int) aabb.minX,
+                            (int) aabb.minY,
+                            (int) aabb.minZ,
+                            (int) aabb.maxX - 1,
+                            (int) aabb.maxY - 1,
+                            (int) aabb.maxZ - 1);
+                    map.put(sp, bb);
                 }
             }
+
             intersectionMap = map;
         }
+
         return intersectionMap;
     }
 
