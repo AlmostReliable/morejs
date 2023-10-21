@@ -1,5 +1,9 @@
 # Changelog
 
+
+## [0.4.0] - 2023-10-21
+- Added `structureAfterPlace` event. Thanks to [Pietro Lopes](https://github.com/pietro-lopes)
+
 ## [0.3.0] - 2023-09-10
 - Update to KubeJS 6.3 1.20.1
 
@@ -51,6 +55,8 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.4.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.4.0-beta
+[0.3.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.3.0-beta
 [0.2.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.2.0-beta
 [0.0.8]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.8-beta
 [0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.7-beta
