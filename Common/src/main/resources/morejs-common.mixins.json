@@ -12,6 +12,7 @@
     "potion.PotionBrewingAccessor",
     "structure.StructureBlockInfoMixin",
     "structure.StructureManagerMixin",
+    "structure.StructureStartMixin",
     "structure.StructureTemplateMixin",
     "villager.AbstractVillagerMixin",
     "villager.MerchantMenuMixin",
