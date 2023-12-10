@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.5.0] - 2023-10-21
+- Fix [#8](https://github.com/AlmostReliable/morejs/issues/8)
 
 ## [0.4.0] - 2023-10-21
 - Added `structureAfterPlace` event. Thanks to [Pietro Lopes](https://github.com/pietro-lopes)
@@ -55,6 +57,7 @@
 - Added `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.5.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.5.0
 [0.4.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.4.0-beta
 [0.3.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.3.0-beta
 [0.2.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.2.0-beta
