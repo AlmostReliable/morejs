@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0] - 2024-02-04
+- Fix [#9](https://github.com/AlmostReliable/morejs/issues/9)
+- Added utility to `VillagerUtils`
+    - `.setAbstractTrades(tradeMap, level, trades)`
+    - `.getAbstractTrades(tradeMap, level)`
+    - `.getVillagerTrades(profession)`
+    - `.getVillagerTrades(profession, level)`
+    - `.getRandomVillagerTrade(profession)`
+    - `.getRandomVillagerTrade(profession, level)`
+    - `.getWandererTrades(level)`
+    - `.getRandomWandererTrade(level)`
+
 ## [0.2.1] - 2023-09-19
 - Add `removeContainer` and `addContainerRecipe` to potion event
 
