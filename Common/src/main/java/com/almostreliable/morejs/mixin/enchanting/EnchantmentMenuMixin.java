@@ -27,7 +27,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 import java.util.List;
 
-@Mixin(value = EnchantmentMenu.class, priority = 42) // lower priority to ensure we run first. 42 is the answer to everything.
+// lower priority to ensure we run first. 42 is the answer to everything.
+@Mixin(value = EnchantmentMenu.class, priority = 42)
 public abstract class EnchantmentMenuMixin extends AbstractContainerMenu implements EnchantmentMenuExtension {
     @Unique
     private EnchantmentMenuProcess morejs$process;
@@ -141,11 +142,22 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
                 cir.setReturnValue(false);
             }
 
-            if(e.itemWasChanged()) {
+            if (e.itemWasChanged()) {
                 cir.setReturnValue(false);
                 ItemStack newItem = e.getItem().copy();
                 this.morejs$process.abortEvent(newItem);
                 this.enchantSlots.setItem(0, newItem);
+            }
+        });
+    }
+
+    @Inject(method = "clickMenuButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ContainerLevelAccess;execute(Ljava/util/function/BiConsumer;)V", shift = At.Shift.AFTER))
+    private void clickMenuButton$postClear(Player player, int i, CallbackInfoReturnable<Boolean> cir) {
+        this.access.execute((level, pos) -> {
+            ItemStack currentItem = this.morejs$process.getCurrentItem();
+            ItemStack secondItem = this.enchantSlots.getItem(0);
+            if (!ItemStack.matches(currentItem, secondItem)) {
+                this.morejs$process.abortEvent(ItemStack.EMPTY);
             }
         });
     }

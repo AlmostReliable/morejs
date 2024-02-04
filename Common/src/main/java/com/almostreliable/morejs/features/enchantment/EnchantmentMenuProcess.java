@@ -49,7 +49,10 @@ public class EnchantmentMenuProcess {
     }
 
     public void clearEnchantments() {
-        if (Debug.ENCHANTMENT) MoreJS.LOG.warn("<{}> Clearing enchantments", player);
+        if (Debug.ENCHANTMENT) {
+            MoreJS.LOG.warn("");
+            MoreJS.LOG.warn("<{}> Clearing enchantments", player);
+        }
         enchantments.clear();
     }
 
@@ -67,6 +70,7 @@ public class EnchantmentMenuProcess {
             var s = formatEnchantments(enchantments);
             MoreJS.LOG.info("<{}> Setting enchantments for index {} [{}]", player, index, s);
         }
+
         this.enchantments.put(index, new ArrayList<>(enchantments));
     }
 
@@ -113,5 +117,9 @@ public class EnchantmentMenuProcess {
         setCurrentItem(item);
         clearEnchantments();
         setState(EnchantmentState.IDLE);
+    }
+
+    public ItemStack getCurrentItem() {
+        return currentItem;
     }
 }
