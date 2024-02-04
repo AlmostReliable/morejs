@@ -95,7 +95,7 @@ jobs:
           retry-delay: 10000
 
       - name: Release Forge to CF and MR
-        uses: Kir-Antipov/mc-publish@v3.2
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: 666198
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -122,7 +122,7 @@ jobs:
           retry-delay: 10000
 
       - name: Release to GitHub
-        uses: Kir-Antipov/mc-publish@v3.2
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           files: build/libs/${{ env.MOD_ID }}-*-${{ env.MINECRAFT_VERSION }}-${{ env.MOD_VERSION }}.jar
