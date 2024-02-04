@@ -16,6 +16,7 @@ public class TradingManager {
     @Nullable protected Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
 
     public void invokeVillagerTradeEvent(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> originalTrades) {
+        VillagerUtils.CACHED_PROFESSION_TRADES.clear();
         updateVanillaTrades(originalTrades);
         var trades = createMutableTradesMapByProfessions();
         Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(trades));
