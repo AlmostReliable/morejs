@@ -1,9 +1,8 @@
 package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.core.Events;
-import com.google.common.collect.ImmutableList;
+import com.almostreliable.morejs.features.villager.VillagerUtils;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -18,7 +17,6 @@ public class UpdateAbstractVillagerOffersEventJS extends LivingEntityEventJS {
     private final MerchantOffers offers;
     private final VillagerTrades.ItemListing[] currentUsedItemListings;
     private final List<MerchantOffer> addedOffers;
-    private final Map<VillagerProfession, List<VillagerTrades.ItemListing>> cachedProfessionTrades = new HashMap<>();
     @Nullable private List<VillagerTrades.ItemListing> cachedWandererTrades;
 
     public static void invokeEvent(AbstractVillager villager, MerchantOffers offers, VillagerTrades.ItemListing[] currentUsedItemListings, List<MerchantOffer> addedOffers) {
@@ -105,35 +103,11 @@ public class UpdateAbstractVillagerOffersEventJS extends LivingEntityEventJS {
     }
 
     public List<VillagerTrades.ItemListing> getVillagerTrades(VillagerProfession profession) {
-        return cachedProfessionTrades.computeIfAbsent(profession, p -> {
-            Int2ObjectMap<VillagerTrades.ItemListing[]> levelListings = VillagerTrades.TRADES.get(p);
-            if (levelListings == null) {
-                return List.of();
-            }
-
-            ImmutableList.Builder<VillagerTrades.ItemListing> builder = ImmutableList.builder();
-            for (VillagerTrades.ItemListing[] listings : levelListings.values()) {
-                for (VillagerTrades.ItemListing listing : listings) {
-                    builder.add(listing);
-                }
-            }
-
-            return builder.build();
-        });
+        return VillagerUtils.getVillagerTrades(profession);
     }
 
     public List<VillagerTrades.ItemListing> getVillagerTrades(VillagerProfession profession, int level) {
-        Int2ObjectMap<VillagerTrades.ItemListing[]> levelListings = VillagerTrades.TRADES.get(profession);
-        if (levelListings == null) {
-            return List.of();
-        }
-
-        VillagerTrades.ItemListing[] listings = levelListings.get(level);
-        if (listings == null) {
-            return List.of();
-        }
-
-        return Arrays.asList(listings);
+        return VillagerUtils.getVillagerTrades(profession, level);
     }
 
     public List<VillagerTrades.ItemListing> getWandererTrades() {
@@ -148,11 +122,6 @@ public class UpdateAbstractVillagerOffersEventJS extends LivingEntityEventJS {
     }
 
     public List<VillagerTrades.ItemListing> getWandererTrades(int level) {
-        VillagerTrades.ItemListing[] listings = VillagerTrades.WANDERING_TRADER_TRADES.get(level);
-        if (listings == null) {
-            return List.of();
-        }
-
-        return Arrays.asList(listings);
+        return VillagerUtils.getWandererTrades(level);
     }
 }
