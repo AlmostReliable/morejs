@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.7.0] - 2024-03-14
+- Add `removeContainer` and `addContainerRecipe` to potion event
+
 ## [0.6.0] - 2024-02-04
 - Fix [#9](https://github.com/AlmostReliable/morejs/issues/9)
 - Added utility to `VillagerUtils`
