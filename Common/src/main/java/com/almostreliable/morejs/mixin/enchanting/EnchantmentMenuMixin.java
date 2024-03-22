@@ -128,7 +128,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
     }
 
     @Inject(method = "clickMenuButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ContainerLevelAccess;execute(Ljava/util/function/BiConsumer;)V"), cancellable = true)
-    private void clickMenuButton$InvokeEnchantEvent(Player player, int i, CallbackInfoReturnable<Boolean> cir) {
+    private void clickMenuButton$InvokeEnchantEvent(Player player, int clickedBtn, CallbackInfoReturnable<Boolean> cir) {
         this.access.execute((level, pos) -> {
             if (player != this.morejs$process.getPlayer()) {
                 MoreJS.LOG.warn("<{}> Player changed during clickMenuButton", this.morejs$process.getPlayer());
@@ -137,7 +137,7 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
 
             ItemStack item = this.enchantSlots.getItem(0);
             ItemStack secondItem = this.enchantSlots.getItem(1);
-            var e = new EnchantmentTableServerEventJS(item, secondItem, level, pos, player, this.morejs$process);
+            var e = new PlayerEnchantEventJS(clickedBtn, item, secondItem, level, pos, player, this.morejs$process);
             if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e).interruptFalse()) {
                 cir.setReturnValue(false);
             }

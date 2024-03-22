@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.8.0] - 2024-03-22
+
+- Add `event.clickedButton`, `event.costs`, `event.enchantments`, `event.enchantmentIds`
+  to `MoreJSEvents.enchantmentTableEnchant` event
+
 ## [0.7.0] - 2024-03-14
 - Add `removeContainer` and `addContainerRecipe` to potion event
 
