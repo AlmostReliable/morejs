@@ -26,7 +26,8 @@
     "villager.VillagerTradesMixin$ItemsForEmeraldsMixin",
     "villager.VillagerTradesMixin$SuspiciousStewForEmeraldMixin",
     "villager.VillagerTradesMixin$TippedArrowForItemsAndEmeraldsMixin",
-    "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin"
+    "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin",
+    "villager.WanderingTraderMixin"
   ],
   "client": [
     "enchanting.EnchantmentScreenMixin",

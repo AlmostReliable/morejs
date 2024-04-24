@@ -3,6 +3,7 @@ package com.almostreliable.morejs.features.villager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public interface OfferExtension {
 
@@ -41,6 +42,20 @@ public interface OfferExtension {
 
         if (getOutput().getItem() == Items.EMERALD) {
             setOutput(new ItemStack(replacement, getOutput().getCount()));
+        }
+    }
+
+    default void replaceItems(Ingredient filter, ItemStack itemStack) {
+        if (filter.test(getFirstInput())) {
+            setFirstInput(itemStack.copy());
+        }
+
+        if (filter.test(getSecondInput())) {
+            setSecondInput(itemStack.copy());
+        }
+
+        if (filter.test(getOutput())) {
+            setOutput(itemStack.copy());
         }
     }
 }
