@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.0] - 2024-03-22
+
+- Add `.replaceItems(ingredient, item)` when working with offers similar to `.replaceEmeralds`
+- Fix a bug that rare trades from wanderer are not detected on update events
+
 ## [0.8.0] - 2024-03-22
 
 - Add `event.clickedButton`, `event.costs`, `event.enchantments`, `event.enchantmentIds`
