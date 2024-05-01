@@ -15,69 +15,80 @@ public class MerchantOfferMixin implements OfferExtension {
     @Mutable @Shadow @Final private ItemStack costB;
     @Mutable @Shadow @Final private ItemStack result;
     @Mutable @Shadow @Final private int maxUses;
+    @Mutable @Shadow @Final private boolean rewardExp;
     @Shadow private int demand;
     @Shadow private int xp;
     @Shadow private float priceMultiplier;
     @Unique private boolean morejs$isDisabled;
 
     @Override
-    public boolean isDisabled() {
+    public boolean morejs$isDisabled() {
         return this.morejs$isDisabled;
     }
 
     @Override
-    public void setDisabled(boolean disabled) {
+    public void morejs$setDisabled(boolean disabled) {
         this.morejs$isDisabled = disabled;
     }
 
     @Override
-    public ItemStack getFirstInput() {
+    public ItemStack morejs$getFirstInput() {
         return this.baseCostA;
     }
 
     @Override
-    public void setFirstInput(ItemStack itemStack) {
+    public void morejs$setFirstInput(ItemStack itemStack) {
         this.baseCostA = itemStack;
     }
 
     @Override
-    public ItemStack getSecondInput() {
+    public ItemStack morejs$getSecondInput() {
         return this.costB;
     }
 
     @Override
-    public void setSecondInput(ItemStack itemStack) {
+    public void morejs$setSecondInput(ItemStack itemStack) {
         this.costB = itemStack;
     }
 
     @Override
-    public ItemStack getOutput() {
+    public ItemStack morejs$getOutput() {
         return this.result;
     }
 
     @Override
-    public void setOutput(ItemStack itemStack) {
+    public void morejs$setOutput(ItemStack itemStack) {
         this.result = itemStack;
     }
 
     @Override
-    public void setMaxUses(int maxUses) {
+    public void morejs$setMaxUses(int maxUses) {
         this.maxUses = maxUses;
     }
 
     @Override
-    public void setDemand(int demand) {
+    public void morejs$setDemand(int demand) {
         this.demand = demand;
     }
 
     @Override
-    public void setVillagerExperience(int villagerExperience) {
+    public void morejs$setVillagerExperience(int villagerExperience) {
         this.xp = villagerExperience;
     }
 
     @Override
-    public void setPriceMultiplier(float priceMultiplier) {
+    public void morejs$setPriceMultiplier(float priceMultiplier) {
         this.priceMultiplier = priceMultiplier;
+    }
+
+    @Override
+    public void morejs$setRewardExp(boolean rewardExp) {
+        this.rewardExp = rewardExp;
+    }
+
+    @Override
+    public boolean morejs$isRewardingExp() {
+        return this.rewardExp;
     }
 
     @Inject(method = "isOutOfStock", at = @At("HEAD"), cancellable = true)

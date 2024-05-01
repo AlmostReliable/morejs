@@ -32,7 +32,7 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     }
 
     private static boolean morejs$offerIsDisabled(MerchantOffer offer) {
-        return ((OfferExtension) offer).isDisabled();
+        return ((OfferExtension) offer).morejs$isDisabled();
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffer;isOutOfStock()Z", ordinal = 0))

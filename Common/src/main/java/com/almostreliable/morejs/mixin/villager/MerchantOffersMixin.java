@@ -24,14 +24,14 @@ public class MerchantOffersMixin {
     private static void morejs$createFromStream(FriendlyByteBuf friendlyByteBuf, CallbackInfoReturnable<MerchantOffers> cir) {
         cir.getReturnValue().forEach(o -> {
             boolean disabled = friendlyByteBuf.readBoolean();
-            ((OfferExtension) o).setDisabled(disabled);
+            ((OfferExtension) o).morejs$setDisabled(disabled);
         });
     }
 
     @Inject(method = "writeToStream", at = @At("RETURN"))
     private void morejs$writeCustomData(FriendlyByteBuf friendlyByteBuf, CallbackInfo ci) {
         for (MerchantOffer o : morejs$getSelf()) {
-            friendlyByteBuf.writeBoolean(((OfferExtension) o).isDisabled());
+            friendlyByteBuf.writeBoolean(((OfferExtension) o).morejs$isDisabled());
         }
     }
 
@@ -46,7 +46,7 @@ public class MerchantOffersMixin {
             for (int i = 0; i < offers.size(); i++) {
                 Tag hopefullyByteTag = list.get(i);
                 boolean disabled = hopefullyByteTag instanceof ByteTag bt && bt.getAsByte() != 0;
-                ((OfferExtension) offers.get(i)).setDisabled(disabled);
+                ((OfferExtension) offers.get(i)).morejs$setDisabled(disabled);
             }
         } catch (Exception e) {
             MoreJS.LOG.warn("Failed to receive disabled offers", e);
@@ -62,7 +62,7 @@ public class MerchantOffersMixin {
             MerchantOffers offers = morejs$getSelf();
             ListTag list = new ListTag();
             for (MerchantOffer offer : offers) {
-                boolean disabled = ((OfferExtension) offer).isDisabled();
+                boolean disabled = ((OfferExtension) offer).morejs$isDisabled();
                 list.add(ByteTag.valueOf(disabled));
             }
             tag.put(MoreJS.DISABLED_TAG, list);

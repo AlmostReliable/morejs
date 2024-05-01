@@ -14,27 +14,27 @@ public class OfferModification {
     }
 
     public ItemStack getFirstInput() {
-        return offerAsAccessor.getFirstInput();
+        return offerAsAccessor.morejs$getFirstInput();
     }
 
     public void setFirstInput(ItemStack itemStack) {
-        offerAsAccessor.setFirstInput(itemStack);
+        offerAsAccessor.morejs$setFirstInput(itemStack);
     }
 
     public ItemStack getSecondInput() {
-        return offerAsAccessor.getSecondInput();
+        return offerAsAccessor.morejs$getSecondInput();
     }
 
     public void setSecondInput(ItemStack itemStack) {
-        offerAsAccessor.setSecondInput(itemStack);
+        offerAsAccessor.morejs$setSecondInput(itemStack);
     }
 
     public ItemStack getOutput() {
-        return offerAsAccessor.getOutput();
+        return offerAsAccessor.morejs$getOutput();
     }
 
     public void setOutput(ItemStack itemStack) {
-        offerAsAccessor.setOutput(itemStack);
+        offerAsAccessor.morejs$setOutput(itemStack);
     }
 
     public int getMaxUses() {
@@ -42,7 +42,7 @@ public class OfferModification {
     }
 
     public void setMaxUses(int maxUses) {
-        offerAsAccessor.setMaxUses(maxUses);
+        offerAsAccessor.morejs$setMaxUses(maxUses);
     }
 
     public int getDemand() {
@@ -50,7 +50,7 @@ public class OfferModification {
     }
 
     public void setDemand(int demand) {
-        offerAsAccessor.setDemand(demand);
+        offerAsAccessor.morejs$setDemand(demand);
     }
 
     public int getVillagerExperience() {
@@ -58,7 +58,7 @@ public class OfferModification {
     }
 
     public void setVillagerExperience(int villagerExperience) {
-        offerAsAccessor.setVillagerExperience(villagerExperience);
+        offerAsAccessor.morejs$setVillagerExperience(villagerExperience);
     }
 
     public float getPriceMultiplier() {
@@ -66,7 +66,15 @@ public class OfferModification {
     }
 
     public void setPriceMultiplier(float priceMultiplier) {
-        offerAsAccessor.setPriceMultiplier(priceMultiplier);
+        offerAsAccessor.morejs$setPriceMultiplier(priceMultiplier);
+    }
+
+    public void setRewardExp(boolean rewardExp) {
+        offerAsAccessor.morejs$setRewardExp(rewardExp);
+    }
+
+    public boolean isRewardingExp() {
+        return offerAsAccessor.morejs$isRewardingExp();
     }
 
     public MerchantOffer getMerchantOffer() {
