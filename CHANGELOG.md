@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.10.0] - 2024-05-01
+
+- Add `setRewardExp` and `isRewardingExp` for offers
+
 ## [0.9.0] - 2024-03-22
 
 - Add `.replaceItems(ingredient, item)` when working with offers similar to `.replaceEmeralds`
