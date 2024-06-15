@@ -2,7 +2,6 @@ package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.events.StartTradingEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.ClientSideMerchant;
 import net.minecraft.world.entity.player.Inventory;

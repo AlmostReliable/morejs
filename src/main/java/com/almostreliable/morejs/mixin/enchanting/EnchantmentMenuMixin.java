@@ -3,7 +3,6 @@ package com.almostreliable.morejs.mixin.enchanting;
 import com.almostreliable.morejs.Debug;
 import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
-import com.almostreliable.morejs.features.enchantment.*;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;

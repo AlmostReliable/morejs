@@ -2,7 +2,6 @@ package com.almostreliable.morejs.features.structure;
 
 import com.almostreliable.morejs.core.Events;
 import dev.latvian.mods.kubejs.event.EventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;

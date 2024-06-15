@@ -10,7 +10,6 @@ import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEvent;
 import com.almostreliable.morejs.features.structure.StructureAfterPlaceEventJS;
 import com.almostreliable.morejs.features.structure.StructureLoadEventJS;
 import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
-import com.almostreliable.morejs.features.villager.events.*;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
 
