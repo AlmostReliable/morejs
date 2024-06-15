@@ -21,7 +21,7 @@ base {
 }
 
 loom {
-    accessWidenerPath.set(File("src/main/resources/${modId}.accesswidener"))
+//    accessWidenerPath.set(File("src/main/resources/${modId}.accesswidener"))
     runConfigs.configureEach {
         ideConfigGenerated(false)
     }

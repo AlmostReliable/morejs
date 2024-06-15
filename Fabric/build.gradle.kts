@@ -49,7 +49,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath.set(project(":Common").file("src/main/resources/${modId}.accesswidener"))
+    accessWidenerPath.set(project(":Forge").file("src/main/resources/${modId}.accesswidener"))
 
     runs {
         named("client") {
