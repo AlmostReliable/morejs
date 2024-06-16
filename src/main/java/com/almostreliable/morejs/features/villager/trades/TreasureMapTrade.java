@@ -5,6 +5,8 @@ import com.almostreliable.morejs.util.LevelUtils;
 import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.WeightedList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -13,7 +15,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MapItem;
 import net.minecraft.world.item.trading.MerchantOffer;
-import net.minecraft.world.level.saveddata.maps.MapDecoration;
+import net.minecraft.world.level.saveddata.maps.MapDecorationType;
+import net.minecraft.world.level.saveddata.maps.MapDecorationTypes;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 import javax.annotation.Nullable;
@@ -21,7 +24,7 @@ import javax.annotation.Nullable;
 public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
     protected final MapPosInfo.Provider destinationPositionFunc;
     @Nullable protected Component displayName;
-    protected MapDecoration.Type destinationType = MapDecoration.Type.RED_X;
+    protected Holder<MapDecorationType> destinationType = MapDecorationTypes.RED_X;
     private boolean renderBiomePreviewMap = true;
 
     private byte mapViewScale = 2;
@@ -70,7 +73,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
         return this;
     }
 
-    public TreasureMapTrade marker(MapDecoration.Type type) {
+    public TreasureMapTrade marker(Holder<MapDecorationType> type) {
         this.destinationType = type;
         return this;
     }
@@ -95,7 +98,7 @@ public class TreasureMapTrade extends TransformableTrade<TreasureMapTrade> {
             ItemStack map = MapItem.create(level, info.pos().getX(), info.pos().getZ(), this.mapViewScale, true, true);
             if (renderBiomePreviewMap) MapItem.renderBiomePreviewMap(level, map);
             MapItemSavedData.addTargetDecoration(map, info.pos(), "+", destinationType);
-            map.setHoverName(displayName == null ? info.name() : displayName);
+            map.set(DataComponents.CUSTOM_NAME, displayName == null ? info.name() : displayName);
             return createOffer(map, random);
         }
 

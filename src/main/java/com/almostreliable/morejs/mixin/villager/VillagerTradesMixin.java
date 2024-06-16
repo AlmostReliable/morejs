@@ -1,40 +1,25 @@
 package com.almostreliable.morejs.mixin.villager;
 
-import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeTypes;
-import com.almostreliable.morejs.features.villager.events.FilterEnchantedTradeEventJS;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.trading.ItemCost;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class VillagerTradesMixin {
 
     @Mixin(VillagerTrades.EmeraldForItems.class)
     private static class EmeraldForItemsMixin implements TradeFilter.Filterable {
-        @Shadow @Final private Item item;
-
-        @Shadow @Final private int cost;
+        @Shadow @Final private ItemCost itemStack;
 
         @Override
         public boolean matchesTradeFilter(TradeFilter filter) {
-            return filter.match(new ItemStack(this.item, this.cost), new ItemStack(Items.EMERALD),
+            return filter.match(itemStack, new ItemStack(Items.EMERALD),
                     TradeTypes.EmeraldForItems);
         }
     }
@@ -45,12 +30,10 @@ public class VillagerTradesMixin {
 
         @Shadow @Final private ItemStack itemStack;
 
-        @Shadow @Final private int numberOfItems;
-
         @Override
         public boolean matchesTradeFilter(TradeFilter filter) {
             return filter.match(new ItemStack(Items.EMERALD, this.emeraldCost),
-                    new ItemStack(this.itemStack.getItem(), this.numberOfItems),
+                    this.itemStack,
                     TradeTypes.ItemsForEmeralds);
         }
     }
@@ -60,19 +43,15 @@ public class VillagerTradesMixin {
 
         @Shadow @Final private int emeraldCost;
 
-        @Shadow @Final private ItemStack fromItem;
+        @Shadow @Final private ItemCost fromItem;
 
         @Shadow @Final private ItemStack toItem;
-
-        @Shadow @Final private int fromCount;
-
-        @Shadow @Final private int toCount;
 
         @Override
         public boolean matchesTradeFilter(TradeFilter filter) {
             return filter.match(new ItemStack(Items.EMERALD, this.emeraldCost),
-                    new ItemStack(this.fromItem.getItem(), this.fromCount),
-                    new ItemStack(this.toItem.getItem(), this.toCount),
+                    this.fromItem,
+                    this.toItem,
                     TradeTypes.ItemsAndEmeraldsToItems);
         }
     }
@@ -129,18 +108,6 @@ public class VillagerTradesMixin {
 
     @Mixin(VillagerTrades.EnchantBookForEmeralds.class)
     private static class EnchantBookForEmeraldsMixin implements TradeFilter.Filterable {
-
-        @Redirect(method = "getOffer", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;collect(Ljava/util/stream/Collector;)Ljava/lang/Object;"))
-        private Object invokeFilterEvent(Stream<Enchantment> instance, Collector<Enchantment, ?, List<Enchantment>> arCollector, Entity entity, RandomSource randomSource) {
-            if (entity instanceof AbstractVillager villager) {
-                List<Enchantment> enchantments = instance.collect(Collectors.toCollection(ArrayList::new));
-                var event = new FilterEnchantedTradeEventJS(villager, randomSource, enchantments);
-                Events.FILTER_ENCHANTED_BOOK_TRADE.post(event);
-                return enchantments;
-            }
-
-            return instance.collect(arCollector);
-        }
 
         @Override
         public boolean matchesTradeFilter(TradeFilter filter) {

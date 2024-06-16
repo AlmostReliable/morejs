@@ -2,7 +2,7 @@ package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
-import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
+import dev.latvian.mods.kubejs.entity.KubeLivingEntityEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.*;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -11,7 +11,7 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class UpdateAbstractVillagerOffersEventJS extends LivingEntityEventJS {
+public class UpdateAbstractVillagerOffersEventJS implements KubeLivingEntityEvent {
 
     private final AbstractVillager villager;
     private final MerchantOffers offers;

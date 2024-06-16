@@ -1,6 +1,7 @@
 package com.almostreliable.morejs.util;
 
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.trading.ItemCost;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -52,5 +53,9 @@ public class Utils {
 
     public static boolean matchesIngredient(Ingredient filter, Ingredient ingredient) {
         return Arrays.stream(filter.getItems()).anyMatch(ingredient);
+    }
+
+    public static boolean matchesItemCost(Ingredient filter, ItemCost itemCost) {
+        return Arrays.stream(filter.getItems()).anyMatch(itemCost::test);
     }
 }

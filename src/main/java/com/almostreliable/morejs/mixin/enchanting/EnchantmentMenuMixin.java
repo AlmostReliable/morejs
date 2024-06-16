@@ -3,6 +3,8 @@ package com.almostreliable.morejs.mixin.enchanting;
 import com.almostreliable.morejs.Debug;
 import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
+import com.almostreliable.morejs.features.enchantment.*;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -111,16 +113,11 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
     }
 
     @Inject(method = "getEnchantmentList", at = @At("RETURN"), cancellable = true)
-    private void handleEnchantmentGetter(ItemStack itemStack, int index, int powerLevel, CallbackInfoReturnable<List<EnchantmentInstance>> cir) {
+    private void handleEnchantmentGetter(RegistryAccess registryAccess, ItemStack itemStack, int index, int powerLevel, CallbackInfoReturnable<List<EnchantmentInstance>> cir) {
         switch (this.morejs$process.getState()) {
             case STORE_ENCHANTMENTS -> this.morejs$process.setEnchantments(index, cir.getReturnValue());
             case USE_STORED_ENCHANTMENTS -> {
                 var enchantments = this.morejs$process.getEnchantments(index);
-                if (enchantments == null) {
-                    MoreJS.LOG.error(
-                            "Enchantment list is null for index " + index + ", when in state USE_STORED_ENCHANTMENTS");
-                    return;
-                }
                 cir.setReturnValue(enchantments);
             }
         }

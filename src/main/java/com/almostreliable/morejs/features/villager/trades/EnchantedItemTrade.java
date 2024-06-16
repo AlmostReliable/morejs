@@ -1,74 +1,51 @@
 package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.TradeItem;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.Mth;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public class EnchantedItemTrade extends TransformableTrade<EnchantedItemTrade> {
 
     private final Item itemToEnchant;
-    List<Enchantment> enchantments;
-    private int minEnchantmentAmount = 1;
-    private int maxEnchantmentAmount = 1;
+    private final TagKey<Enchantment> tradeableEnchantments;
+    private IntProvider enchantLevels = UniformInt.of(5, 20);
 
-    public EnchantedItemTrade(TradeItem[] inputs, Item itemToEnchant) {
+    public EnchantedItemTrade(TradeItem[] inputs, Item itemToEnchant, TagKey<Enchantment> tradeableEnchantments) {
         super(inputs);
         this.itemToEnchant = itemToEnchant;
-        enchantments = BuiltInRegistries.ENCHANTMENT.stream().toList();
+        this.tradeableEnchantments = tradeableEnchantments;
     }
 
-    public EnchantedItemTrade enchantments(Enchantment... enchantments) {
-        this.enchantments = Arrays.stream(enchantments).peek(e -> {
-            if (e == null) {
-                ConsoleJS.SERVER.error("Null enchantment in array: " + Arrays.toString(enchantments));
-            }
-        }).filter(Objects::nonNull).toList();
+    public EnchantedItemTrade levels(IntProvider levels) {
+        this.enchantLevels = levels;
         return this;
-    }
-
-    public EnchantedItemTrade amount(int min, int max) {
-        this.minEnchantmentAmount = min;
-        this.maxEnchantmentAmount = max;
-        return this;
-    }
-
-    public EnchantedItemTrade amount(int amount) {
-        return amount(amount, amount);
     }
 
     @Nullable
     @Override
     public MerchantOffer createOffer(Entity entity, RandomSource random) {
-        ItemStack result = itemToEnchant.equals(Items.BOOK) ? new ItemStack(Items.ENCHANTED_BOOK)
-                                                            : new ItemStack(itemToEnchant);
+        int levels = enchantLevels.sample(random);
+        var registryAccess = entity.level().registryAccess();
+        var possibleEnchantments = registryAccess
+                .registryOrThrow(Registries.ENCHANTMENT)
+                .getTag(tradeableEnchantments);
 
-        int amount = Mth.nextInt(random, minEnchantmentAmount, maxEnchantmentAmount);
-        for (int i = 0; i < amount; i++) {
-            Enchantment enchantment = enchantments.get(random.nextInt(enchantments.size()));
-            int level = Mth.nextInt(random, enchantment.getMinLevel(), enchantment.getMaxLevel());
-            if (result.is(Items.ENCHANTED_BOOK)) {
-                EnchantmentInstance enchantmentInstance = new EnchantmentInstance(enchantment, level);
-                EnchantedBookItem.addEnchantment(result, enchantmentInstance);
-            } else {
-                result.enchant(enchantment, level);
-            }
-        }
-
+        ItemStack result = EnchantmentHelper.enchantItem(random,
+                new ItemStack(itemToEnchant),
+                levels,
+                registryAccess,
+                possibleEnchantments);
         return createOffer(result, random);
     }
 }

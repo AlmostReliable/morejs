@@ -1,12 +1,12 @@
 package com.almostreliable.morejs.features.teleport;
 
-import dev.latvian.mods.kubejs.entity.EntityEventJS;
+import dev.latvian.mods.kubejs.entity.KubeEntityEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
-public class EntityTeleportsEventJS extends EntityEventJS {
+public class EntityTeleportsEventJS implements KubeEntityEvent {
 
     private final Entity entity;
     private final TeleportType type;

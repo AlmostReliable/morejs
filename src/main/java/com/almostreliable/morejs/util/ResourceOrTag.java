@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+// TODO remove, we can now use HolderSet I guess
 public class ResourceOrTag<T> {
     private final Either<ResourceKey<T>, TagKey<T>> either;
 
@@ -21,11 +22,11 @@ public class ResourceOrTag<T> {
 
     public static <E> ResourceOrTag<E> get(String s, ResourceKey<Registry<E>> registry) {
         if (s.startsWith("#")) {
-            ResourceLocation rl = new ResourceLocation(s.substring(1));
+            ResourceLocation rl = ResourceLocation.parse(s.substring(1));
             return new ResourceOrTag<>(Either.right(TagKey.create(registry, rl)));
         }
 
-        ResourceLocation rl = new ResourceLocation(s);
+        ResourceLocation rl = ResourceLocation.parse(s);
         return new ResourceOrTag<>(Either.left(ResourceKey.create(registry, rl)));
     }
 

@@ -1,13 +1,13 @@
 package com.almostreliable.morejs.features.misc;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class PiglinPlayerBehaviorEventJS extends PlayerEventJS {
+public class PiglinPlayerBehaviorEventJS implements KubePlayerEvent {
 
     private final Player player;
     private final Piglin piglin;

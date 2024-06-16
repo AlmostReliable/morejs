@@ -1,12 +1,13 @@
 package com.almostreliable.morejs.features.villager;
 
 import com.almostreliable.morejs.util.TriConsumer;
-import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.trading.ItemCost;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.Set;
 
 public class TradeFilter {
@@ -70,19 +71,36 @@ public class TradeFilter {
         return tradeTypes == null || tradeTypes.contains(type);
     }
 
-    public boolean match(ItemStack first, ItemStack second, ItemStack output, TradeTypes type) {
-        boolean firstMatch = firstMatcher.test(first) && firstCountMatcher.test(first.getCount());
-        boolean secondMatch = secondMatcher.test(second) && secondCountMatcher.test(second.getCount());
-        boolean outputMatch = outputMatcher.test(output) && outputCountMatcher.test(output.getCount());
+    private boolean match(Ingredient filter, IntRange countFilter, ItemStack itemStack) {
+        return filter.test(itemStack) && countFilter.test(itemStack.getCount());
+    }
+
+    public boolean match(ItemStack costA, ItemStack costB, ItemStack output, TradeTypes type) {
+        boolean firstMatch = match(firstMatcher, firstCountMatcher, costA);
+        boolean secondMatch = match(secondMatcher, secondCountMatcher, costB);
+        boolean outputMatch = match(outputMatcher, outputCountMatcher, output);
         boolean matched = matchType(type) && firstMatch && secondMatch && outputMatch;
         if (matched) {
-            onMatch.accept(first, second, output);
+            onMatch.accept(costA, costB, output);
         }
         return matched;
     }
 
     public boolean match(ItemStack first, ItemStack output, TradeTypes type) {
         return match(first, ItemStack.EMPTY, output, type);
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public boolean match(ItemCost costA, Optional<ItemCost> costB, ItemStack output, TradeTypes type) {
+        return match(costA.itemStack(), costB.map(ItemCost::itemStack).orElse(ItemStack.EMPTY), output, type);
+    }
+
+    public boolean match(ItemStack costA, ItemCost costB, ItemStack output, TradeTypes type) {
+        return match(costA, costB.itemStack(), output, type);
+    }
+
+    public boolean match(ItemCost costA, ItemStack output, TradeTypes type) {
+        return match(costA, Optional.empty(), output, type);
     }
 
     public interface Filterable {

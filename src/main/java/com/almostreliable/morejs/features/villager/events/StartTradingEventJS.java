@@ -1,14 +1,14 @@
 package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.features.villager.OfferExtension;
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import java.util.function.BiConsumer;
 
-public class StartTradingEventJS extends PlayerEventJS {
+public class StartTradingEventJS implements KubePlayerEvent {
     private final Player player;
     private final Merchant merchant;
 

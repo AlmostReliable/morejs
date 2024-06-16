@@ -3,7 +3,10 @@ package com.almostreliable.morejs.features.enchantment;
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +15,6 @@ import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 
 public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
@@ -64,7 +66,7 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
             return getEnchantments().size();
         }
 
-        public void forEachEnchantments(BiConsumer<Enchantment, Integer> consumer) {
+        public void forEachEnchantments(BiConsumer<Holder<Enchantment>, Integer> consumer) {
             getEnchantments().forEach(i -> consumer.accept(i.enchantment, i.level));
         }
 
@@ -75,8 +77,8 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         public List<ResourceLocation> getEnchantmentIds() {
             return getEnchantments()
                     .stream()
-                    .map(e -> BuiltInRegistries.ENCHANTMENT.getKey(e.enchantment))
-                    .filter(Objects::nonNull)
+                    .flatMap(e -> e.enchantment.unwrapKey().stream())
+                    .map(ResourceKey::location)
                     .toList();
         }
 
@@ -85,14 +87,14 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         }
 
         public boolean hasEnchantment(ResourceLocation id, IntRange range) {
-            Enchantment enchantment = BuiltInRegistries.ENCHANTMENT.getOptional(id).orElse(null);
-            if (enchantment == null) return false;
-            for (EnchantmentInstance enchantmentInstance : getEnchantments()) {
-                if (enchantmentInstance.enchantment == enchantment && range.test(enchantmentInstance.level)) {
-                    return true;
+            Registry<Enchantment> registry = getLevel().registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+            return registry.getHolder(id).filter(ref -> {
+                for (EnchantmentInstance ei : getEnchantments()) {
+                    if (ei.enchantment == ref && range.test(ei.level)) return true;
                 }
-            }
-            return false;
+
+                return false;
+            }).isPresent();
         }
 
         protected List<EnchantmentInstance> getEnchantments() {

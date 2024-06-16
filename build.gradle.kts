@@ -56,15 +56,12 @@ loom {
     }
 
     runs {
-        val exampleScripts = project.rootDir.resolve("example_scripts").toString()
-        print("Example scripts directory set to: $exampleScripts")
         create("gametest") {
             name("Gametest")
             server()
             source(sourceSets.test.get())
             property("neoforge.gameTestServer", "true")
             property("neoforge.enabledGameTestNamespaces", modId)
-            property("lootjs.example_scripts", exampleScripts)
         }
 
         create("testmod") {
@@ -73,7 +70,6 @@ loom {
             source(sourceSets.test.get())
             property("neoforge.gameTestServer", "true")
             property("neoforge.enabledGameTestNamespaces", modId)
-            property("lootjs.example_scripts", exampleScripts)
         }
 
         forEach {
@@ -150,6 +146,8 @@ tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
         options.release.set(21)
+        options.compilerArgs.add("-Xmaxerrs")
+        options.compilerArgs.add("1000")
     }
 
     /**
@@ -167,7 +165,6 @@ tasks {
     named<Jar>("jar") {
         archiveClassifier.set("dev")
     }
-
 }
 
 extensions.configure<JavaPluginExtension> {

@@ -8,19 +8,18 @@ import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class VillagerTradingEventJS extends EventJS {
+public class VillagerTradingEventJS implements KubeEvent {
     private final Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades;
 
     public VillagerTradingEventJS(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades) {

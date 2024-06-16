@@ -1,12 +1,12 @@
 package com.almostreliable.morejs.features.enchantment;
 
-import dev.latvian.mods.kubejs.level.LevelEventJS;
+import dev.latvian.mods.kubejs.level.KubeLevelEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EnchantmentTableEventJS extends LevelEventJS {
+public class EnchantmentTableEventJS implements KubeLevelEvent {
     protected final EnchantmentMenu menu;
 
     protected ItemStack item;

@@ -1,6 +1,5 @@
 package com.almostreliable.morejs.features.villager.trades;
 
-import com.almostreliable.morejs.features.villager.OfferModification;
 import com.almostreliable.morejs.features.villager.TradeItem;
 import com.google.common.base.Preconditions;
 import net.minecraft.util.RandomSource;
@@ -10,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
@@ -36,7 +36,7 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
             return null;
         }
         if (transformer != null) {
-            transformer.accept(new OfferModification(offer), entity, random);
+            transformer.accept(offer, entity, random);
         }
         return offer;
     }
@@ -71,12 +71,12 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
     }
 
     protected MerchantOffer createOffer(ItemStack output, RandomSource random) {
-        ItemStack fi = firstInput.createItemStack(random);
-        ItemStack si = secondInput.createItemStack(random);
+        var fi = firstInput.createItemCost(random);
+        var si = Optional.ofNullable(secondInput.isEmpty() ? null : secondInput.createItemCost(random));
         return new MerchantOffer(fi, si, output, maxUses, villagerExperience, priceMultiplier);
     }
 
     public interface Transformer {
-        void accept(OfferModification offer, Entity entity, RandomSource random);
+        void accept(MerchantOffer offer, Entity entity, RandomSource random);
     }
 }

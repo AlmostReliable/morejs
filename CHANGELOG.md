@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.11.0] - TBA
+
+- Update to 1.21
+
 ## [0.10.0] - 2024-05-01
 
 - Add `setRewardExp` and `isRewardingExp` for offers

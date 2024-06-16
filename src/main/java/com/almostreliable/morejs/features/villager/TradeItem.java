@@ -1,9 +1,10 @@
 package com.almostreliable.morejs.features.villager;
 
 import dev.latvian.mods.kubejs.bindings.ItemWrapper;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.ItemCost;
 
 import javax.annotation.Nullable;
 
@@ -25,14 +26,6 @@ public class TradeItem {
         return new TradeItem(ItemWrapper.of(item), new IntRange(min, max));
     }
 
-    public static TradeItem of(ItemStack item, int price, CompoundTag nbt) {
-        return of(item, price, price, nbt);
-    }
-
-    public static TradeItem of(ItemStack item, int min, int max, CompoundTag nbt) {
-        return new TradeItem(ItemWrapper.of(item, nbt), new IntRange(min, max));
-    }
-
     public TradeItem(ItemStack itemStack, @Nullable IntRange countRange) {
         this.itemStack = itemStack;
         this.countRange = countRange;
@@ -51,6 +44,15 @@ public class TradeItem {
         ItemStack stack = itemStack.copy();
         stack.setCount(c);
         return stack;
+    }
+
+    public ItemCost createItemCost(RandomSource random) {
+        int c = countRange == null ? 1 : countRange.getRandom(random);
+
+        ItemStack copy = itemStack.copy();
+        DataComponentPredicate dcp = DataComponentPredicate.allOf(copy.getComponents());
+        //noinspection deprecation
+        return new ItemCost(copy.getItem().builtInRegistryHolder(), c, dcp, copy);
     }
 
     public boolean isEmpty() {

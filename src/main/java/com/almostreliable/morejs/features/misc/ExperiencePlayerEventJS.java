@@ -1,10 +1,10 @@
 package com.almostreliable.morejs.features.misc;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.world.entity.player.Player;
 
 
-public class ExperiencePlayerEventJS extends PlayerEventJS {
+public class ExperiencePlayerEventJS implements KubePlayerEvent {
 
     private final Player player;
     private int amount;

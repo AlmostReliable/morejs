@@ -1,6 +1,6 @@
 package com.almostreliable.morejs.features.structure;
 
-import dev.latvian.mods.kubejs.level.LevelEventJS;
+import dev.latvian.mods.kubejs.level.KubeLevelEvent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +17,12 @@ import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.phys.AABB;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-public class StructureAfterPlaceEventJS extends LevelEventJS {
+public class StructureAfterPlaceEventJS implements KubeLevelEvent {
 
     private final Structure structure;
     private final WorldGenLevel worldGenLevel;

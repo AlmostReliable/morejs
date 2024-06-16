@@ -1,5 +1,6 @@
 package com.almostreliable.morejs.features.villager;
 
+import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
 import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
@@ -12,8 +13,22 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class TradingManager {
+    public static final TradingManager INSTANCE = new TradingManager();
     @Nullable protected Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> tradesBackup;
     @Nullable protected Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
+    private boolean readyToReload = false;
+
+    public void reset() {
+        tradesBackup = null;
+        wandererTradesBackup = null;
+        readyToReload = false;
+    }
+
+    public void start() {
+        reset();
+        readyToReload = true;
+        reload();
+    }
 
     public void invokeVillagerTradeEvent(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> originalTrades) {
         VillagerUtils.CACHED_PROFESSION_TRADES.clear();
@@ -31,8 +46,13 @@ public class TradingManager {
     }
 
     public void reload() {
-        invokeVillagerTradeEvent(getTradesBackup());
-        invokeWanderingTradeEvent(getWandererTradesBackup());
+        if (readyToReload) {
+            invokeVillagerTradeEvent(getTradesBackup());
+            invokeWanderingTradeEvent(getWandererTradesBackup());
+            return;
+        }
+
+        MoreJS.LOG.debug("Villager trades are not ready to reload yet. Waiting for the server to start.");
     }
 
     public Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> getTradesBackup() {

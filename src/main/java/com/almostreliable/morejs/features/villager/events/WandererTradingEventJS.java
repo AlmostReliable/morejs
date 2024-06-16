@@ -7,18 +7,17 @@ import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class WandererTradingEventJS extends EventJS {
+public class WandererTradingEventJS implements KubeEvent {
     private final Int2ObjectMap<List<VillagerTrades.ItemListing>> trades;
 
     public WandererTradingEventJS(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {

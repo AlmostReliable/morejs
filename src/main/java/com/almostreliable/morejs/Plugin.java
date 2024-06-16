@@ -7,25 +7,26 @@ import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
-import dev.latvian.mods.kubejs.script.BindingsEvent;
+import dev.latvian.mods.kubejs.event.EventGroupRegistry;
+import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
 import dev.latvian.mods.kubejs.util.ClassFilter;
-import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Plugin extends KubeJSPlugin {
+public class Plugin implements KubeJSPlugin {
 
     @Override
     public void registerClasses(ScriptType type, ClassFilter filter) {
-        filter.allow(BuildConfig.MOD_GROUP);
+        filter.allow(MoreJS.class.getPackage().getName());
     }
 
     @Override
-    public void registerBindings(BindingsEvent event) {
+    public void registerBindings(BindingRegistry event) {
         event.add("VillagerUtils", VillagerUtils.class);
         event.add("TradeItem", TradeItem.class);
         event.add("MoreJS", MoreJSBinding.class);
@@ -37,15 +38,15 @@ public class Plugin extends KubeJSPlugin {
     }
 
     @Override
-    public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-        typeWrappers.registerSimple(TradeItem.class, MoreJSBinding::ofTradeItem);
-        typeWrappers.registerSimple(IntRange.class, MoreJSBinding::range);
-        typeWrappers.registerSimple(WeightedList.class, MoreJSBinding::ofWeightedList);
-        typeWrappers.registerSimple(TradeFilter.class, MoreJSBinding::ofTradeFilter);
+    public void registerTypeWrappers(TypeWrapperRegistry typeWrappers) {
+        typeWrappers.register(TradeItem.class, MoreJSBinding::ofTradeItem);
+        typeWrappers.register(IntRange.class, MoreJSBinding::range);
+        typeWrappers.register(WeightedList.class, MoreJSBinding::ofWeightedList);
+        typeWrappers.register(TradeFilter.class, MoreJSBinding::ofTradeFilter);
     }
 
     @Override
-    public void registerEvents() {
-        Events.GROUP.register();
+    public void registerEvents(EventGroupRegistry registry) {
+        registry.register(Events.GROUP);
     }
 }

@@ -23,9 +23,9 @@ import java.util.Map;
 @Mixin(StructureTemplate.StructureBlockInfo.class)
 public class StructureBlockInfoMixin implements StructureBlockInfoModification {
 
-    @Mutable @Shadow @Final public CompoundTag nbt;
+    @Mutable @Shadow @Final private CompoundTag nbt;
 
-    @Mutable @Shadow @Final public BlockState state;
+    @Mutable @Shadow @Final private BlockState state;
 
     @Shadow @Final public BlockPos pos;
 

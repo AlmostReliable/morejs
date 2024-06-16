@@ -12,6 +12,7 @@ import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.kubejs.util.UtilsJS;
+import dev.latvian.mods.rhino.Context;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -84,7 +85,7 @@ public class MoreJSBinding {
         return builder.build();
     }
 
-    public static TradeFilter ofTradeFilter(@Nullable Object o) {
+    public static TradeFilter ofTradeFilter(Context cx, @Nullable Object o) {
         if (o instanceof TradeFilter filter) {
             return filter;
         }
@@ -99,9 +100,9 @@ public class MoreJSBinding {
         }
 
         TradeFilter filter = new TradeFilter(
-                IngredientJS.of(map.get("firstItem")),
-                IngredientJS.of(map.get("secondItem")),
-                IngredientJS.of(map.get("outputItem"))
+                IngredientJS.wrap(cx, map.get("firstItem")),
+                IngredientJS.wrap(cx, map.get("secondItem")),
+                IngredientJS.wrap(cx, map.get("outputItem"))
         );
 
         filter.setFirstCountMatcher(range(map.get("firstCount")));
@@ -135,11 +136,11 @@ public class MoreJSBinding {
         return filter;
     }
 
-    public static TradeItem ofTradeItem(@Nullable Object o) {
+    public static TradeItem ofTradeItem(Context cx, @Nullable Object o) {
         if (o instanceof TradeItem item) {
             return item;
         }
 
-        return TradeItem.of(ItemStackJS.of(o));
+        return TradeItem.of(ItemStackJS.wrap(cx, o));
     }
 }

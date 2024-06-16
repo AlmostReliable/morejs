@@ -1,14 +1,14 @@
 package com.almostreliable.morejs.features.structure;
 
 import com.almostreliable.morejs.core.Events;
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import java.util.function.Consumer;
 
-public class StructureLoadEventJS extends EventJS {
+public class StructureLoadEventJS implements KubeEvent {
     private final StructureTemplateAccess structure;
     private final ResourceLocation id;
 

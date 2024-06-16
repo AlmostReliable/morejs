@@ -1,10 +1,12 @@
 package com.almostreliable.morejs.features.villager;
 
+import com.almostreliable.morejs.util.Utils;
 import dev.latvian.mods.rhino.util.RemapPrefixForJS;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.trading.ItemCost;
 
 @RemapPrefixForJS("morejs$")
 public interface OfferExtension {
@@ -13,13 +15,13 @@ public interface OfferExtension {
 
     void morejs$setDisabled(boolean disabled);
 
-    ItemStack morejs$getFirstInput();
+    ItemCost morejs$getFirstCost();
 
-    void morejs$setFirstInput(ItemStack itemStack);
+    void morejs$setFirstCost(ItemStack itemStack);
 
-    ItemStack morejs$getSecondInput();
+    ItemCost morejs$getSecondCost();
 
-    void morejs$setSecondInput(ItemStack itemStack);
+    void morejs$setSecondCost(ItemStack itemStack);
 
     ItemStack morejs$getOutput();
 
@@ -38,12 +40,12 @@ public interface OfferExtension {
     boolean morejs$isRewardingExp();
 
     default void morejs$replaceEmeralds(Item replacement) {
-        if (morejs$getFirstInput().getItem() == Items.EMERALD) {
-            morejs$setFirstInput(new ItemStack(replacement, morejs$getFirstInput().getCount()));
+        if (morejs$getFirstCost().test(new ItemStack(Items.EMERALD))) {
+            morejs$setFirstCost(new ItemStack(replacement, morejs$getFirstCost().count()));
         }
 
-        if (morejs$getSecondInput().getItem() == Items.EMERALD) {
-            morejs$setSecondInput(new ItemStack(replacement, morejs$getSecondInput().getCount()));
+        if (morejs$getSecondCost().test(new ItemStack(Items.EMERALD))) {
+            morejs$setSecondCost(new ItemStack(replacement, morejs$getSecondCost().count()));
         }
 
         if (morejs$getOutput().getItem() == Items.EMERALD) {
@@ -52,12 +54,12 @@ public interface OfferExtension {
     }
 
     default void morejs$replaceItems(Ingredient filter, ItemStack itemStack) {
-        if (filter.test(morejs$getFirstInput())) {
-            morejs$setFirstInput(itemStack.copy());
+        if (Utils.matchesItemCost(filter, morejs$getFirstCost())) {
+            morejs$setFirstCost(itemStack.copy());
         }
 
-        if (filter.test(morejs$getSecondInput())) {
-            morejs$setSecondInput(itemStack.copy());
+        if (Utils.matchesItemCost(filter, morejs$getSecondCost())) {
+            morejs$setSecondCost(itemStack.copy());
         }
 
         if (filter.test(morejs$getOutput())) {

@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.features.enchantment;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +32,7 @@ public class PlayerEnchantEventJS extends EnchantmentTableServerEventJS {
                 .getEnchantments(clickedButton)
                 .stream()
                 .map(ei -> ei.enchantment)
-                .map(BuiltInRegistries.ENCHANTMENT::getKey)
+                .map(ref -> ref.unwrapKey().map(ResourceKey::location).orElse(null))
                 .toList();
     }
 

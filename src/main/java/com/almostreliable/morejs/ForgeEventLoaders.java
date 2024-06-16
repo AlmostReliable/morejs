@@ -2,11 +2,15 @@ package com.almostreliable.morejs;
 
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.misc.ExperiencePlayerEventJS;
+import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEvent;
 import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
 import com.almostreliable.morejs.features.teleport.TeleportType;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
 public class ForgeEventLoaders {
 
@@ -14,6 +18,11 @@ public class ForgeEventLoaders {
         bus.addListener(ForgeEventLoaders::onExperienceChange);
         bus.addListener(ForgeEventLoaders::chorusFruitTeleport);
         bus.addListener(ForgeEventLoaders::enderPearlTeleport);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, ForgeEventLoaders::onRegisterPotions);
+    }
+
+    private static void onRegisterPotions(RegisterBrewingRecipesEvent event) {
+        Events.POTION_BREWING_REGISTER.post(new PotionBrewingRegisterEvent(event.getBuilder()));
     }
 
     private static void onExperienceChange(PlayerXpEvent.XpChange event) {

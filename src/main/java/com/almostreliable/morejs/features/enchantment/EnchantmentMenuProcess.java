@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 import javax.annotation.Nullable;
@@ -77,7 +78,7 @@ public class EnchantmentMenuProcess {
     private String formatEnchantments(List<EnchantmentInstance> enchantments) {
         return enchantments
                 .stream()
-                .map(i -> i.enchantment.getFullname(i.level).toString())
+                .map(i -> Enchantment.getFullname(i.enchantment, i.level).toString())
                 .collect(Collectors.joining(","));
     }
 

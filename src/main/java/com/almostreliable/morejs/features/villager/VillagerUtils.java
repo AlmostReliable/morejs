@@ -4,8 +4,10 @@ import com.almostreliable.morejs.features.villager.trades.*;
 import com.almostreliable.morejs.util.WeightedList;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
@@ -77,11 +79,16 @@ public class VillagerUtils {
     }
 
     public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, Item output) {
-        return new EnchantedItemTrade(inputs, output);
+        return new EnchantedItemTrade(inputs, output, EnchantmentTags.ON_TRADED_EQUIPMENT);
     }
 
-    public static StewTrade createStewTrade(TradeItem[] inputs, MobEffect[] effects, int duration) {
-        return new StewTrade(inputs, effects, duration);
+    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, Item output, String tag) {
+        ResourceLocation tagRL = ResourceLocation.parse(tag.substring(1));
+        return new EnchantedItemTrade(inputs, output, TagKey.create(Registries.ENCHANTMENT, tagRL));
+    }
+
+    public static StewTrade createStewTrade(TradeItem[] inputs) {
+        return new StewTrade(inputs);
     }
 
     public static PotionTrade createPotionTrade(TradeItem[] inputs) {
