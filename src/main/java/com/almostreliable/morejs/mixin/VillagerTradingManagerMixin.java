@@ -14,7 +14,8 @@ public class VillagerTradingManagerMixin {
     @Inject(method = "loadTrades", at = @At("RETURN"), remap = false)
     private static void postTradeLoading(TagsUpdatedEvent e, CallbackInfo ci) {
         if (e.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
-            TradingManager.INSTANCE.start();
+            TradingManager.invokeVillagerTradeEvent();
+            TradingManager.invokeWanderingTradeEvent();
         }
     }
 }

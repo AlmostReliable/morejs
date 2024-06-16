@@ -8,30 +8,30 @@ import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Table;
 import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class VillagerTradingEventJS implements KubeEvent {
-    private final Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades;
+    private final Table<VillagerProfession, Integer, List<VillagerTrades.ItemListing>> trades;
 
-    public VillagerTradingEventJS(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades) {
-        this.trades = trades;
+    public VillagerTradingEventJS(Table<VillagerProfession, Integer, List<VillagerTrades.ItemListing>> allTrades) {
+        trades = allTrades;
     }
 
     public List<VillagerTrades.ItemListing> getTrades(VillagerProfession profession, int level) {
         Preconditions.checkArgument(1 <= level && level <= 5, "Level must be between 1 and 5");
         Preconditions.checkArgument(!profession.equals(VillagerProfession.NONE), "No or invalid profession specified");
-        return trades
-                .computeIfAbsent(profession, $ -> new Int2ObjectOpenHashMap<>())
-                .computeIfAbsent(level, $ -> new ArrayList<>());
+        return trades.get(profession, level);
     }
 
     public SimpleTrade addTrade(VillagerProfession profession, int level, TradeItem[] inputs, TradeItem output) {
@@ -55,8 +55,14 @@ public class VillagerTradingEventJS implements KubeEvent {
 
     public void removeTrades(TradeFilter filter) {
         forEachTrades((listings, level, profession) -> {
-            filter.onMatch((first, second, output) -> ConsoleJS.SERVER.info(
-                    "Removing villager ( trade for level " + level + ": " + first + " & " + second + " -> " + output));
+            filter.onMatch((first, second, output) -> {
+                String secondStr = second == null ? "" : " & " + second;
+
+                ConsoleJS.SERVER.info(
+                        "Removing villager trade for profession " + profession + " for level " + level + ": " + first +
+                        secondStr + " -> " + output);
+            });
+
             if (!filter.matchProfession(profession)) {
                 return;
             }
@@ -99,8 +105,8 @@ public class VillagerTradingEventJS implements KubeEvent {
     }
 
     public void forEachTrades(ForEachCallback callback) {
-        trades.forEach((profession, levelTrades) -> {
-            levelTrades.forEach((level, itemListings) -> {
+        trades.rowMap().forEach((profession, tradesPerLevel) -> {
+            tradesPerLevel.forEach((level, itemListings) -> {
                 callback.accept(itemListings, level, profession);
             });
         });

@@ -1,120 +1,65 @@
 package com.almostreliable.morejs.features.villager;
 
-import com.almostreliable.morejs.MoreJS;
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
 import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TradingManager {
-    public static final TradingManager INSTANCE = new TradingManager();
-    @Nullable protected Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> tradesBackup;
-    @Nullable protected Int2ObjectMap<List<VillagerTrades.ItemListing>> wandererTradesBackup;
-    private boolean readyToReload = false;
-
-    public void reset() {
-        tradesBackup = null;
-        wandererTradesBackup = null;
-        readyToReload = false;
-    }
-
-    public void start() {
-        reset();
-        readyToReload = true;
-        reload();
-    }
-
-    public void invokeVillagerTradeEvent(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> originalTrades) {
-        VillagerUtils.CACHED_PROFESSION_TRADES.clear();
-        updateVanillaTrades(originalTrades);
-        var trades = createMutableTradesMapByProfessions();
-        Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(trades));
-        updateVanillaTrades(trades);
-    }
-
-    public void invokeWanderingTradeEvent(Int2ObjectMap<List<VillagerTrades.ItemListing>> originalTrades) {
-        updateVanillaWanderingTrades(originalTrades);
-        var wandererTrades = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
-        Events.WANDERING_TRADING.post(new WandererTradingEventJS(wandererTrades));
-        updateVanillaWanderingTrades(wandererTrades);
-    }
-
-    public void reload() {
-        if (readyToReload) {
-            invokeVillagerTradeEvent(getTradesBackup());
-            invokeWanderingTradeEvent(getWandererTradesBackup());
-            return;
-        }
-
-        MoreJS.LOG.debug("Villager trades are not ready to reload yet. Waiting for the server to start.");
-    }
-
-    public Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> getTradesBackup() {
-        if (tradesBackup == null) {
-            tradesBackup = createMutableTradesMapByProfessions();
-        }
-        return tradesBackup;
-    }
-
-    public Int2ObjectMap<List<VillagerTrades.ItemListing>> getWandererTradesBackup() {
-        if (wandererTradesBackup == null) {
-            wandererTradesBackup = toListingsListMap(VillagerTrades.WANDERING_TRADER_TRADES);
-        }
-        return wandererTradesBackup;
-    }
-
-    private Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> createMutableTradesMapByProfessions() {
+    public static void invokeVillagerTradeEvent() {
         synchronized (VillagerTrades.TRADES) {
-            Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> result = new HashMap<>();
+            var allTrades = createTradesTable();
 
-            VillagerTrades.TRADES.forEach((profession, trades) -> {
-                Int2ObjectMap<List<VillagerTrades.ItemListing>> map = toListingsListMap(trades);
-                result.put(profession, map);
-            });
+            Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(allTrades));
 
-            return result;
-        }
-    }
+            allTrades.rowMap().forEach((profession, tradesPerLevel) -> {
+                Int2ObjectMap<VillagerTrades.ItemListing[]> newTrades = new Int2ObjectOpenHashMap<>();
+                tradesPerLevel.forEach((level, listings) -> {
+                    var listingsArray = listings.toArray(new VillagerTrades.ItemListing[0]);
+                    newTrades.put(level.intValue(), listingsArray);
+                });
 
-    private synchronized Int2ObjectMap<List<VillagerTrades.ItemListing>> toListingsListMap(Int2ObjectMap<VillagerTrades.ItemListing[]> listingsMap) {
-        Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>> result = new Int2ObjectOpenHashMap<>();
-        listingsMap.forEach((level, listings) -> {
-            var newListings = new ArrayList<>(Arrays.stream(listings).toList());
-            result.put(level.intValue(), newListings);
-        });
-        return result;
-    }
-
-    private synchronized Int2ObjectMap<VillagerTrades.ItemListing[]> toListingsArrayMap(Int2ObjectMap<List<VillagerTrades.ItemListing>> listingsMap) {
-        Int2ObjectOpenHashMap<VillagerTrades.ItemListing[]> result = new Int2ObjectOpenHashMap<>();
-        listingsMap.forEach((level, listings) -> {
-            result.put(level.intValue(), listings.toArray(new VillagerTrades.ItemListing[0]));
-        });
-        return result;
-    }
-
-    private void updateVanillaTrades(Map<VillagerProfession, Int2ObjectMap<List<VillagerTrades.ItemListing>>> trades) {
-        synchronized (VillagerTrades.TRADES) {
-            VillagerTrades.TRADES.clear();
-
-            trades.forEach((profession, newTrades) -> {
-                Int2ObjectMap<VillagerTrades.ItemListing[]> vanillaTrades = toListingsArrayMap(newTrades);
-                VillagerTrades.TRADES.put(profession, vanillaTrades);
+                VillagerTrades.TRADES.put(profession, newTrades);
             });
         }
     }
 
-    private void updateVanillaWanderingTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
+    private static Table<VillagerProfession, Integer, List<VillagerTrades.ItemListing>> createTradesTable() {
+        Table<VillagerProfession, Integer, List<VillagerTrades.ItemListing>> allTrades = HashBasedTable.create();
+        for (var entry : VillagerTrades.TRADES.entrySet()) {
+            var profession = entry.getKey();
+            var trades = entry.getValue();
+            trades.forEach((level, listingsArray) -> {
+                List<VillagerTrades.ItemListing> listings = new ArrayList<>(Arrays.asList(listingsArray));
+                allTrades.put(profession, level, listings);
+            });
+        }
+
+        return allTrades;
+    }
+
+    public static void invokeWanderingTradeEvent() {
         synchronized (VillagerTrades.WANDERING_TRADER_TRADES) {
-            VillagerTrades.WANDERING_TRADER_TRADES.clear();
-            Int2ObjectMap<VillagerTrades.ItemListing[]> map = toListingsArrayMap(trades);
-            VillagerTrades.WANDERING_TRADER_TRADES.putAll(map);
+            var allTrades = new Int2ObjectOpenHashMap<List<VillagerTrades.ItemListing>>();
+            VillagerTrades.WANDERING_TRADER_TRADES.forEach((integer, itemListings) -> {
+                allTrades.put(integer.intValue(), new ArrayList<>(Arrays.asList(itemListings)));
+            });
+
+            Events.WANDERING_TRADING.post(new WandererTradingEventJS(allTrades));
+
+            allTrades.forEach((level, listings) -> {
+                var listingsArray = listings.toArray(new VillagerTrades.ItemListing[0]);
+                VillagerTrades.WANDERING_TRADER_TRADES.put(level.intValue(), listingsArray);
+            });
         }
     }
 }

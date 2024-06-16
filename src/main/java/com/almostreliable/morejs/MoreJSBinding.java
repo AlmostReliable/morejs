@@ -10,7 +10,6 @@ import com.almostreliable.morejs.util.Utils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import dev.latvian.mods.rhino.Context;
 import net.minecraft.core.BlockPos;
@@ -31,8 +30,7 @@ import java.util.stream.Stream;
 public class MoreJSBinding {
     @Nullable
     public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int chunkRadius) {
-        ResourceOrTag<Structure> rot = ResourceOrTag.get(structure,
-                Registries.STRUCTURE);
+        ResourceOrTag<Structure> rot = ResourceOrTag.get(structure, Registries.STRUCTURE);
         return LevelUtils.findStructure(position, level, rot, chunkRadius);
     }
 
@@ -94,16 +92,11 @@ public class MoreJSBinding {
             return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
         }
 
-        if (!map.containsKey("firstItem") || !map.containsKey("secondItem") || !map.containsKey("outputItem")) {
-            ConsoleJS.SERVER.error("Trade filter must contain firstItem, secondItem and outputItem");
-            return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
-        }
+        var fc = map.containsKey("firstCost") ? IngredientJS.wrap(cx, map.get("firstCost")) : null;
+        var sc = map.containsKey("secondCost") ? IngredientJS.wrap(cx, map.get("secondCost")) : null;
+        var output = map.containsKey("output") ? IngredientJS.wrap(cx, map.get("output")) : null;
 
-        TradeFilter filter = new TradeFilter(
-                IngredientJS.wrap(cx, map.get("firstItem")),
-                IngredientJS.wrap(cx, map.get("secondItem")),
-                IngredientJS.wrap(cx, map.get("outputItem"))
-        );
+        TradeFilter filter = new TradeFilter(fc, sc, output);
 
         filter.setFirstCountMatcher(range(map.get("firstCount")));
         filter.setSecondCountMatcher(range(map.get("secondCount")));

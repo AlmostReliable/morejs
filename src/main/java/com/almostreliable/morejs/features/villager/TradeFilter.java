@@ -11,21 +11,23 @@ import java.util.Optional;
 import java.util.Set;
 
 public class TradeFilter {
-
+    @Nullable
     private final Ingredient firstMatcher;
+    @Nullable
     private final Ingredient secondMatcher;
+    @Nullable
     private final Ingredient outputMatcher;
-    private IntRange merchantLevelMatch = IntRange.all();
     private IntRange firstCountMatcher = IntRange.all();
     private IntRange secondCountMatcher = IntRange.all();
     private IntRange outputCountMatcher = IntRange.all();
+    private IntRange merchantLevelMatch = IntRange.all();
     private TriConsumer<ItemStack, ItemStack, ItemStack> onMatch = ($1, $2, $3) -> {};
 
     @Nullable private Set<TradeTypes> tradeTypes;
 
     @Nullable private Set<VillagerProfession> professions;
 
-    public TradeFilter(Ingredient firstMatcher, Ingredient secondMatcher, Ingredient outputMatcher) {
+    public TradeFilter(@Nullable Ingredient firstMatcher, @Nullable Ingredient secondMatcher, @Nullable Ingredient outputMatcher) {
         this.firstMatcher = firstMatcher;
         this.secondMatcher = secondMatcher;
         this.outputMatcher = outputMatcher;
@@ -71,8 +73,16 @@ public class TradeFilter {
         return tradeTypes == null || tradeTypes.contains(type);
     }
 
-    private boolean match(Ingredient filter, IntRange countFilter, ItemStack itemStack) {
-        return filter.test(itemStack) && countFilter.test(itemStack.getCount());
+    private boolean match(@Nullable Ingredient filter, IntRange countFilter, ItemStack itemStack) {
+        if (!countFilter.test(itemStack.getCount())) {
+            return false;
+        }
+
+        if (filter == null) {
+            return true;
+        }
+
+        return filter.test(itemStack);
     }
 
     public boolean match(ItemStack costA, ItemStack costB, ItemStack output, TradeTypes type) {
