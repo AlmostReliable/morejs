@@ -15,9 +15,9 @@ import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 public class ForgeEventLoaders {
 
     public static void load(IEventBus bus) {
-        bus.addListener(ForgeEventLoaders::onExperienceChange);
-        bus.addListener(ForgeEventLoaders::chorusFruitTeleport);
-        bus.addListener(ForgeEventLoaders::enderPearlTeleport);
+        NeoForge.EVENT_BUS.addListener(ForgeEventLoaders::onExperienceChange);
+        NeoForge.EVENT_BUS.addListener(ForgeEventLoaders::chorusFruitTeleport);
+        NeoForge.EVENT_BUS.addListener(ForgeEventLoaders::enderPearlTeleport);
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, ForgeEventLoaders::onRegisterPotions);
     }
 

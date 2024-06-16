@@ -1,6 +1,5 @@
 package com.almostreliable.morejs.features.potion;
 
-import com.almostreliable.morejs.mixin.BrewingRecipeRegistryAccessor;
 import com.almostreliable.morejs.mixin.PotionBrewingBuilderAccessor;
 import com.almostreliable.morejs.util.Utils;
 import com.google.common.base.Preconditions;
@@ -145,7 +144,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
 
 
     public void removeByCustom(@Nullable Ingredient topInput, @Nullable Ingredient bottomInput, @Nullable Ingredient output) {
-        ListIterator<IBrewingRecipe> it = BrewingRecipeRegistryAccessor.getRecipes().listIterator();
+        ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
         while (it.hasNext()) {
             IBrewingRecipe recipe = it.next();
             if (!(recipe instanceof BrewingRecipe br)) { // BrewingRecipe is the vanilla one
@@ -169,7 +168,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
     }
 
     public void removeByCustom(Predicate<IBrewingRecipe> predicate) {
-        ListIterator<IBrewingRecipe> it = BrewingRecipeRegistryAccessor.getRecipes().listIterator();
+        ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
         while (it.hasNext()) {
             IBrewingRecipe recipe = it.next();
             if (recipe instanceof BrewingRecipe) {
