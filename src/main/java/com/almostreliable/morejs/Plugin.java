@@ -14,10 +14,6 @@ import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
 import dev.latvian.mods.kubejs.util.ClassFilter;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 public class Plugin implements KubeJSPlugin {
 
     @Override
@@ -29,12 +25,8 @@ public class Plugin implements KubeJSPlugin {
     public void registerBindings(BindingRegistry event) {
         event.add("VillagerUtils", VillagerUtils.class);
         event.add("TradeItem", TradeItem.class);
-        event.add("MoreJS", MoreJSBinding.class);
+        event.add("MoreUtils", MoreJSBinding.class);
         event.add("EnchantmentInstance", EnchantmentInstance.class);
-
-        event.add("Optional", Optional.class);
-        event.add("Collectors", Collectors.class);
-        event.add("Comparator", Comparator.class);
     }
 
     @Override

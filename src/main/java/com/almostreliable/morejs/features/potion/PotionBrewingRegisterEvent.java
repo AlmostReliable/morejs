@@ -38,26 +38,26 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         return BuiltInRegistries.POTION.getKey(potion);
     }
 
-    protected void validate(Ingredient topInput, Ingredient bottomInput, ItemStack output) {
-        Preconditions.checkArgument(topInput.getItems().length > 0, "Top input must have at least one item");
-        Preconditions.checkArgument(bottomInput.getItems().length > 0, "Bottom input must have at least one item");
+    protected void validate(Ingredient ingredient, Ingredient input, ItemStack output) {
+        Preconditions.checkArgument(input.getItems().length > 0, "Input must have at least one item");
+        Preconditions.checkArgument(ingredient.getItems().length > 0, "Ingredient must have at least one item");
         Preconditions.checkArgument(!output.isEmpty(), "Output must not be empty");
     }
 
-    protected void validateSimple(Potion from, Ingredient ingredient, Potion to) {
-        Preconditions.checkNotNull(from, "Input potion must not be null");
+    protected void validateSimple(Ingredient ingredient, Potion input, Potion output) {
+        Preconditions.checkNotNull(input, "Input potion must not be null");
         Preconditions.checkNotNull(ingredient, "Ingredient must not be null");
-        Preconditions.checkNotNull(to, "Output potion must not be null");
+        Preconditions.checkNotNull(output, "Output potion must not be null");
         Preconditions.checkArgument(ingredient.getItems().length > 0, "Ingredient must have at least one item");
     }
 
-    public void addCustomBrewing(Ingredient topInput, Ingredient ingredient, ItemStack output) {
-        validate(topInput, ingredient, output);
-        potionBrewing.addRecipe(topInput, ingredient, output);
+    public void addCustomBrewing(Ingredient ingredient, Ingredient input, ItemStack output) {
+        validate(ingredient, input, output);
+        potionBrewing.addRecipe(input, ingredient, output);
     }
 
     public void addPotionBrewing(Ingredient ingredient, Potion input, Potion output) {
-        validateSimple(input, ingredient, output);
+        validateSimple(ingredient, input, output);
         Holder<Potion> inputRef = BuiltInRegistries.POTION.wrapAsHolder(input);
         Holder<Potion> outputRef = BuiltInRegistries.POTION.wrapAsHolder(output);
         potionBrewingAccessor.morejs$getPotionMixes().add(new PotionBrewing.Mix<>(inputRef, ingredient, outputRef));
@@ -67,7 +67,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         addPotionBrewing(ingredient, Potions.WATER.value(), output);
     }
 
-    public void removeByPotion(@Nullable Potion input, @Nullable Ingredient ingredient, @Nullable Potion output) {
+    public void removePotionBrewing(@Nullable Ingredient ingredient, @Nullable Potion input, @Nullable Potion output) {
         potionBrewingAccessor.morejs$getPotionMixes().removeIf(mix -> {
             boolean matchesInput = input == null || getInputPotionFromMix(mix) == input;
             boolean matchesIngredient = ingredient == null || Utils.matchesIngredient(ingredient, mix.ingredient);
@@ -88,7 +88,6 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
     protected Potion getInputPotionFromMix(PotionBrewing.Mix<Potion> mix) {
         return mix.from.value();
     }
-
 
     protected Potion getOutputPotionFromMix(PotionBrewing.Mix<Potion> mix) {
         return mix.to.value();
@@ -128,22 +127,21 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         }
     }
 
-    public void validateContainer(Item from, Ingredient ingredient, Item output) {
-        Preconditions.checkArgument(from != null && from != Items.AIR, "Input must not be null or air");
+    public void validateContainer(Ingredient ingredient, Item input, Item output) {
+        Preconditions.checkArgument(input != null && input != Items.AIR, "Input must not be null or air");
         Preconditions.checkNotNull(ingredient, "Ingredient must not be null");
         Preconditions.checkArgument(ingredient.getItems().length > 0, "Ingredient must have at least one item");
         Preconditions.checkArgument(output != null && output != Items.AIR, "Output must not be null or air");
     }
 
-    public void addContainerRecipe(Item from, Ingredient ingredient, Item output) {
-        validateContainer(from, ingredient, output);
+    public void addContainerRecipe(Ingredient ingredient, Item input, Item output) {
+        validateContainer(ingredient, input, output);
         //noinspection deprecation
-        var mix = new PotionBrewing.Mix<>(from.builtInRegistryHolder(), ingredient, output.builtInRegistryHolder());
+        var mix = new PotionBrewing.Mix<>(input.builtInRegistryHolder(), ingredient, output.builtInRegistryHolder());
         potionBrewingAccessor.morejs$getContainerMixes().add(mix);
     }
 
-
-    public void removeByCustom(@Nullable Ingredient topInput, @Nullable Ingredient bottomInput, @Nullable Ingredient output) {
+    public void removeCustomBrewing(@Nullable Ingredient ingredient, @Nullable Ingredient input, @Nullable Ingredient output) {
         ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
         while (it.hasNext()) {
             IBrewingRecipe recipe = it.next();
@@ -151,8 +149,8 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
                 continue;
             }
 
-            boolean matchesInput = topInput == null || Utils.matchesIngredient(topInput, br.getIngredient());
-            boolean matchesIngredient = bottomInput == null || Utils.matchesIngredient(bottomInput, br.getInput());
+            boolean matchesInput = ingredient == null || Utils.matchesIngredient(ingredient, br.getIngredient());
+            boolean matchesIngredient = input == null || Utils.matchesIngredient(input, br.getInput());
             boolean matchesOutput = output == null || output.test(br.getOutput());
 
 
@@ -167,7 +165,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         }
     }
 
-    public void removeByCustom(Predicate<IBrewingRecipe> predicate) {
+    public void removeCustomBrewing(Predicate<IBrewingRecipe> predicate) {
         ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
         while (it.hasNext()) {
             IBrewingRecipe recipe = it.next();
