@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.TradeItem;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;

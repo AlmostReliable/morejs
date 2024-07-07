@@ -4,7 +4,7 @@ import com.almostreliable.morejs.mixin.PotionBrewingBuilderAccessor;
 import com.almostreliable.morejs.util.Utils;
 import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.event.KubeEvent;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

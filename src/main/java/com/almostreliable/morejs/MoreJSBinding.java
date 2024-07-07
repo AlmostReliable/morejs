@@ -10,8 +10,8 @@ import com.almostreliable.morejs.util.Utils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
+import dev.latvian.mods.kubejs.util.RegistryAccessContainer;
 import dev.latvian.mods.kubejs.util.UtilsJS;
-import dev.latvian.mods.rhino.Context;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -83,7 +83,7 @@ public class MoreJSBinding {
         return builder.build();
     }
 
-    public static TradeFilter ofTradeFilter(Context cx, @Nullable Object o) {
+    public static TradeFilter ofTradeFilter(RegistryAccessContainer registries, @Nullable Object o) {
         if (o instanceof TradeFilter filter) {
             return filter;
         }
@@ -92,9 +92,9 @@ public class MoreJSBinding {
             return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
         }
 
-        var fc = map.containsKey("firstCost") ? IngredientJS.wrap(cx, map.get("firstCost")) : null;
-        var sc = map.containsKey("secondCost") ? IngredientJS.wrap(cx, map.get("secondCost")) : null;
-        var output = map.containsKey("output") ? IngredientJS.wrap(cx, map.get("output")) : null;
+        var fc = map.containsKey("firstCost") ? IngredientJS.wrap(registries, map.get("firstCost")) : null;
+        var sc = map.containsKey("secondCost") ? IngredientJS.wrap(registries, map.get("secondCost")) : null;
+        var output = map.containsKey("output") ? IngredientJS.wrap(registries, map.get("output")) : null;
 
         TradeFilter filter = new TradeFilter(fc, sc, output);
 
@@ -129,11 +129,11 @@ public class MoreJSBinding {
         return filter;
     }
 
-    public static TradeItem ofTradeItem(Context cx, @Nullable Object o) {
+    public static TradeItem ofTradeItem(RegistryAccessContainer registries, @Nullable Object o) {
         if (o instanceof TradeItem item) {
             return item;
         }
 
-        return TradeItem.of(ItemStackJS.wrap(cx, o));
+        return TradeItem.of(ItemStackJS.wrap(registries, o));
     }
 }

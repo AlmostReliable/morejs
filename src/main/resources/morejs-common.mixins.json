@@ -6,7 +6,6 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "PotionBrewingBuilderAccessor",
-    "enchanting.EnchantmentMenuMixin",
     "entity.PiglinSpecificSensorMixin",
     "structure.StructureBlockInfoMixin",
     "structure.StructureManagerMixin",
@@ -28,7 +27,6 @@
     "villager.WanderingTraderMixin"
   ],
   "client": [
-    "enchanting.EnchantmentScreenMixin",
     "villager.MerchantScreenMixin"
   ],
   "injectors": {

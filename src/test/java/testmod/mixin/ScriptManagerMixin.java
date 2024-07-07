@@ -1,7 +1,6 @@
 package testmod.mixin;
 
 
-import com.almostreliable.morejs.MoreJS;
 import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.script.*;
 import org.spongepowered.asm.mixin.Final;
@@ -19,10 +18,10 @@ public abstract class ScriptManagerMixin {
 
     @Shadow @Final public ScriptType scriptType;
 
-    @Shadow
-    protected abstract void loadFile(ScriptPack pack, ScriptFileInfo fileInfo, ScriptSource source);
-
     @Shadow @Final public Map<String, ScriptPack> packs;
+
+    @Shadow
+    protected abstract void loadFile(ScriptPack pack, ScriptFileInfo fileInfo);
 
     @Inject(method = "reload", at = @At(value = "INVOKE", target = "Ldev/latvian/mods/kubejs/script/ScriptManager;load()V"))
     private void testmod$test(CallbackInfo ci) {
@@ -35,20 +34,16 @@ public abstract class ScriptManagerMixin {
             return;
         }
 
-        try {
-            Path p = Path.of(prop);
-            var packInfo = new ScriptPackInfo("server_examples", "");
-            var pack = new ScriptPack((ScriptManager) (Object) this, packInfo);
-            KubeJS.loadScripts(pack, p, "");
+        Path p = Path.of(prop);
+        var packInfo = new ScriptPackInfo("server_examples", "");
+        var pack = new ScriptPack((ScriptManager) (Object) this, packInfo);
+        KubeJS.loadScripts(pack, p, "");
 
-            for (var script : pack.info.scripts) {
-                loadFile(pack, script, (ScriptSource.FromPath) info -> p.resolve(info.file));
-            }
-
-            pack.scripts.sort(null);
-            this.packs.put("server_examples", pack);
-        } catch (Exception e) {
-            MoreJS.LOG.error("Error loading example scripts: ", e);
+        for (var script : pack.info.scripts) {
+            loadFile(pack, script);
         }
+
+        pack.scripts.sort(null);
+        this.packs.put("server_examples", pack);
     }
 }

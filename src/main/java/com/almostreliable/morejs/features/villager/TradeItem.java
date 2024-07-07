@@ -58,4 +58,16 @@ public class TradeItem {
     public boolean isEmpty() {
         return itemStack.isEmpty();
     }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    public IntRange getCountRange() {
+        if (countRange == null) {
+            return new IntRange(1, 1);
+        }
+
+        return countRange;
+    }
 }

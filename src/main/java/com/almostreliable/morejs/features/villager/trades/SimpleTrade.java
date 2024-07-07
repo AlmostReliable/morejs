@@ -16,6 +16,10 @@ public class SimpleTrade extends TransformableTrade<SimpleTrade> {
         this.output = output;
     }
 
+    public TradeItem getOutput() {
+        return output;
+    }
+
     @Nullable
     @Override
     public MerchantOffer createOffer(Entity trader, RandomSource random) {

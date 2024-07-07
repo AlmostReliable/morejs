@@ -76,6 +76,14 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
         return new MerchantOffer(fi, si, output, maxUses, villagerExperience, priceMultiplier);
     }
 
+    public TradeItem getFirstInput() {
+        return firstInput;
+    }
+
+    public TradeItem getSecondInput() {
+        return secondInput;
+    }
+
     public interface Transformer {
         void accept(MerchantOffer offer, Entity entity, RandomSource random);
     }

@@ -1,7 +1,7 @@
 package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.OfferExtension;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

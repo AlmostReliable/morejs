@@ -6,20 +6,13 @@ import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.util.WeightedList;
-import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
+import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
-import dev.latvian.mods.kubejs.util.ClassFilter;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 
 public class Plugin implements KubeJSPlugin {
-
-    @Override
-    public void registerClasses(ScriptType type, ClassFilter filter) {
-        filter.allow(MoreJS.class.getPackage().getName());
-    }
 
     @Override
     public void registerBindings(BindingRegistry event) {
