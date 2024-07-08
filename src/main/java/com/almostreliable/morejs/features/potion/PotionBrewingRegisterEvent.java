@@ -69,32 +69,19 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
 
     public void removePotionBrewing(@Nullable Ingredient ingredient, @Nullable Potion input, @Nullable Potion output) {
         potionBrewingAccessor.morejs$getPotionMixes().removeIf(mix -> {
-            boolean matchesInput = input == null || getInputPotionFromMix(mix) == input;
-            boolean matchesIngredient = ingredient == null || Utils.matchesIngredient(ingredient, mix.ingredient);
-            boolean matchesOutput = output == null || getOutputPotionFromMix(mix) == output;
+            boolean matchesInput = input == null || mix.from().value() == input;
+            boolean matchesIngredient = ingredient == null || Utils.matchesIngredient(ingredient, mix.ingredient());
+            boolean matchesOutput = output == null || mix.to().value() == output;
             boolean matches = matchesInput && matchesIngredient && matchesOutput;
             if (matches) {
                 ConsoleJS.STARTUP.info(
                         "Removed potion brewing recipe: " +
-                        key(getInputPotionFromMix(mix)) + " + " +
-                        StringUtils.abbreviate(mix.ingredient.toString(), 64) + " -> " +
-                        key(getOutputPotionFromMix(mix)));
+                        mix.from() + " + " +
+                        StringUtils.abbreviate(mix.ingredient().toString(), 64) + " -> " +
+                        mix.to());
             }
             return matches;
         });
-    }
-
-
-    protected Potion getInputPotionFromMix(PotionBrewing.Mix<Potion> mix) {
-        return mix.from.value();
-    }
-
-    protected Potion getOutputPotionFromMix(PotionBrewing.Mix<Potion> mix) {
-        return mix.to.value();
-    }
-
-    protected Item getOutputItemFromMix(PotionBrewing.Mix<Item> mix) {
-        return mix.to.value();
     }
 
     public void removeContainer(Ingredient ingredient) {
@@ -115,7 +102,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         var mixIt = potionBrewingAccessor.morejs$getContainerMixes().listIterator();
         while (mixIt.hasNext()) {
             PotionBrewing.Mix<Item> mix = mixIt.next();
-            var output = getOutputItemFromMix(mix);
+            var output = mix.to().value();
             if (ingredient.test(output.getDefaultInstance())) {
                 mixIt.remove();
                 removed.add(output);
