@@ -32,7 +32,4 @@ ordering = "NONE"
 side = "BOTH"
 
 [[mixins]]
-config = "morejs-common.mixins.json"
-
-[[mixins]]
-config = "morejs-forge.mixins.json"
+config = "morejs.mixins.json"

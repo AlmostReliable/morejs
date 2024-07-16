@@ -1,4 +1,4 @@
-package com.almostreliable.morejs.mixin;
+package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.TradingManager;
 import net.neoforged.neoforge.common.VillagerTradingManager;

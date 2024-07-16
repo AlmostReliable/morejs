@@ -2,7 +2,6 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.almostreliable.morejs.mixin",
-  "refmap": "morejs.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "PotionBrewingBuilderAccessor",
@@ -12,6 +11,7 @@
     "structure.StructureStartMixin",
     "structure.StructureTemplateMixin",
     "villager.AbstractVillagerMixin",
+    "villager.BasicItemListingMixin",
     "villager.MerchantMenuMixin",
     "villager.MerchantOfferAccessor",
     "villager.MerchantOfferMixin",
@@ -24,6 +24,7 @@
     "villager.VillagerTradesMixin$SuspiciousStewForEmeraldMixin",
     "villager.VillagerTradesMixin$TippedArrowForItemsAndEmeraldsMixin",
     "villager.VillagerTradesMixin$TreasureMapForEmeraldsMixin",
+    "villager.VillagerTradingManagerMixin",
     "villager.WanderingTraderMixin"
   ],
   "client": [

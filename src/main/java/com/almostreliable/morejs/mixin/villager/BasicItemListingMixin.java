@@ -1,4 +1,4 @@
-package com.almostreliable.morejs.mixin;
+package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeTypes;
