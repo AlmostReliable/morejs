@@ -1,22 +1,19 @@
 package com.almostreliable.morejs;
 
+import com.almostreliable.morejs.features.villager.MerchantOfferCodecPatch;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ServiceLoader;
-
+@Mod(BuildConfig.MOD_ID)
 public class MoreJS {
 
-    public static final Logger LOG = LogManager.getLogger(BuildConfig.MOD_NAME + "/enchanting");
-    public static final MoreJSPlatform PLATFORM = load();
+    public static final Logger LOG = LogManager.getLogger(BuildConfig.MOD_NAME);
     public static final String DISABLED_TAG = "morejs$disabled";
 
-    static MoreJSPlatform load() {
-        Class<MoreJSPlatform> clazz = MoreJSPlatform.class;
-        final MoreJSPlatform loadedService = ServiceLoader.load(clazz)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        MoreJS.LOG.debug("Loaded {} for service {}", loadedService, clazz);
-        return loadedService;
+    public MoreJS(IEventBus bus) {
+        ForgeEventLoaders.load(bus);
+        MerchantOfferCodecPatch.patch();
     }
 }
