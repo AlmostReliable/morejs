@@ -56,7 +56,6 @@ neoForge {
             systemProperty("neoforge.gameTestServer", "true")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             systemProperty("$modId.example_scripts", exampleScripts)
-            programArguments.addAll("--quickPlaySingleplayer", "New World")
         }
         create("client") {
             client()

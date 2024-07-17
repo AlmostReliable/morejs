@@ -34,9 +34,9 @@ public abstract class EnchantmentScreenMixin extends AbstractContainerScreen<Enc
 
         if (this.menu instanceof EnchantmentMenuExtension extension) {
             EnchantmentTableTooltipEventJS e = new EnchantmentTableTooltipEventJS(extension
-                    .getMoreJsEnchantSlots()
+                    .morejs$getContainer()
                     .getItem(0),
-                    extension.getMoreJsEnchantSlots().getItem(1),
+                    extension.morejs$getContainer().getItem(1),
                     Minecraft.getInstance().level,
                     Minecraft.getInstance().player,
                     this.menu,

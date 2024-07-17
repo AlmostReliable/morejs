@@ -23,12 +23,12 @@ public interface Events {
     EventHandler UPDATE_VILLAGER_OFFERS = GROUP.server("updateVillagerOffers", () -> UpdateVillagerOffersEventJS.class);
     EventHandler UPDATE_WANDERER_OFFERS = GROUP.server("updateWandererOffers",
             () -> UpdateAbstractVillagerOffersEventJS.class);
-    EventHandler ENCHANTMENT_TABLE_IS_ENCHANTABLE = GROUP.server("enchantmentTableIsEnchantable",
+    EventHandler IS_ENCHANTABLE = GROUP.server("isEnchantable",
             () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_CHANGED = GROUP.server("enchantmentTableChanged",
             () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_ENCHANT = GROUP
-            .server("enchantmentTableEnchant", () -> PlayerEnchantEventJS.class)
+            .server("playerEnchant", () -> PlayerEnchantEventJS.class)
             .hasResult();
     EventHandler ENCHANTMENT_TABLE_TOOLTIP = GROUP.client("enchantmentTableTooltip",
             () -> EnchantmentTableTooltipEventJS.class);

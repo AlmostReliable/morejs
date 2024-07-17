@@ -2,6 +2,8 @@ package com.almostreliable.morejs.features.enchantment;
 
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.google.common.base.Preconditions;
+import dev.latvian.mods.kubejs.event.EventResult;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -19,11 +21,12 @@ import java.util.function.BiConsumer;
 
 public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
 
-    protected final EnchantmentMenuProcess state;
+    protected final EnchantmentMenuState state;
     private final BlockPos pos;
     private boolean itemChanged;
+    private final Int2ObjectOpenHashMap<EnchantmentData> enchantments = new Int2ObjectOpenHashMap<>();
 
-    public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuProcess state) {
+    public EnchantmentTableServerEventJS(ItemStack item, ItemStack secondItem, Level level, BlockPos pos, Player player, EnchantmentMenuState state) {
         super(item, secondItem, level, player, state.getMenu());
         this.pos = pos;
         this.state = state;
@@ -33,9 +36,12 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
         return pos;
     }
 
-    public Data get(int index) {
+    public EnchantmentData get(int index) {
         Preconditions.checkElementIndex(index, getSize());
-        return new Data(index);
+        return enchantments.computeIfAbsent(index, i -> {
+            List<EnchantmentInstance> eis = state.getEnchantments(i);
+            return new EnchantmentData(eis, i, state.getMenu(), getLevel());
+        });
     }
 
     public int getSize() {
@@ -49,6 +55,19 @@ public class EnchantmentTableServerEventJS extends EnchantmentTableEventJS {
 
     public boolean itemWasChanged() {
         return itemChanged;
+    }
+
+    @Override
+    public void afterPosted(EventResult result) {
+        super.afterPosted(result);
+
+        // If the enchantments are cleared we want also to clear the required level.
+        enchantments.forEach((integer, data) -> {
+            if (data.getEnchantments().isEmpty()) {
+                data.setRequiredLevel(0);
+                data.clearClue();
+            }
+        });
     }
 
     public class Data {
