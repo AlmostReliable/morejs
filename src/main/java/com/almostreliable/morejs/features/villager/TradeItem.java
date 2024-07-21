@@ -47,12 +47,14 @@ public class TradeItem {
     }
 
     public ItemCost createItemCost(RandomSource random) {
-        int c = countRange == null ? 1 : countRange.getRandom(random);
-
         ItemStack copy = itemStack.copy();
+        if (countRange != null) {
+            copy.setCount(countRange.getRandom(random));
+        }
+
         DataComponentPredicate dcp = DataComponentPredicate.allOf(copy.getComponents());
         //noinspection deprecation
-        return new ItemCost(copy.getItem().builtInRegistryHolder(), c, dcp, copy);
+        return new ItemCost(copy.getItem().builtInRegistryHolder(), copy.getCount(), dcp, copy);
     }
 
     public boolean isEmpty() {

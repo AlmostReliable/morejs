@@ -2,6 +2,7 @@ package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeItem;
+import com.almostreliable.morejs.features.villager.TradeMatcher;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
@@ -50,19 +51,17 @@ public class WandererTradingEventJS implements KubeEvent {
 
     public void removeTrades(TradeFilter filter) {
         trades.forEach((level, listings) -> {
-            filter.onMatch((first, second, output) -> ConsoleJS.SERVER.info(
+            var matcher = new TradeMatcher(filter, (first, second, output) -> ConsoleJS.SERVER.info(
                     "Removing wanderer trade for level " + level + ": " + first + " & " + second + " -> " + output));
 
-            if (!filter.matchMerchantLevel(level)) {
-                return;
+            if (matcher.matchMerchantLevel(level)) {
+                listings.removeIf(itemListing -> {
+                    if (itemListing instanceof TradeMatcher.Filterable filterable) {
+                        return filterable.matchesTradeFilter(matcher);
+                    }
+                    return false;
+                });
             }
-
-            listings.removeIf(itemListing -> {
-                if (itemListing instanceof TradeFilter.Filterable filterable) {
-                    return filterable.matchesTradeFilter(filter);
-                }
-                return false;
-            });
         });
     }
 
@@ -70,6 +69,7 @@ public class WandererTradingEventJS implements KubeEvent {
         getTrades(1).removeIf(VillagerUtils::isVanillaTrade);
         getTrades(2).removeIf(VillagerUtils::isVanillaTrade);
     }
+
     public void removeVanillaTrades(int level) {
         checkLevel(level);
         getTrades(level).removeIf(VillagerUtils::isVanillaTrade);

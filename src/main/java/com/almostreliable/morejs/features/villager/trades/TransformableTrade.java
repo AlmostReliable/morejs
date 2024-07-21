@@ -2,6 +2,7 @@ package com.almostreliable.morejs.features.villager.trades;
 
 import com.almostreliable.morejs.features.villager.TradeItem;
 import com.google.common.base.Preconditions;
+import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -41,6 +42,7 @@ public abstract class TransformableTrade<T extends VillagerTrades.ItemListing>
         return offer;
     }
 
+    @HideFromJS
     @Nullable
     public abstract MerchantOffer createOffer(Entity entity, RandomSource random);
 

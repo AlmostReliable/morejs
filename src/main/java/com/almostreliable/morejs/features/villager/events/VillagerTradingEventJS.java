@@ -1,9 +1,6 @@
 package com.almostreliable.morejs.features.villager.events;
 
-import com.almostreliable.morejs.features.villager.IntRange;
-import com.almostreliable.morejs.features.villager.TradeFilter;
-import com.almostreliable.morejs.features.villager.TradeItem;
-import com.almostreliable.morejs.features.villager.VillagerUtils;
+import com.almostreliable.morejs.features.villager.*;
 import com.almostreliable.morejs.features.villager.trades.CustomTrade;
 import com.almostreliable.morejs.features.villager.trades.SimpleTrade;
 import com.almostreliable.morejs.features.villager.trades.TransformableTrade;
@@ -11,6 +8,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Table;
 import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.kubejs.script.ConsoleJS;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 
@@ -28,13 +27,14 @@ public class VillagerTradingEventJS implements KubeEvent {
         trades = allTrades;
     }
 
-    public List<VillagerTrades.ItemListing> getTrades(VillagerProfession profession, int level) {
+    public List<VillagerTrades.ItemListing> getTrades(Holder<VillagerProfession> profession, int level) {
         Preconditions.checkArgument(1 <= level && level <= 5, "Level must be between 1 and 5");
-        Preconditions.checkArgument(!profession.equals(VillagerProfession.NONE), "No or invalid profession specified");
-        return trades.get(profession, level);
+        Preconditions.checkArgument(!profession.value().equals(VillagerProfession.NONE),
+                "No or invalid profession specified");
+        return Objects.requireNonNull(trades.get(profession.value(), level));
     }
 
-    public SimpleTrade addTrade(VillagerProfession profession, int level, TradeItem[] inputs, TradeItem output) {
+    public SimpleTrade addTrade(Holder<VillagerProfession> profession, int level, TradeItem[] inputs, TradeItem output) {
         Preconditions.checkArgument(!output.isEmpty(), "Sell item cannot be empty");
         Preconditions.checkArgument(inputs.length != 0, "Buyer items cannot be empty");
         Preconditions.checkArgument(Arrays.stream(inputs).noneMatch(TradeItem::isEmpty), "Buyer items cannot be empty");
@@ -43,62 +43,65 @@ public class VillagerTradingEventJS implements KubeEvent {
         return addTrade(profession, level, trade);
     }
 
-    public <T extends VillagerTrades.ItemListing> T addTrade(VillagerProfession profession, int level, T trade) {
+    public <T extends VillagerTrades.ItemListing> T addTrade(Holder<VillagerProfession> profession, int level, T trade) {
         Objects.requireNonNull(trade);
         getTrades(profession, level).add(trade);
         return trade;
     }
 
-    public void addCustomTrade(VillagerProfession profession, int level, TransformableTrade.Transformer transformer) {
+    public void addCustomTrade(Holder<VillagerProfession> profession, int level, TransformableTrade.Transformer transformer) {
         getTrades(profession, level).add(new CustomTrade(transformer));
     }
 
     public void removeTrades(TradeFilter filter) {
         forEachTrades((listings, level, profession) -> {
-            filter.onMatch((first, second, output) -> {
-                String secondStr = second == null ? "" : " & " + second;
+            var matcher = new TradeMatcher(filter, (first, second, output) -> {
+                String secondStr = second == null || second.isEmpty() ? "" : " & " + second;
 
+                var profId = BuiltInRegistries.VILLAGER_PROFESSION.getKey(profession);
                 ConsoleJS.SERVER.info(
-                        "Removing villager trade for profession " + profession + " for level " + level + ": " + first +
+                        "Removing villager trade for profession '" + profId + "' for level " + level + ": " + first +
                         secondStr + " -> " + output);
             });
 
-            if (!filter.matchProfession(profession)) {
-                return;
+            if (matcher.matchProfession(profession) && matcher.matchMerchantLevel(level)) {
+                listings.removeIf(itemListing -> {
+                    if (itemListing instanceof TradeMatcher.Filterable filterable) {
+                        return filterable.matchesTradeFilter(matcher);
+                    }
+                    return false;
+                });
             }
-
-            if (!filter.matchMerchantLevel(level)) {
-                return;
-            }
-
-            listings.removeIf(itemListing -> {
-                if (itemListing instanceof TradeFilter.Filterable filterable) {
-                    return filterable.matchesTradeFilter(filter);
-                }
-                return false;
-            });
         });
     }
 
-    public void removeVanillaTrades() {
+    public void removeVanillaTypedTrades() {
         forEachTrades((listings, level, profession) -> {
             listings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
 
-    public void removeVanillaTrades(VillagerProfession[] professions, IntRange intRange) {
+    public void removeVanillaTypedTrades(List<Holder<VillagerProfession>> profession) {
+        removeVanillaTypedTrades(profession, IntRange.all());
+    }
+
+    public void removeVanillaTypedTrades(List<Holder<VillagerProfession>> professions, IntRange intRange) {
         forEachTrades(professions, intRange, itemListings -> {
             itemListings.removeIf(VillagerUtils::isVanillaTrade);
         });
     }
 
-    public void removeModdedTrades() {
+    public void removeModdedTypedTrades() {
         forEachTrades((listings, level, profession) -> {
             listings.removeIf(VillagerUtils::isModdedTrade);
         });
     }
 
-    public void removeModdedTrades(VillagerProfession[] professions, IntRange intRange) {
+    public void removeModdedTypedTrades(List<Holder<VillagerProfession>> profession) {
+        removeModdedTypedTrades(profession, IntRange.all());
+    }
+
+    public void removeModdedTypedTrades(List<Holder<VillagerProfession>> professions, IntRange intRange) {
         forEachTrades(professions, intRange, itemListings -> {
             itemListings.removeIf(VillagerUtils::isModdedTrade);
         });
@@ -112,8 +115,8 @@ public class VillagerTradingEventJS implements KubeEvent {
         });
     }
 
-    public void forEachTrades(VillagerProfession[] professions, IntRange intRange, Consumer<List<VillagerTrades.ItemListing>> consumer) {
-        Set<VillagerProfession> filter = Arrays.stream(professions).collect(Collectors.toSet());
+    public void forEachTrades(List<Holder<VillagerProfession>> professions, IntRange intRange, Consumer<List<VillagerTrades.ItemListing>> consumer) {
+        Set<VillagerProfession> filter = professions.stream().map(Holder::value).collect(Collectors.toSet());
         forEachTrades((itemListings, level, profession) -> {
             if (filter.contains(profession) && intRange.test(level)) {
                 consumer.accept(itemListings);

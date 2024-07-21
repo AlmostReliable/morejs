@@ -2,7 +2,6 @@ package com.almostreliable.morejs;
 
 import com.almostreliable.morejs.core.Events;
 import com.almostreliable.morejs.features.villager.IntRange;
-import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeItem;
 import com.almostreliable.morejs.features.villager.VillagerUtils;
 import com.almostreliable.morejs.util.WeightedList;
@@ -27,7 +26,6 @@ public class Plugin implements KubeJSPlugin {
         typeWrappers.register(TradeItem.class, MoreJSBinding::ofTradeItem);
         typeWrappers.register(IntRange.class, MoreJSBinding::range);
         typeWrappers.register(WeightedList.class, MoreJSBinding::ofWeightedList);
-        typeWrappers.register(TradeFilter.class, MoreJSBinding::ofTradeFilter);
     }
 
     @Override

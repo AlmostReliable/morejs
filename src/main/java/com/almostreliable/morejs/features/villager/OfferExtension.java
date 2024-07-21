@@ -6,20 +6,22 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.trading.ItemCost;
+import net.minecraft.world.item.trading.MerchantOffer;
 
 @RemapPrefixForJS("morejs$")
 public interface OfferExtension {
+
+    MerchantOffer morejs$self();
 
     boolean morejs$isDisabled();
 
     void morejs$setDisabled(boolean disabled);
 
-    ItemCost morejs$getFirstCost();
+    ItemStack morejs$getFirstCost();
 
     void morejs$setFirstCost(ItemStack itemStack);
 
-    ItemCost morejs$getSecondCost();
+    ItemStack morejs$getSecondCost();
 
     void morejs$setSecondCost(ItemStack itemStack);
 
@@ -40,13 +42,16 @@ public interface OfferExtension {
     boolean morejs$isRewardingExp();
 
     default void morejs$replaceEmeralds(Item replacement) {
-        if (morejs$getFirstCost().test(new ItemStack(Items.EMERALD))) {
-            morejs$setFirstCost(new ItemStack(replacement, morejs$getFirstCost().count()));
+        if (morejs$self().getItemCostA().test(new ItemStack(Items.EMERALD))) {
+            morejs$setFirstCost(new ItemStack(replacement, morejs$getFirstCost().getCount()));
         }
 
-        if (morejs$getSecondCost().test(new ItemStack(Items.EMERALD))) {
-            morejs$setSecondCost(new ItemStack(replacement, morejs$getSecondCost().count()));
-        }
+        morejs$self().getItemCostB().ifPresent(cost -> {
+            if (cost.test(new ItemStack(Items.EMERALD))) {
+                morejs$setSecondCost(new ItemStack(replacement, morejs$getSecondCost().getCount()));
+            }
+        });
+
 
         if (morejs$getOutput().getItem() == Items.EMERALD) {
             morejs$setOutput(new ItemStack(replacement, morejs$getOutput().getCount()));
@@ -54,13 +59,15 @@ public interface OfferExtension {
     }
 
     default void morejs$replaceItems(Ingredient filter, ItemStack itemStack) {
-        if (Utils.matchesItemCost(filter, morejs$getFirstCost())) {
+        if (Utils.matchesItemCost(filter, morejs$self().getItemCostA())) {
             morejs$setFirstCost(itemStack.copy());
         }
 
-        if (Utils.matchesItemCost(filter, morejs$getSecondCost())) {
-            morejs$setSecondCost(itemStack.copy());
-        }
+        morejs$self().getItemCostB().ifPresent(cost -> {
+            if (Utils.matchesItemCost(filter, cost)) {
+                morejs$setSecondCost(itemStack.copy());
+            }
+        });
 
         if (filter.test(morejs$getOutput())) {
             morejs$setOutput(itemStack.copy());

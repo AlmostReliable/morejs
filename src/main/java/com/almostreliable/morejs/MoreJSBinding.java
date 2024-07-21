@@ -1,31 +1,22 @@
 package com.almostreliable.morejs;
 
 import com.almostreliable.morejs.features.villager.IntRange;
-import com.almostreliable.morejs.features.villager.TradeFilter;
 import com.almostreliable.morejs.features.villager.TradeItem;
-import com.almostreliable.morejs.features.villager.TradeTypes;
 import com.almostreliable.morejs.util.LevelUtils;
 import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.Utils;
 import com.almostreliable.morejs.util.WeightedList;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
-import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
 import dev.latvian.mods.kubejs.util.RegistryAccessContainer;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
 import javax.annotation.Nullable;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class MoreJSBinding {
     @Nullable
@@ -53,7 +44,7 @@ public class MoreJSBinding {
             return switch (list.size()) {
                 case 0 -> IntRange.all();
                 case 1 -> range(list.get(0));
-                default -> new IntRange(UtilsJS.parseInt(list.get(0), 1), UtilsJS.parseInt(list.get(0), 5));
+                default -> new IntRange(UtilsJS.parseInt(list.get(0), 1), UtilsJS.parseInt(list.get(1), 5));
             };
         }
 
@@ -81,52 +72,6 @@ public class MoreJSBinding {
             }
         }
         return builder.build();
-    }
-
-    public static TradeFilter ofTradeFilter(RegistryAccessContainer registries, @Nullable Object o) {
-        if (o instanceof TradeFilter filter) {
-            return filter;
-        }
-
-        if (!(o instanceof Map<?, ?> map)) {
-            return new TradeFilter(Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY);
-        }
-
-        var fc = map.containsKey("firstCost") ? IngredientJS.wrap(registries, map.get("firstCost")) : null;
-        var sc = map.containsKey("secondCost") ? IngredientJS.wrap(registries, map.get("secondCost")) : null;
-        var output = map.containsKey("output") ? IngredientJS.wrap(registries, map.get("output")) : null;
-
-        TradeFilter filter = new TradeFilter(fc, sc, output);
-
-        filter.setFirstCountMatcher(range(map.get("firstCount")));
-        filter.setSecondCountMatcher(range(map.get("secondCount")));
-        filter.setOutputCountMatcher(range(map.get("outputCount")));
-
-        if (map.get("types") instanceof List<?> list) {
-            Set<String> allTypes = Stream.of(TradeTypes.values()).map(TradeTypes::name).collect(Collectors.toSet());
-            Set<TradeTypes> types = list
-                    .stream()
-                    .map(Object::toString)
-                    .filter(allTypes::contains)
-                    .map(TradeTypes::valueOf)
-                    .collect(Collectors.toSet());
-            filter.setTradeTypes(types);
-        }
-
-        if (map.get("professions") instanceof List<?> list) {
-            Set<VillagerProfession> professions = list
-                    .stream()
-                    .map(Object::toString)
-                    .map(ResourceLocation::tryParse)
-                    .filter(Objects::nonNull)
-                    .map(BuiltInRegistries.VILLAGER_PROFESSION::getOptional)
-                    .flatMap(Optional::stream)
-                    .collect(Collectors.toSet());
-            filter.setProfessions(professions);
-        }
-
-        filter.setMerchantLevelMatcher(range(map.get("level")));
-        return filter;
     }
 
     public static TradeItem ofTradeItem(RegistryAccessContainer registries, @Nullable Object o) {

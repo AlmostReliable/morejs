@@ -4,7 +4,6 @@ import com.almostreliable.morejs.features.villager.OfferExtension;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import org.spongepowered.asm.mixin.*;
@@ -30,6 +29,11 @@ public class MerchantOfferMixin implements OfferExtension {
     @Unique private boolean morejs$isDisabled;
 
     @Override
+    public MerchantOffer morejs$self() {
+        return (MerchantOffer) (Object) this;
+    }
+
+    @Override
     public boolean morejs$isDisabled() {
         return this.morejs$isDisabled;
     }
@@ -40,8 +44,8 @@ public class MerchantOfferMixin implements OfferExtension {
     }
 
     @Override
-    public ItemCost morejs$getFirstCost() {
-        return this.baseCostA;
+    public ItemStack morejs$getFirstCost() {
+        return this.baseCostA.itemStack();
     }
 
     @Override
@@ -56,8 +60,8 @@ public class MerchantOfferMixin implements OfferExtension {
     }
 
     @Override
-    public ItemCost morejs$getSecondCost() {
-        return this.costB.orElseGet(() -> new ItemCost(Items.AIR, 0));
+    public ItemStack morejs$getSecondCost() {
+        return this.costB.map(ItemCost::itemStack).orElse(ItemStack.EMPTY);
     }
 
     @Override
