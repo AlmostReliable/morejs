@@ -2,15 +2,15 @@ package com.almostreliable.morejs;
 
 import com.almostreliable.morejs.features.villager.IntRange;
 import com.almostreliable.morejs.features.villager.TradeItem;
-import com.almostreliable.morejs.util.LevelUtils;
-import com.almostreliable.morejs.util.ResourceOrTag;
 import com.almostreliable.morejs.util.Utils;
 import com.almostreliable.morejs.util.WeightedList;
+import com.mojang.datafixers.util.Pair;
 import dev.latvian.mods.kubejs.item.ItemStackJS;
 import dev.latvian.mods.kubejs.util.RegistryAccessContainer;
 import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -20,15 +20,30 @@ import java.util.List;
 
 public class MoreJSBinding {
     @Nullable
-    public static BlockPos findStructure(BlockPos position, ServerLevel level, String structure, int chunkRadius) {
-        ResourceOrTag<Structure> rot = ResourceOrTag.get(structure, Registries.STRUCTURE);
-        return LevelUtils.findStructure(position, level, rot, chunkRadius);
+    public static BlockPos findStructure(BlockPos position, ServerLevel level, HolderSet<Structure> structures, int chunkRadius) {
+        var result = level
+                .getChunkSource()
+                .getGenerator()
+                .findNearestMapStructure(level, structures, position, chunkRadius, true);
+        if (result == null) {
+            return null;
+        }
+
+        return result.getFirst();
     }
 
     @Nullable
-    public static BlockPos findBiome(BlockPos position, ServerLevel level, String biome, int chunkRadius) {
-        ResourceOrTag<Biome> rot = ResourceOrTag.get(biome, Registries.BIOME);
-        return LevelUtils.findBiome(position, level, rot, chunkRadius);
+    public static BlockPos findBiome(BlockPos position, ServerLevel level, HolderSet<Biome> biomes, int chunkRadius) {
+        Pair<BlockPos, Holder<Biome>> nearestBiome = level.findClosestBiome3d(biomes::contains,
+                position,
+                chunkRadius * 16,
+                32,
+                64);
+        if (nearestBiome != null) {
+            return nearestBiome.getFirst();
+        }
+
+        return null;
     }
 
     public static WeightedList.Builder<Object> weightedList() {

@@ -21,6 +21,7 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     maven("https://maven.saps.dev/minecraft")
     maven("https://www.cursemaven.com")
 }

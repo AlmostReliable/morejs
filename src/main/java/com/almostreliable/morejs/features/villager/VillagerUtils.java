@@ -1,8 +1,10 @@
 package com.almostreliable.morejs.features.villager;
 
+import com.almostreliable.morejs.MoreJSBinding;
 import com.almostreliable.morejs.features.villager.trades.*;
-import com.almostreliable.morejs.util.WeightedList;
+import com.almostreliable.morejs.util.BlockPosFinder;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +13,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.Structure;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -66,15 +70,17 @@ public class VillagerUtils {
         return new CustomTrade(transformer);
     }
 
-    public static TreasureMapTrade createStructureMapTrade(TradeItem[] inputs, WeightedList<Object> structures) {
-        return TreasureMapTrade.forStructure(inputs, structures);
+    public static TreasureMapTrade createStructureMapTrade(TradeItem[] inputs, HolderSet<Structure> structures) {
+        return new TreasureMapTrade(inputs,
+                (level, entity) -> MoreJSBinding.findStructure(entity.blockPosition(), level, structures, 100));
     }
 
-    public static TreasureMapTrade createBiomeMapTrade(TradeItem[] inputs, WeightedList<Object> biomes) {
-        return TreasureMapTrade.forBiome(inputs, biomes);
+    public static TreasureMapTrade createBiomeMapTrade(TradeItem[] inputs, HolderSet<Biome> biomes) {
+        return new TreasureMapTrade(inputs,
+                (level, entity) -> MoreJSBinding.findBiome(entity.blockPosition(), level, biomes, 250));
     }
 
-    public static TreasureMapTrade createCustomMapTrade(TradeItem[] inputs, MapPosInfo.Provider func) {
+    public static TreasureMapTrade createCustomMapTrade(TradeItem[] inputs, BlockPosFinder func) {
         return new TreasureMapTrade(inputs, func);
     }
 
