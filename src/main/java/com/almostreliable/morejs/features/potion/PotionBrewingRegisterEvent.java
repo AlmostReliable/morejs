@@ -19,10 +19,9 @@ import net.neoforged.neoforge.common.brewing.BrewingRecipe;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ListIterator;
-import java.util.function.Predicate;
 
 public class PotionBrewingRegisterEvent implements KubeEvent {
 
@@ -67,20 +66,18 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         addPotionBrewing(ingredient, Potions.WATER.value(), output);
     }
 
-    public void removePotionBrewing(@Nullable Ingredient ingredient, @Nullable Potion input, @Nullable Potion output) {
+    public void removePotionBrewing(PotionBrewingFilter filter) {
         potionBrewingAccessor.morejs$getPotionMixes().removeIf(mix -> {
-            boolean matchesInput = input == null || mix.from().value() == input;
-            boolean matchesIngredient = ingredient == null || Utils.matchesIngredient(ingredient, mix.ingredient());
-            boolean matchesOutput = output == null || mix.to().value() == output;
-            boolean matches = matchesInput && matchesIngredient && matchesOutput;
-            if (matches) {
+            if (filter.test(mix)) {
                 ConsoleJS.STARTUP.info(
                         "Removed potion brewing recipe: " +
                         mix.from() + " + " +
                         StringUtils.abbreviate(mix.ingredient().toString(), 64) + " -> " +
                         mix.to());
+                return true;
             }
-            return matches;
+
+            return false;
         });
     }
 
@@ -128,7 +125,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         potionBrewingAccessor.morejs$getContainerMixes().add(mix);
     }
 
-    public void removeCustomBrewing(@Nullable Ingredient ingredient, @Nullable Ingredient input, @Nullable Ingredient output) {
+    public void removeCustomBrewing(CustomBrewingFilter filter) {
         ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
         while (it.hasNext()) {
             IBrewingRecipe recipe = it.next();
@@ -136,12 +133,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
                 continue;
             }
 
-            boolean matchesInput = ingredient == null || Utils.matchesIngredient(ingredient, br.getIngredient());
-            boolean matchesIngredient = input == null || Utils.matchesIngredient(input, br.getInput());
-            boolean matchesOutput = output == null || output.test(br.getOutput());
-
-
-            if (matchesInput && matchesIngredient && matchesOutput) {
+            if (filter.test(br)) {
                 String s = String.format("Removing custom brewing recipe: [Input: %s][Ingredient: %s][Output: %s]",
                         br.getInput(),
                         br.getIngredient(),
@@ -152,18 +144,7 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
         }
     }
 
-    public void removeCustomBrewing(Predicate<IBrewingRecipe> predicate) {
-        ListIterator<IBrewingRecipe> it = potionBrewingAccessor.morejs$getRecipes().listIterator();
-        while (it.hasNext()) {
-            IBrewingRecipe recipe = it.next();
-            if (recipe instanceof BrewingRecipe) {
-                continue;
-            }
-
-            if (predicate.test(recipe)) {
-                ConsoleJS.STARTUP.info("Removing custom brewing recipe: " + recipe);
-                it.remove();
-            }
-        }
+    public List<IBrewingRecipe> getCustomBrewingRecipes() {
+        return potionBrewingAccessor.morejs$getRecipes();
     }
 }

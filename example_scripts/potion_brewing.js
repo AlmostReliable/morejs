@@ -15,7 +15,11 @@ MoreJS.registerPotionBrewing(event => {
 
 // removePotionBrewing
 MoreJS.registerPotionBrewing(event => {
-    event.removePotionBrewing("minecraft:glowstone_dust", "minecraft:harming", "minecraft:strong_harming");
+    event.removePotionBrewing({
+        ingredient: "minecraft:apple",
+        input: "minecraft:harming",
+        output: "minecraft:strong_harming",
+    })
 });
 
 // addCustomBrewing
@@ -26,5 +30,9 @@ MoreJS.registerPotionBrewing(event => {
 // removeCustomBrewing
 MoreJS.registerPotionBrewing(event => {
     event.addCustomBrewing("minecraft:emerald", "minecraft:nether_star", "minecraft:diamond");
-    event.removeCustomBrewing("minecraft:emerald", "minecraft:nether_star", "minecraft:diamond");
+    event.removeCustomBrewing({
+        ingredient: "minecraft:emerald",
+        input: "minecraft:nether_star",
+        output: "minecraft:diamond",
+    })
 });
