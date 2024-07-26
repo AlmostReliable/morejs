@@ -77,7 +77,7 @@ public class VillagerTradingEventJS implements KubeEvent {
 
     public void removeVanillaTypedTrades() {
         forEachTrades((listings, level, profession) -> {
-            listings.removeIf(VillagerUtils::isVanillaTrade);
+            listings.removeIf(VillagerUtils::isVanillaTypedTrade);
         });
     }
 
@@ -87,13 +87,13 @@ public class VillagerTradingEventJS implements KubeEvent {
 
     public void removeVanillaTypedTrades(List<Holder<VillagerProfession>> professions, IntRange intRange) {
         forEachTrades(professions, intRange, itemListings -> {
-            itemListings.removeIf(VillagerUtils::isVanillaTrade);
+            itemListings.removeIf(VillagerUtils::isVanillaTypedTrade);
         });
     }
 
     public void removeModdedTypedTrades() {
         forEachTrades((listings, level, profession) -> {
-            listings.removeIf(VillagerUtils::isModdedTrade);
+            listings.removeIf(VillagerUtils::isModdedTypedTrade);
         });
     }
 
@@ -103,7 +103,7 @@ public class VillagerTradingEventJS implements KubeEvent {
 
     public void removeModdedTypedTrades(List<Holder<VillagerProfession>> professions, IntRange intRange) {
         forEachTrades(professions, intRange, itemListings -> {
-            itemListings.removeIf(VillagerUtils::isModdedTrade);
+            itemListings.removeIf(VillagerUtils::isModdedTypedTrade);
         });
     }
 

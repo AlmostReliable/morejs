@@ -6,13 +6,12 @@ import com.almostreliable.morejs.util.BlockPosFinder;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.Structure;
 
@@ -34,15 +33,15 @@ public class VillagerUtils {
             VillagerTrades.TreasureMapForEmeralds.class
     );
 
-    public static boolean isVanillaTrade(VillagerTrades.ItemListing listing) {
+    public static boolean isVanillaTypedTrade(VillagerTrades.ItemListing listing) {
         return VANILLA_TRADE_TYPES.contains(listing.getClass());
     }
 
-    public static boolean isModdedTrade(VillagerTrades.ItemListing listing) {
-        return !isVanillaTrade(listing) && !isMoreJSTrade(listing);
+    public static boolean isModdedTypedTrade(VillagerTrades.ItemListing listing) {
+        return !isVanillaTypedTrade(listing) && !isCustomTypedTrade(listing);
     }
 
-    public static boolean isMoreJSTrade(VillagerTrades.ItemListing listing) {
+    public static boolean isCustomTypedTrade(VillagerTrades.ItemListing listing) {
         return listing instanceof TransformableTrade<?> || listing instanceof CustomTrade;
     }
 
@@ -84,13 +83,12 @@ public class VillagerUtils {
         return new TreasureMapTrade(inputs, func);
     }
 
-    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, Item output) {
+    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, ItemStack output) {
         return new EnchantedItemTrade(inputs, output, EnchantmentTags.ON_TRADED_EQUIPMENT);
     }
 
-    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, Item output, String tag) {
-        ResourceLocation tagRL = ResourceLocation.parse(tag.substring(1));
-        return new EnchantedItemTrade(inputs, output, TagKey.create(Registries.ENCHANTMENT, tagRL));
+    public static EnchantedItemTrade createEnchantedItemTrade(TradeItem[] inputs, ItemStack output, HolderSet<Enchantment> enchantments) {
+        return new EnchantedItemTrade(inputs, output, enchantments);
     }
 
     public static StewTrade createStewTrade(TradeItem[] inputs) {

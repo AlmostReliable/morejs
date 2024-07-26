@@ -17,6 +17,7 @@ import java.util.List;
 public class TradingManager {
     public static void invokeVillagerTradeEvent() {
         synchronized (VillagerTrades.TRADES) {
+            VillagerUtils.CACHED_PROFESSION_TRADES.clear();
             var allTrades = createTradesTable();
 
             Events.VILLAGER_TRADING.post(new VillagerTradingEventJS(allTrades));

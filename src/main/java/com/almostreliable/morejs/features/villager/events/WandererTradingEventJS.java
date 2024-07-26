@@ -66,23 +66,23 @@ public class WandererTradingEventJS implements KubeEvent {
     }
 
     public void removeVanillaTrades() {
-        getTrades(1).removeIf(VillagerUtils::isVanillaTrade);
-        getTrades(2).removeIf(VillagerUtils::isVanillaTrade);
+        getTrades(1).removeIf(VillagerUtils::isVanillaTypedTrade);
+        getTrades(2).removeIf(VillagerUtils::isVanillaTypedTrade);
     }
 
     public void removeVanillaTrades(int level) {
         checkLevel(level);
-        getTrades(level).removeIf(VillagerUtils::isVanillaTrade);
+        getTrades(level).removeIf(VillagerUtils::isVanillaTypedTrade);
     }
 
     public void removeModdedTrades() {
-        getTrades(1).removeIf(VillagerUtils::isModdedTrade);
-        getTrades(2).removeIf(VillagerUtils::isModdedTrade);
+        getTrades(1).removeIf(VillagerUtils::isModdedTypedTrade);
+        getTrades(2).removeIf(VillagerUtils::isModdedTypedTrade);
     }
 
     public void removeModdedTrades(int level) {
         checkLevel(level);
-        getTrades(level).removeIf(VillagerUtils::isModdedTrade);
+        getTrades(level).removeIf(VillagerUtils::isModdedTypedTrade);
     }
 
     private void checkLevel(int level) {
