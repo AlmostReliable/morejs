@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.13.0] - 2024-07-26
 
 - Rename some functions in VillagerUtils to fit other functions.
 - Fix trade cache does not get cleared after reload.
@@ -99,6 +99,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.13.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.0
 [0.12.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.12.0
 [0.11.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.11.0
 [0.10.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.10.0
