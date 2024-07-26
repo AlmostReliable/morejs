@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Rename some functions in VillagerUtils to fit other functions.
+- Fix trade cache does not get cleared after reload.
+
 ## [0.12.0] - 2024-07-26
 
 - Refactor potion brewing event to use a filter object for removing brewing recipes
