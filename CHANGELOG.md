@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Refactor potion brewing event to use a filter object for removing brewing recipes
+
 ## [0.11.0] - 2024-07-26
 
 - Update to 1.21
