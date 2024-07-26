@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## Unreleased
 
 - Update to 1.21
 
@@ -23,7 +23,7 @@
 
 ## [0.6.0] - 2024-02-04
 - Fix [#9](https://github.com/AlmostReliable/morejs/issues/9)
-- Added utility to `VillagerUtils`
+- Add utility to `VillagerUtils`
     - `.setAbstractTrades(tradeMap, level, trades)`
     - `.getAbstractTrades(tradeMap, level)`
     - `.getVillagerTrades(profession)`
@@ -37,7 +37,7 @@
 - Fix [#8](https://github.com/AlmostReliable/morejs/issues/8)
 
 ## [0.4.0] - 2023-10-21
-- Added `structureAfterPlace` event. Thanks to [Pietro Lopes](https://github.com/pietro-lopes)
+- Add `structureAfterPlace` event. Thanks to [Pietro Lopes](https://github.com/pietro-lopes)
 
 ## [0.3.0] - 2023-09-10
 - Update to KubeJS 6.3 1.20.1
@@ -76,27 +76,35 @@
 - Fix crash with new KubeJS version
 
 ## [0.0.2] - 2022-10-21
-- Added trade filters
+- Add trade filters
 
 ## [0.0.1] - 2022-08-30
-- Added `morejs.villager.trading` event.
-- Added `morejs.wanderer.trading` event.
-- Added `morejs.enchantment_table.changed` event.
-- Added `morejs.enchantment_table.enchant` event.
-- Added `morejs.enchantment_table.tooltip` event.
-- Added `morejs.teleport` event.
-- Added `morejs.structure.load` event.
-- Added `morejs.player.xp_change` event.
-- Added `morejs.player.start_trading` event.
+- Add `morejs.villager.trading` event.
+- Add `morejs.wanderer.trading` event.
+- Add `morejs.enchantment_table.changed` event.
+- Add `morejs.enchantment_table.enchant` event.
+- Add `morejs.enchantment_table.tooltip` event.
+- Add `morejs.teleport` event.
+- Add `morejs.structure.load` event.
+- Add `morejs.player.xp_change` event.
+- Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
-[0.5.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.5.0
-[0.4.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.4.0-beta
-[0.3.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.12.1-0.3.0-beta
+[0.10.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.10.0
+[0.9.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.9.0
+[0.8.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.8.0
+[0.7.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.7.0
+[0.6.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.6.0
+[0.5.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.5.0
+[0.4.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.4.0
+[0.3.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.3.0
 [0.2.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.2.0-beta
+[0.1.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.1.1-beta
+[0.1.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.1.0-beta
 [0.0.8]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.8-beta
 [0.0.7]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.7-beta
 [0.0.6]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.6-beta
+[0.0.5]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.5-beta
 [0.0.4]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.4-beta
 [0.0.3]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.3-beta
 [0.0.2]: https://github.com/AlmostReliable/morejs/releases/tag/v1.19-0.0.2-beta
