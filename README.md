@@ -20,25 +20,14 @@ A [Minecraft] mod to extend [KubeJS] with additional events.
 </div>
 
 ## **📑 Overview**
-This is a mod for [Minecraft]-[Forge] and [Fabric] and needs [KubeJS].<br>
-An overview of a few events: 
-| Events                           | Client Script | Server Script |
-| -------------------------------- | :-----------: | :-----------: |
-| morejs.villager.trades           |               |      ✔️       |
-| morejs.wanderer.trades           |               |      ✔️       |
-| morejs.player.start_trading      |               |      ✔️       |
-| morejs.enchantment_table.changed |               |      ✔️       |
-| morejs.enchantment_table.enchant |               |      ✔️       |
-| morejs.enchantment_table.tooltip |      ✔️       |               |
-| morejs.teleport                  |               |      ✔️       |
-| morejs.structure.load            |               |      ✔️       |
-| morejs.player.xp_change          |               |      ✔️       |
+
+This is a mod for [Minecraft] [NeoForge] and needs [KubeJS].<br>
 
 
 ## **🔧 Installation**
 1. Download the latest **mod jar** from the [releases], from [CurseForge] or from [Modrinth].
 2. Download the latest **mod jar** of [KubeJS].
-3. Install Minecraft [Forge] or [Fabric].
+3. Install Minecraft [NeoForge].
 4. Drop both **jar files** into your mods folder.
 
 ## **⚙️ More Information**
@@ -65,8 +54,9 @@ This project is licensed under the [GNU Lesser General Public License v3.0][lice
 [releases]: https://github.com/AlmostReliable/morejs/releases
 [curseforge]: https://www.curseforge.com/minecraft/mc-mods/morejs
 [modrinth]: https://modrinth.com/mod/morejs
-[forge]: http://files.minecraftforge.net/
-[fabric]: https://fabricmc.net/
-[wiki]: https://github.com/AlmostReliable/morejs/wiki
+
+[neoforge]: https://neoforged.net/
+
+[wiki]: https://docs.almostreliable.com/morejs/
 [changelog]: CHANGELOG.md
 [license]: LICENSE
