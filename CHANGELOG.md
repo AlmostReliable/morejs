@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.11.0] - 2024-07-26
 
 - Update to 1.21
 
@@ -90,6 +90,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.11.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.11.0
 [0.10.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.10.0
 [0.9.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.9.0
 [0.8.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.8.0
