@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [0.12.0] - 2024-07-26
 
 - Refactor potion brewing event to use a filter object for removing brewing recipes
 
@@ -94,6 +94,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.12.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.12.0
 [0.11.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.11.0
 [0.10.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.10.0
 [0.9.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.20.1-0.9.0
