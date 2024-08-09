@@ -47,13 +47,15 @@ neoForge {
     runs {
         val exampleScripts = project.rootDir.resolve("example_scripts").toString()
         create("gametest") {
-            server();
+            server()
+            sourceSet.set(sourceSets.test.get())
             systemProperty("neoforge.gameTestServer", "true")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             systemProperty("$modId.example_scripts", exampleScripts)
         }
         create("testmod") {
-            client();
+            client()
+            sourceSet.set(sourceSets.test.get())
             systemProperty("neoforge.gameTestServer", "true")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             systemProperty("$modId.example_scripts", exampleScripts)
