@@ -71,9 +71,9 @@ public class PotionBrewingRegisterEvent implements KubeEvent {
             if (filter.test(mix)) {
                 ConsoleJS.STARTUP.info(
                         "Removed potion brewing recipe: " +
-                        mix.from() + " + " +
+                        key(mix.from().value()) + " + " +
                         StringUtils.abbreviate(mix.ingredient().toString(), 64) + " -> " +
-                        mix.to());
+                        key(mix.to().value()));
                 return true;
             }
 

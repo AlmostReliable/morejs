@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Fix removing of potion brewing
+
 ## [0.13.0] - 2024-07-26
 
 - Rename some functions in VillagerUtils to fit other functions.

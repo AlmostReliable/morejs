@@ -12,15 +12,16 @@ public record CustomBrewingFilter(Optional<Ingredient> ingredient, Optional<Ingr
 
     @Override
     public boolean test(BrewingRecipe brewingRecipe) {
-        if (input.filter(input -> Utils.matchesIngredient(input, brewingRecipe.getInput())).isEmpty()) {
+        if (input().isPresent() &&
+            input.filter(input -> Utils.matchesIngredient(input, brewingRecipe.getInput())).isEmpty()) {
             return false;
         }
 
-        if (output.filter(output -> output.test(brewingRecipe.getOutput())).isEmpty()) {
+        if (output().isPresent() && output.filter(output -> output.test(brewingRecipe.getOutput())).isEmpty()) {
             return false;
         }
 
-        return ingredient
+        return ingredient().isEmpty() || ingredient
                 .filter(ingredient -> Utils.matchesIngredient(ingredient, brewingRecipe.getIngredient()))
                 .isPresent();
     }

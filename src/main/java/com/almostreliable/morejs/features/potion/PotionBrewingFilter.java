@@ -14,14 +14,15 @@ public record PotionBrewingFilter(Optional<Ingredient> ingredient, Optional<Hold
 
     @Override
     public boolean test(PotionBrewing.Mix<Potion> potionMix) {
-        if (input.filter(input -> input.contains(potionMix.from())).isEmpty()) {
+        if (input.isPresent() && input.filter(input -> input.contains(potionMix.from())).isEmpty()) {
             return false;
         }
 
-        if (output.filter(output -> output.contains(potionMix.to())).isEmpty()) {
+        if (output.isPresent() && output.filter(output -> output.contains(potionMix.to())).isEmpty()) {
             return false;
         }
-        return ingredient
+
+        return ingredient().isEmpty() || ingredient
                 .filter(ingredient -> Utils.matchesIngredient(ingredient, potionMix.ingredient()))
                 .isPresent();
     }

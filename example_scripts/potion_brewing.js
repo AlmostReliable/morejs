@@ -36,3 +36,10 @@ MoreJS.registerPotionBrewing(event => {
         output: "minecraft:diamond",
     })
 });
+
+
+MoreJS.registerPotionBrewing(event => {
+    event.removePotionBrewing({
+        input: "water"
+    })
+})
