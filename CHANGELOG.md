@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Fix removing of potion brewing
+- Fix enchantments not being applied to the item in the enchantment table
 
 ## [0.13.0] - 2024-07-26
 

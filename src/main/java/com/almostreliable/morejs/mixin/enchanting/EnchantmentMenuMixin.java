@@ -31,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -165,52 +166,58 @@ public abstract class EnchantmentMenuMixin extends AbstractContainerMenu impleme
             switch (state.getState()) {
                 case STORE_ENCHANTMENTS -> state.setEnchantments(index, cir.getReturnValue());
                 case USE_STORED_ENCHANTMENTS -> {
-                    var enchantments = state.getEnchantments(index);
+                    var enchantments = new ArrayList<>(state.getEnchantments(index));
                     cir.setReturnValue(enchantments);
                 }
             }
         });
     }
 
-    @Inject(method = "clickMenuButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ContainerLevelAccess;execute(Ljava/util/function/BiConsumer;)V"), cancellable = true)
-    private void clickMenuButton$InvokeEnchantEvent(Player player, int clickedBtn, CallbackInfoReturnable<Boolean> cir) {
-        this.access.execute((level, pos) -> {
-            morejs$getState().ifPresent(state -> {
-                if (player != state.getPlayer()) {
-                    MoreJS.LOG.error("<{}> Player changed during clickMenuButton", state.getPlayer());
-                    return;
-                }
+    @Inject(method = "lambda$clickMenuButton$1", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/inventory/EnchantmentMenu;getEnchantmentList(Lnet/minecraft/core/RegistryAccess;Lnet/minecraft/world/item/ItemStack;II)Ljava/util/List;", shift = At.Shift.AFTER), cancellable = true)
+    private void morejs$invokeEnchantmentTableEnchant(ItemStack mainItem, int btnRow, Player player, int minLevel, ItemStack secondItem, Level level, BlockPos pos, CallbackInfo ci, @Local List<EnchantmentInstance> enchantments) {
+        morejs$getState().ifPresent(state -> {
+            if (player != state.getPlayer()) {
+                MoreJS.LOG.error("<{}> Player changed during clickMenuButton", state.getPlayer());
+                return;
+            }
 
-                ItemStack item = this.enchantSlots.getItem(0);
-                ItemStack secondItem = this.enchantSlots.getItem(1);
-                var e = new PlayerEnchantEventJS(clickedBtn, item, secondItem, level, pos, player, state);
-                if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e).interruptFalse()) {
-                    cir.setReturnValue(false);
-                }
+            var requiredLevel = state.getMenu().costs[btnRow];
+            var e = new PlayerEnchantEventJS(mainItem, secondItem, level, pos, player, state, requiredLevel, enchantments);
+            if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e).interruptFalse()) {
+               ci.cancel();
+               return;
+            }
 
-                if (e.itemWasChanged()) {
-                    cir.setReturnValue(false);
-                    ItemStack newItem = e.getItem().copy();
-                    state.reset(newItem);
-                    this.enchantSlots.setItem(0, newItem);
-                }
-
-                state.reset(ItemStack.EMPTY);
-            });
-
+            state.reset(ItemStack.EMPTY);
         });
     }
 
-    @Inject(method = "clickMenuButton", at = @At(value = "RETURN"))
-    private void clickMenuButton$postClear(Player player, int i, CallbackInfoReturnable<Boolean> cir) {
+//    @Inject(method = "clickMenuButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ContainerLevelAccess;execute(Ljava/util/function/BiConsumer;)V"), cancellable = true)
+//    private void clickMenuButton$InvokeEnchantEvent(Player player, int clickedBtn, CallbackInfoReturnable<Boolean> cir) {
 //        this.access.execute((level, pos) -> {
 //            morejs$getState().ifPresent(state -> {
-//                var oldItem = state.getCurrentItem();
-//                var item = this.enchantSlots.getItem(0);
-//                if (!ItemStack.matches(oldItem, item)) {
-//                    state.reset(ItemStack.EMPTY);
+//                if (player != state.getPlayer()) {
+//                    MoreJS.LOG.error("<{}> Player changed during clickMenuButton", state.getPlayer());
+//                    return;
 //                }
+//
+//                ItemStack item = this.enchantSlots.getItem(0);
+//                ItemStack secondItem = this.enchantSlots.getItem(1);
+//                var e = new PlayerEnchantEventJS(clickedBtn, item, secondItem, level, pos, player, state);
+//                if (Events.ENCHANTMENT_TABLE_ENCHANT.post(e).interruptFalse()) {
+//                    cir.setReturnValue(false);
+//                }
+//
+//                if (e.itemWasChanged()) {
+//                    cir.setReturnValue(false);
+//                    ItemStack newItem = e.getItem().copy();
+//                    state.reset(newItem);
+//                    this.enchantSlots.setItem(0, newItem);
+//                }
+//
+//                state.reset(ItemStack.EMPTY);
 //            });
+//
 //        });
-    }
+//    }
 }

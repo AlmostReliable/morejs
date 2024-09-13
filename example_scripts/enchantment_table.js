@@ -7,11 +7,21 @@ MoreJS.playerEnchant((event) => {
 
 MoreJS.playerEnchant((event) => {
     const player = event.player;
-    const selected = event.selected;
-    const level = selected.requiredLevel;
+    const level = event.requiredLevel;
 
     player.tell(
-            `Player enchanted '${event.item.id} on level ${level} and ${selected.enchantments.size()}x Enchantments`
+            `Player enchanted '${event.item.id} on level ${level} and ${event.enchantments.size()}x Enchantments`
     );
-    player.tell(`Enchantments: ${selected.enchantments}`);
+    player.tell(`Enchantments: ${event.enchantments}`);
 });
+
+MoreJS.enchantmentTableChanged(event => {
+    const data = event.get(2)
+    // data.enchantments.clear()
+    data.addEnchantment("minecraft:mending", 1)
+
+    data.setRequiredLevel(30)
+    data.randomClue()
+
+    console.log(data.enchantmentIds)
+})
