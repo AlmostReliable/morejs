@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- /
+
+## [0.14.0] - 2024-10-31
 
 - Added `MoreJS.postUpdateOffers` event which triggers after a Villager updates their offers
 
@@ -108,6 +111,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.14.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.14.0
 [0.13.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.1
 [0.13.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.0
 [0.12.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.12.0
