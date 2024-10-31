@@ -1,7 +1,8 @@
 package com.almostreliable.morejs.mixin.villager;
 
 import com.almostreliable.morejs.core.Events;
-import com.almostreliable.morejs.features.villager.events.UpdateOfferEventJS;
+import com.almostreliable.morejs.features.villager.events.PostUpdateOfferEventJS;
+import com.almostreliable.morejs.features.villager.events.SingleUpdateOfferEventJS;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.npc.WanderingTrader;
@@ -9,7 +10,9 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WanderingTrader.class)
 public abstract class WanderingTraderMixin {
@@ -17,7 +20,7 @@ public abstract class WanderingTraderMixin {
     @Redirect(method = "updateTrades", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/trading/MerchantOffers;add(Ljava/lang/Object;)Z"))
     private boolean mid$foo(MerchantOffers offers, Object o) {
         MerchantOffer offer = (MerchantOffer) o;
-        var e = new UpdateOfferEventJS((AbstractVillager) (Object) this,
+        var e = new SingleUpdateOfferEventJS((AbstractVillager) (Object) this,
                 offers,
                 VillagerTrades.WANDERING_TRADER_TRADES.get(2),
                 offer);
@@ -26,5 +29,11 @@ public abstract class WanderingTraderMixin {
         }
 
         return offers.add(e.getOffer());
+    }
+
+    @Inject(method = "updateTrades", at = @At(value = "RETURN"))
+    private void morejs$invokePostUpdateOffer(CallbackInfo ci) {
+        var self = (AbstractVillager) (Object) this;
+        PostUpdateOfferEventJS.invoke(self, self.getOffers());
     }
 }

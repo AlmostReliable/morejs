@@ -1,7 +1,6 @@
 package com.almostreliable.morejs.features.villager.events;
 
 import com.almostreliable.morejs.features.villager.VillagerUtils;
-import com.google.common.base.Preconditions;
 import dev.latvian.mods.kubejs.entity.KubeLivingEntityEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,19 +13,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UpdateOfferEventJS implements KubeLivingEntityEvent {
+public abstract class UpdateOfferEventJS implements KubeLivingEntityEvent {
 
     private final AbstractVillager villager;
     private final MerchantOffers allOffers;
-    private final VillagerTrades.ItemListing[] possibleTrades;
-    private MerchantOffer offer;
     @Nullable private List<VillagerTrades.ItemListing> cachedWandererTrades;
 
-    public UpdateOfferEventJS(AbstractVillager villager, MerchantOffers allOffers, VillagerTrades.ItemListing[] possibleTrades, MerchantOffer offer) {
+    public UpdateOfferEventJS(AbstractVillager villager, MerchantOffers allOffers) {
         this.villager = villager;
         this.allOffers = allOffers;
-        this.possibleTrades = possibleTrades;
-        this.offer = offer;
     }
 
     public RandomSource getRandom() {
@@ -88,31 +83,6 @@ public class UpdateOfferEventJS implements KubeLivingEntityEvent {
         return allOffers;
     }
 
-    public List<VillagerTrades.ItemListing> getUsedTrades() {
-        return Arrays.asList(possibleTrades);
-    }
-
-    public MerchantOffer getOffer() {
-        return offer;
-    }
-
-    public void setOffer(MerchantOffer offer) {
-        Preconditions.checkNotNull(offer, "Offer must not be null");
-        this.offer = offer;
-    }
-
-    public void setOffer(VillagerTrades.ItemListing trade) {
-        MerchantOffer newOffer = trade.getOffer(villager, getLevel().getRandom());
-        if (newOffer != null) {
-            this.offer = newOffer;
-        }
-    }
-
-    @Nullable
-    public MerchantOffer createRandomOffer() {
-        return createRandomOffer(getUsedTrades());
-    }
-
     @Nullable
     public MerchantOffer createRandomOffer(List<VillagerTrades.ItemListing> possibleTrades) {
         if (possibleTrades.isEmpty()) {
@@ -121,7 +91,7 @@ public class UpdateOfferEventJS implements KubeLivingEntityEvent {
 
         int i = getLevel().getRandom().nextInt(possibleTrades.size());
         VillagerTrades.ItemListing randomListing = possibleTrades.get(i);
-        return randomListing.getOffer(villager, getLevel().getRandom());
+        return randomListing.getOffer(getEntity(), getLevel().getRandom());
     }
 
     public List<VillagerTrades.ItemListing> getVillagerTrades(VillagerProfession profession) {

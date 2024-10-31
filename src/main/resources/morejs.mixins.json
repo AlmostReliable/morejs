@@ -16,6 +16,7 @@
     "villager.MerchantMenuMixin",
     "villager.MerchantOfferAccessor",
     "villager.MerchantOfferMixin",
+    "villager.VillagerMixin",
     "villager.VillagerTradesMixin$EmeraldForItemsMixin",
     "villager.VillagerTradesMixin$EmeraldsForVillagerTypeItemMixin",
     "villager.VillagerTradesMixin$EnchantBookForEmeraldsMixin",

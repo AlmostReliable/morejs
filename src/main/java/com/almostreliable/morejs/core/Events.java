@@ -9,10 +9,7 @@ import com.almostreliable.morejs.features.potion.PotionBrewingRegisterEvent;
 import com.almostreliable.morejs.features.structure.StructureAfterPlaceEventJS;
 import com.almostreliable.morejs.features.structure.StructureLoadEventJS;
 import com.almostreliable.morejs.features.teleport.EntityTeleportsEventJS;
-import com.almostreliable.morejs.features.villager.events.StartTradingEventJS;
-import com.almostreliable.morejs.features.villager.events.UpdateOfferEventJS;
-import com.almostreliable.morejs.features.villager.events.VillagerTradingEventJS;
-import com.almostreliable.morejs.features.villager.events.WandererTradingEventJS;
+import com.almostreliable.morejs.features.villager.events.*;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
 
@@ -22,7 +19,8 @@ public interface Events {
     EventHandler WANDERING_TRADING = GROUP.server("wandererTrades", () -> WandererTradingEventJS.class);
     EventHandler PLAYER_START_TRADING = GROUP.server("playerStartTrading", () -> StartTradingEventJS.class);
     EventHandler UPDATE_OFFER = GROUP.server("updateOffer",
-            () -> UpdateOfferEventJS.class).hasResult();
+            () -> SingleUpdateOfferEventJS.class).hasResult();
+    EventHandler POST_UPDATE_OFFERS = GROUP.server("postUpdateOffers", () -> PostUpdateOfferEventJS.class);
     EventHandler IS_ENCHANTABLE = GROUP.server("isEnchantable",
             () -> EnchantmentTableServerEventJS.class);
     EventHandler ENCHANTMENT_TABLE_CHANGED = GROUP.server("enchantmentTableChanged",

@@ -1,7 +1,8 @@
 # Changelog
 
 ## Unreleased
-- /
+
+- Added `MoreJS.postUpdateOffers` event which triggers after a Villager updates their offers
 
 ## [0.13.1] - 2024-09-13
 

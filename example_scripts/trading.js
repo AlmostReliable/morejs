@@ -81,3 +81,7 @@ MoreJS.updateOffer((event) => {
     const item = Item.of("minecraft:stick").set("minecraft:attribute_modifiers", attributes);
     event.offer.output = item;
 });
+
+MoreJS.postUpdateOffers(event => {
+    event.addTrade(VillagerUtils.createSimpleTrade("minecraft:emerald_block", "minecraft:nether_star"));
+})
