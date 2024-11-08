@@ -65,24 +65,48 @@ public class WandererTradingEventJS implements KubeEvent {
         });
     }
 
-    public void removeVanillaTrades() {
+    public void removeVanillaTypedTrades() {
         getTrades(1).removeIf(VillagerUtils::isVanillaTypedTrade);
         getTrades(2).removeIf(VillagerUtils::isVanillaTypedTrade);
     }
 
-    public void removeVanillaTrades(int level) {
+    @Deprecated(forRemoval = true)
+    public void removeVanillaTrades() {
+        ConsoleJS.SERVER.error("removeVanillaTrades is deprecated, use removeVanillaTypedTrades instead");
+        removeVanillaTypedTrades();
+    }
+
+    public void removeVanillaTypedTrades(int level) {
         checkLevel(level);
         getTrades(level).removeIf(VillagerUtils::isVanillaTypedTrade);
     }
 
-    public void removeModdedTrades() {
+    @Deprecated(forRemoval = true)
+    public void removeVanillaTrades(int level) {
+        ConsoleJS.SERVER.error("removeVanillaTrades is deprecated, use removeVanillaTypedTrades instead");
+        removeVanillaTypedTrades(level);
+    }
+
+    public void removeModdedTypedTrades() {
         getTrades(1).removeIf(VillagerUtils::isModdedTypedTrade);
         getTrades(2).removeIf(VillagerUtils::isModdedTypedTrade);
     }
 
-    public void removeModdedTrades(int level) {
+    @Deprecated(forRemoval = true)
+    public void removeModdedTrades() {
+        ConsoleJS.SERVER.error("removeModdedTrades is deprecated, use removeModdedTypedTrades instead");
+        removeModdedTypedTrades();
+    }
+
+    public void removeModdedTypedTrades(int level) {
         checkLevel(level);
         getTrades(level).removeIf(VillagerUtils::isModdedTypedTrade);
+    }
+
+    @Deprecated(forRemoval = true)
+    public void removeModdedTrades(int level) {
+        ConsoleJS.SERVER.error("removeModdedTrades is deprecated, use removeModdedTypedTrades instead");
+        removeModdedTypedTrades(level);
     }
 
     private void checkLevel(int level) {

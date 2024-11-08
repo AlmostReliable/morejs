@@ -1,7 +1,8 @@
 # Changelog
 
 ## Unreleased
-- /
+
+- Rename methods in wanderer trading event to match villager trading event
 
 ## [0.14.0] - 2024-10-31
 
