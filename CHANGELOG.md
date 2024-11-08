@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- /
+
+## [0.14.1] - 2024-11-08
 
 - Rename methods in wanderer trading event to match villager trading event
 
@@ -112,6 +115,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.14.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.14.1
 [0.14.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.14.0
 [0.13.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.1
 [0.13.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.0
