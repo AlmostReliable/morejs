@@ -39,11 +39,7 @@ allprojects {
                 includeGroup("dev.architectury")
             }
         }
-        maven("https://maven.saps.dev/minecraft") {
-            content {
-                includeGroup("dev.latvian.mods")
-            }
-        }
+        maven("https://maven.latvian.dev/releases")
         maven("https://jitpack.io")
     }
 
