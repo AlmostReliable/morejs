@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.10.1] - 2025-05-17
+
+- Fix crash when filtering potions in a potion trade
+
 ## [0.10.0] - 2024-05-01
 
 - Add `setRewardExp` and `isRewardingExp` for offers
