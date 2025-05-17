@@ -78,7 +78,7 @@ public class PotionTrade extends TransformableTrade<PotionTrade> {
             return null;
         }
 
-        Potion potion = allowedPotions.get(random.nextInt(potions.size()));
+        Potion potion = allowedPotions.get(random.nextInt(allowedPotions.size()));
         ItemStack potionStack = PotionUtils.setPotion(new ItemStack(itemForPotion), potion);
         return createOffer(potionStack, random);
     }
