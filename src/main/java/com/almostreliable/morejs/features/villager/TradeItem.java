@@ -1,6 +1,5 @@
 package com.almostreliable.morejs.features.villager;
 
-import dev.latvian.mods.kubejs.bindings.ItemWrapper;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +14,7 @@ public class TradeItem {
     @Nullable private final IntRange countRange;
 
     public static TradeItem of(ItemStack item) {
-        return new TradeItem(ItemWrapper.of(item), null);
+        return new TradeItem(item, null);
     }
 
     public static TradeItem of(ItemStack item, int price) {
@@ -23,7 +22,7 @@ public class TradeItem {
     }
 
     public static TradeItem of(ItemStack item, int min, int max) {
-        return new TradeItem(ItemWrapper.of(item), new IntRange(min, max));
+        return new TradeItem(item, new IntRange(min, max));
     }
 
     public TradeItem(ItemStack itemStack, @Nullable IntRange countRange) {
