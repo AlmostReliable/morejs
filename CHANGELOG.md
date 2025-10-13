@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- /
+
+## [0.16.0] - 2025-10-13
 - Update to KubeJS 7.2
 
 ## [0.14.1] - 2024-11-08
@@ -115,6 +118,7 @@
 - Add `morejs.player.start_trading` event.
 
 <!-- Versions -->
+[0.16.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21.1-neoforge-0.16.0
 [0.14.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.14.1
 [0.14.0]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.14.0
 [0.13.1]: https://github.com/AlmostReliable/morejs/releases/tag/v1.21-neoforge-0.13.1
