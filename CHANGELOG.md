@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- /
+- Update to KubeJS 7.2
 
 ## [0.14.1] - 2024-11-08
 
