@@ -35,6 +35,6 @@ public interface Events {
     EventHandler STRUCTURE_AFTER_PLACE = GROUP.server("structureAfterPlace", () -> StructureAfterPlaceEventJS.class);
     EventHandler XP_CHANGE = GROUP.server("playerXpChange", () -> ExperiencePlayerEventJS.class).hasResult();
     EventHandler PIGLIN_PLAYER_BEHAVIOR = GROUP.server("piglinPlayerBehavior", () -> PiglinPlayerBehaviorEventJS.class);
-    EventHandler POTION_BREWING_REGISTER = GROUP.server("registerPotionBrewing",
+    EventHandler POTION_BREWING_REGISTER = GROUP.startup("registerPotionBrewing",
             () -> PotionBrewingRegisterEvent.class);
 }
